@@ -4,9 +4,37 @@
 {% block title %}Reads - New - My App{% endblock %}
 
 {% block content %}
+{% include 'base_reads.html' %}
 
+    <p>Reads New</p>
 
-    <p>Reads New</p>>
+    <h1>Submit Form now</h1>
+    <form method="post" action="/reads/history">
+        <label for="date">Date Started:</label>
+        <input type="text" id="date_started" name="date_started" required><br>
 
+        <label for="date">Date Ended:</label>
+        <input type="text" id="date_ended" name="date_ended" required><br>
+
+        <label for="distance">Title:</label>
+        <input type="text" id="title" name="title" required><br>
+
+        <label for="time">Author:</label>
+        <input type="text" id="author" name="author" required><br>
+
+        <label for="location">Pages:</label>
+        <input type="text" id="pages" name="pages" required><br>
+
+        <label for="location">Category:</label>
+        <input type="text" id="category" name="category" required><br>
+
+        <label for="location">Sub Category:</label>
+        <input type="text" id="subcategory" name="subcategory" required><br>
+
+        <label for="location">Country:</label>
+        <input type="text" id="coutry" name="country" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
 
     {% endblock %}

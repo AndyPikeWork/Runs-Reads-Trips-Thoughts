@@ -21,6 +21,20 @@ class Entry(db.Model):
     time = db.Column(db.String(10), nullable=False)
     location = db.Column(db.String(100), nullable=False)
 
+class Read(db.Model):
+    id = db.Column(db.Integer, primary_key=True, nullable=True)
+    date_started = db.Column(db.String(20))
+    date_ended = db.Column(db.String(20))
+    title = db.Column(db.String(50))
+    author = db.Column(db.String(50))
+    pages = db.Column(db.Integer)
+    category = db.Column(db.String(50))
+    subcategory = db.Column(db.String(50))
+    country = db.Column(db.String(50))
+    date_added = db.Column(db.String(50))
+
+
+
 # Route for handling form submissions
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -75,7 +89,8 @@ def runs_history():
 
 @app.route('/reads/history', methods=['GET', 'POST'])
 def reads_history():
-    return render_template('reads_history.html')
+    reads = Read.query.all()
+    return render_template('reads_history.html',reads=reads)
 
 @app.route('/trips/history', methods=['GET', 'POST'])
 def trips_history():
@@ -94,6 +109,20 @@ def runs_new():
 
 @app.route('/reads/new', methods=['GET', 'POST'])
 def reads_new():
+    if request.method == 'POST':
+        date_started = request.form['date_started']
+        date_ended = request.form['date_ended']
+        title = request.form['title']
+        author = request.form['author']
+        pages = request.form['pages']
+        category = request.form['category']
+        subcategory = request.form['subcategory']
+        country = request.form['country']
+        date_added = request.form['date_added']
+        
+    reads_entry = Read(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added)
+    db.session.add(reads_entry)
+    db.session.commit()
     return render_template('reads_new.html')
 
 @app.route('/trips/new', methods=['GET', 'POST'])
