@@ -3,20 +3,25 @@
 <html lang="en">
 <head>
     <!-- Inside your HTML template -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">   
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">  
+    <link rel="stylesheet" href="{{ url_for('static', filename='my_override_style.css') }}">  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
+
 </head>
 <body>
-    <ul class="list-group d-flex flex-row">
-        <li><a class="list-group-item" href="{{ url_for('index') }}">Home</a></li>
-        <li><a class="list-group-item" href="{{ url_for('runs_stats') }}">Runs</a></li>
-        <li><a class="list-group-item" href="{{ url_for('reads_stats') }}">Reads</a></li>
-        <li><a class="list-group-item" href="{{ url_for('trips_stats') }}">Trips</a></li>
-        <li><a class="list-group-item" href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>
-    </ul>
-    
+    <div class="d-flex justify-content-center">
+        <nav>
+        <ul class="list-group d-flex flex-row">
+            <li class="m-2 list-group-item {% if request.endpoint == 'index' %}active{% endif %}"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="m-2 list-group-item {% if 'runs' in request.endpoint %}active{% endif %}"><a href="{{ url_for('runs_stats') }}">Runs</a></li>
+            <li class="m-2 list-group-item {% if 'reads' in request.endpoint %}active{% endif %}"><a href="{{ url_for('reads_stats') }}">Reads</a></li>
+            <li class="m-2 list-group-item {% if 'trips' in request.endpoint %}active{% endif %}"><a href="{{ url_for('trips_stats') }}">Trips</a></li>
+            <li class="m-2 list-group-item {% if 'thoughts' in request.endpoint %}active{% endif %}"><a href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>
+        </ul>
+        </nav>
+    </div>
     
 
     <div>

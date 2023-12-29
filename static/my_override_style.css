@@ -1,0 +1,46 @@
+* { 
+    font-size: 7pt;
+    
+}
+/* remove the bullet points from the list */
+ul {
+    list-style: none;
+}
+li {
+    width: 60px;
+    text-align: center;
+}
+
+.list-group-item.active {
+    background-color: #3A6E8A;
+    color: white;
+    border-color: #3A6E8A;
+}
+
+.list-group-item.active a {
+    background-color: #3A6E8A;
+    color: white;
+    border-color: #3A6E8A;
+}
+
+.list-group-item {
+    background-color: #D9D9D9;
+    color: #666666;
+    border-color: #D9D9D9;
+}
+
+.list-group-item a {
+    background-color: #D9D9D9;
+    color: #666666;
+    border-color: #D9D9D9;
+}
+
+.input_form {
+    width: 330px;
+    margin: auto;
+}
+
+
+.row {
+    flex-wrap: nowrap;
+}

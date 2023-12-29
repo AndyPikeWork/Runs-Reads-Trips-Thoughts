@@ -1,7 +1,8 @@
-<nav>
-    <ul>
-        <li><a href="{{ url_for('runs_stats') }}">Stats</a></li>
-        <li><a href="{{ url_for('runs_new') }}">New</a></li>
-        <li><a href="{{ url_for('runs_history') }}">History</a></li>
+<div class="d-flex justify-content-center">
+    <ul class="list-group d-flex flex-row">
+        <li class="list-group-item m-2 {% if 'stats' in request.endpoint %}active{% endif %}"><a href="{{ url_for('runs_stats') }}">Stats</a></li>
+        <li class="list-group-item m-2 {% if 'new' in request.endpoint %}active{% endif %}"><a href="{{ url_for('runs_new') }}">New</a></li>
+        <li class="list-group-item m-2 {% if 'history' in request.endpoint %}active{% endif %}"><a href="{{ url_for('runs_history') }}">History</a></li>
     </ul>
-</nav>
+</div>
+
