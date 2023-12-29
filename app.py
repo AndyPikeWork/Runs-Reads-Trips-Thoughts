@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -21,8 +21,8 @@ class Entry(db.Model):
     time = db.Column(db.String(10), nullable=False)
     location = db.Column(db.String(100), nullable=False)
 
-class Read(db.Model):
-    id = db.Column(db.Integer, primary_key=True, nullable=True)
+class Reads(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
     date_started = db.Column(db.String(20))
     date_ended = db.Column(db.String(20))
     title = db.Column(db.String(50))
@@ -33,7 +33,8 @@ class Read(db.Model):
     country = db.Column(db.String(50))
     date_added = db.Column(db.String(50))
 
-
+with app.app_context():
+    db.create_all()
 
 # Route for handling form submissions
 @app.route('/', methods=['GET', 'POST'])
@@ -89,7 +90,7 @@ def runs_history():
 
 @app.route('/reads/history', methods=['GET', 'POST'])
 def reads_history():
-    reads = Read.query.all()
+    reads = Reads.query.all()
     return render_template('reads_history.html',reads=reads)
 
 @app.route('/trips/history', methods=['GET', 'POST'])
@@ -110,19 +111,27 @@ def runs_new():
 @app.route('/reads/new', methods=['GET', 'POST'])
 def reads_new():
     if request.method == 'POST':
-        date_started = request.form['date_started']
-        date_ended = request.form['date_ended']
-        title = request.form['title']
-        author = request.form['author']
-        pages = request.form['pages']
-        category = request.form['category']
-        subcategory = request.form['subcategory']
-        country = request.form['country']
-        date_added = request.form['date_added']
-        
-    reads_entry = Read(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added)
-    db.session.add(reads_entry)
-    db.session.commit()
+        try:
+            date_started = request.form['date_started']
+            date_ended = request.form['date_ended']
+            title = request.form['title']
+            author = request.form['author']
+            pages = request.form['pages']
+            category = request.form['category']
+            subcategory = request.form['subcategory']
+            country = request.form['country']
+            date_added = '2023-12-29'
+            
+            reads_entry = Reads(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added)
+            print(reads_entry)
+            db.session.add(reads_entry)
+            db.session.commit()
+            # Redirect to the reads_history page after successful form submission
+            return redirect(url_for('reads_history'))
+        except Exception as e:
+            # Handle database or form processing errors
+            reads_entry = db.session.rollback()
+            print(f"Error: {str(e)}")
     return render_template('reads_new.html')
 
 @app.route('/trips/new', methods=['GET', 'POST'])
@@ -141,7 +150,9 @@ if __name__ == '__main__':
             db.create_all()
             print("Database tables created successfully.")
         except Exception as e:
-            print(f"Error creating database tables: {str(e)}")
+            print(f"Error creating database tables: {str(e)}") 
 
     # Run the Flask app in debug mode
     app.run(debug=True)
+
+print("start")

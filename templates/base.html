@@ -2,21 +2,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Inside your HTML template -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">   
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
 </head>
 <body>
-    <nav>
-        <ul>
-            <li><a href="{{ url_for('index') }}">Home</a></li>
-            <li><a href="{{ url_for('runs_stats') }}">Runs</a></li>
-            <li><a href="{{ url_for('reads_stats') }}">Reads</a></li>
-            <li><a href="{{ url_for('trips_stats') }}">Trips</a></li>
-            <li><a href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>
-        </ul>
-    </nav>
+    <ul class="list-group d-flex flex-row">
+        <li><a class="list-group-item" href="{{ url_for('index') }}">Home</a></li>
+        <li><a class="list-group-item" href="{{ url_for('runs_stats') }}">Runs</a></li>
+        <li><a class="list-group-item" href="{{ url_for('reads_stats') }}">Reads</a></li>
+        <li><a class="list-group-item" href="{{ url_for('trips_stats') }}">Trips</a></li>
+        <li><a class="list-group-item" href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>
+    </ul>
     
+    
+
     <div>
         {% block content %}{% endblock %}
     </div>
