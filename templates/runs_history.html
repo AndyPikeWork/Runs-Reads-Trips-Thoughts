@@ -1,12 +1,36 @@
-<!-- runs_History.html -->
+<!-- home.html -->
 {% extends 'base.html' %}
 
-{% block title %}Runs - History - My App{% endblock %}
+{% block title %}Runs - Stats - My App{% endblock %}
+
 
 {% block content %}
 
 {% include 'base_runs.html' %}
-    <p>Runs History</p>
 
-
+    
+        <h1>Runs History</h1>
+        <table class="table override_table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for run in runs %}
+                    <tr>
+                        <td>{{ run.date }}</td>
+                        <td>{{ run.distance }}</td>
+                        <td>{{ run.time }}</td>
+                        <td>{{ run.location }}</td>
+                        <td>{{ run.average_time_per_km }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endblock %}
+

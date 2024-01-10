@@ -10,13 +10,14 @@
 
     
         <h1>Reads History</h1>
-        <table>
+        <table class="table override_table">
             <thead>
                 <tr>
                     <th>Date</th>
                     <th>Title</th>
                     <th>Author</th>
                     <th>Country</th>
+                    <th>Pages</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,7 @@
                         <td>{{ read.title }}</td>
                         <td>{{ read.author }}</td>
                         <td>{{ read.country }}</td>
+                        <td>{{ read.pages }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

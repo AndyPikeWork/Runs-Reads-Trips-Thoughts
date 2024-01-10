@@ -5,8 +5,18 @@
 
 {% block content %}
 {% include 'base_reads.html' %}
+    <br/><br/><br/>
+    <h6 class="center">Books by Year</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ books_by_year }}">
+    </div><br/>
+    <h6 class="center">Top 5 Categories</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ books_by_category }}">
+    </div>
+    <h6 class="center">Top 5 Writers</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ books_by_author }}">
+    </div>
 
-    <p>Reads History</p>
-
-
-    {% endblock %}
+{% endblock %}

@@ -1,7 +1,16 @@
 * { 
-    font-size: 7pt;
-    
+    font-size: 6pt;
 }
+
+.center {
+    text-align: center;
+    font-weight: bold;
+}
+
+.override_table {
+    table-layout: fixed;
+}
+
 /* remove the bullet points from the list */
 ul {
     list-style: none;
