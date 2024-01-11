@@ -3,10 +3,34 @@
 
 {% block title %}Trips - History - My App{% endblock %}
 
+
 {% block content %}
+
 {% include 'base_trips.html' %}
 
-    <p>Trips History</p>
-
-
+    
+        <h1>Trips History</h1>
+        <table class="table override_table">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Trip</th>
+                    <th>Place</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for trip in trips %}
+                    <tr>
+                        <td>{{ trip.date_start }}</td>
+                        <td>{{ trip.date_end }}</td>
+                        <td>{{ trip.trip_name }}</td>
+                        <td>{{ trip.place }}</td>
+                        <td>{{ trip.place_country }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endblock %}
+

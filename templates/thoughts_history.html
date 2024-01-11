@@ -3,10 +3,30 @@
 
 {% block title %}Thoughts - History - My App{% endblock %}
 
+
 {% block content %}
 
 {% include 'base_thoughts.html' %}
-    <p>Thoughts History</p>
 
-
+    
+        <h1>Thoughts History</h1>
+        <table class="table override_table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Thought</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for thought in thoughts %}
+                    <tr>
+                        <td>{{ thought.date_added }}</td>
+                        <td>{{ thought.thought }}</td>
+                        <td>{{ thought.category }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% endblock %}
+

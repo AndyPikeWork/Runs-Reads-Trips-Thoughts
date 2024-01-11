@@ -1,12 +1,35 @@
-<!-- home.html -->
+
 {% extends 'base.html' %}
 
-{% block title %}Thoughts - New - My App{% endblock %}
+{% block distance %}Thoughts - New - My App{% endblock %}
 
 {% block content %}
 {% include 'base_thoughts.html' %}
 
-    <p>Thoughts New</p>
 
+    <br/>
+    <br/>
+    <form class="input_form" method="post" action="#">
+        <div class="row mb-3">
+            <label for="thought" class="col-sm-2 col-form-label">Thought:</label>
+            <div class="col-sm-10">
+                <input type="text" id="thought" class="form-control" name="thought" required>
+            </div>
+        </div>
 
+        <div class="row mb-3">
+            <label for="category" class="col-sm-2 col-form-label">Category:</label>
+            <div class="col-sm-10">
+                <input type="text" id="category" name="category"  required class="form-control">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-sm-10 offset-sm-2">
+                <input type="submit" value="Submit">
+            </div>
+        </div>
+    </form>
+
+    
     {% endblock %}

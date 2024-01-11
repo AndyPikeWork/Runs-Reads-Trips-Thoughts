@@ -39,6 +39,8 @@ class Reads(db.Model):
     category = db.Column(db.String(50))
     subcategory = db.Column(db.String(50))
     country = db.Column(db.String(50))
+    my_rating = db.Column(db.Integer)
+    publication_year = db.Column(db.Integer)
     date_added = db.Column(db.String(50))
 
 class Runs(db.Model):
@@ -49,6 +51,24 @@ class Runs(db.Model):
     location = db.Column(db.String(50))
     date_added = db.Column(db.String(20))
     average_time_per_km = db.Column(db.String(50))
+
+class Trips(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    trip_name = db.Column(db.String(100))
+    date_start = db.Column(db.String(20))
+    date_end = db.Column(db.String(20))
+    place = db.Column(db.String(50))
+    place_country = db.Column(db.String(20))
+    place_continent = db.Column(db.String(20))
+    lat = db.Column(db.String(50))
+    lon = db.Column(db.String(50))
+    date_added = db.Column(db.String(20))
+
+class Thoughts(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    thought = db.Column(db.String(1000))
+    category = db.Column(db.String(200))
+    date_added = db.Column(db.String(20))
     
 
 with app.app_context():
@@ -85,7 +105,7 @@ def index():
 @app.route('/runs/stats', methods=['GET', 'POST'])
 def runs_stats():
     runs = Runs.query.all()
-
+    
     # get all the years (inc. duplicates)
     years_array = [int(run.date.split('-')[0]) for run in runs]
     years = group_and_rank(years_array,"FALSE", 10)
@@ -103,12 +123,17 @@ def runs_stats():
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
 def reads_stats():
-    reads = Reads.query.all()
+    reads = Reads.query.where(Reads.subcategory != "manga")
 
     # get all the years (inc. duplicates)
-    years = [int(read.date_ended.split('-')[0]) for read in reads]
-    years = group_and_rank(years,"FALSE", 10)
-    books_by_year = make_graph(years, "bar", 0.2, 0, "NULL", "NULL")
+    years_array = [int(read.date_ended.split('-')[0]) for read in reads]
+    years = group_and_rank(years_array,"FALSE", 10)
+    books_by_year = make_graph(years, "hbar", 0.2, 0, "NULL", "NULL")
+
+    # pages read per year
+    pages_array = [read.pages for read in reads]
+    pages_per_year = group_with_agg(years_array, pages_array, "sum", "whole")
+    pages_per_year = make_graph(pages_per_year, "hbar", 0.2, 0, "NULL", "NULL")
 
     # get top 5 categories by books read
     categories = [read.subcategory for read in reads]
@@ -120,7 +145,7 @@ def reads_stats():
     authors = group_and_rank(authors, "TRUE", 5)
     books_by_author = make_graph(authors, "hbar", 0.5, 0, "NULL", "NULL")
 
-    return render_template('reads_stats.html', books_by_year=books_by_year, books_by_category=books_by_category,books_by_author=books_by_author) 
+    return render_template('reads_stats.html', books_by_year=books_by_year, pages_per_year=pages_per_year,books_by_category=books_by_category,books_by_author=books_by_author) 
 
 @app.route('/trips/stats', methods=['GET', 'POST'])
 def trips_stats():
@@ -128,7 +153,16 @@ def trips_stats():
 
 @app.route('/thoughts/stats', methods=['GET', 'POST'])
 def thoughts_stats():
-    return render_template('thoughts_stats.html')
+    thoughts = Thoughts.query.all()
+    
+    # get all the years (inc. duplicates)
+    years_array = [int(thought.date_added.split('-')[0]) for thought in thoughts]
+    years = group_and_rank(years_array,"FALSE", 10)
+    thoughts_by_year = make_graph(years, "hbar", 0.2, 0, "NULL","NULL")
+
+
+
+    return render_template('thoughts_stats.html', thoughts_by_year=thoughts_by_year)
 
 
 # HISTORY ---------------------------------------------------------------------------------------------------
@@ -156,16 +190,19 @@ def runs_history():
 
 @app.route('/reads/history', methods=['GET', 'POST'])
 def reads_history():
-    reads = Reads.query.all()
+
+    reads = Reads.query.order_by(Reads.date_ended.desc()).all()
     return render_template('reads_history.html',reads=reads)
 
 @app.route('/trips/history', methods=['GET', 'POST'])
 def trips_history():
-    return render_template('trips_history.html')
+    trips = Trips.query.all()
+    return render_template('trips_history.html',trips=trips)
 
 @app.route('/thoughts/history', methods=['GET', 'POST'])
 def thoughts_history():
-    return render_template('thoughts_history.html')
+    thoughts = Thoughts.query.all()
+    return render_template('thoughts_history.html',thoughts=thoughts)
 
 # NEW ---------------------------------------------------------------------------------------------------
 
@@ -203,9 +240,11 @@ def reads_new():
             category = request.form['category']
             subcategory = request.form['subcategory']
             country = request.form['country']
+            my_rating = request.form['my_rating']
+            publication_year = request.form['publication_year']
             date_added = datetime.today().strftime('%Y-%m-%d')
             
-            reads_entry = Reads(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added)
+            reads_entry = Reads(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added,my_rating=my_rating,publication_year=publication_year)
             db.session.add(reads_entry)
             db.session.commit()
             # Redirect to the reads_history page after successful form submission
@@ -218,10 +257,47 @@ def reads_new():
 
 @app.route('/trips/new', methods=['GET', 'POST'])
 def trips_new():
+    # Don't redirect to History page (like others) 
+    # because you want to keep the Trip details persistent to include with multiple places
+    if request.method == 'POST':
+        try:
+            trip_name = request.form['trip_name']
+            date_start = request.form['date_start']
+            date_end = request.form['date_end']
+            place = request.form['place']
+            place_country = request.form['place_country']
+            place_continent = request.form['place_continent']
+            lat = request.form['lat']
+            lon = request.form['lon']
+            date_added = datetime.today().strftime('%Y-%m-%d')
+            
+            trips_entry = Trips(trip_name=trip_name,date_start=date_start, date_end=date_end, place=place, place_country=place_country, place_continent=place_continent, lat=lat, lon=lon, date_added=date_added)
+            db.session.add(trips_entry)
+            db.session.commit()
+            
+        except Exception as e:
+            # Handle database or form processing errors
+            reads_entry = db.session.rollback()
+            print(f"Error: {str(e)}")
     return render_template('trips_new.html')
 
 @app.route('/thoughts/new', methods=['GET', 'POST'])
 def thoughts_new():
+    if request.method == 'POST':
+        try:
+            thought = request.form['thought']
+            category = request.form['category']
+            date_added = datetime.today().strftime('%Y-%m-%d')
+            
+            thoughts_entry = Thoughts(thought=thought, category=category,date_added=date_added)
+            db.session.add(thoughts_entry)
+            db.session.commit()
+            # Redirect to the reads_history page after successful form submission
+            return redirect(url_for('thoughts_history'))
+        except Exception as e:
+            # Handle database or form processing errors
+            reads_entry = db.session.rollback()
+            print(f"Error: {str(e)}")
     return render_template('thoughts_new.html')
 
 # FUNCTIONS -----------------------------------------------------------------------------------------------------
@@ -242,7 +318,7 @@ def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NUL
             yval = bar.get_y() + bar.get_height() / 2
             xval = bar.get_width() + 0.1    
             # for each bar, add a data label:
-            plt.text(xval, yval, round(xval - 0.5,round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
+            plt.text(xval, yval, round(bar.get_width(),round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
             # adjust the size of the label area to accomodate larger names (e.g. book titles, as opposed to years)
             plt.subplots_adjust(left=label_size)
             # remove left hand axis labels
@@ -259,7 +335,7 @@ def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NUL
             yval = bar.get_height() + 0.5  
             xval = bar.get_x() + bar.get_width() / 2
             # for each bar, add a data label:
-            plt.text(xval, yval, round(yval - 0.5, round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
+            plt.text(xval, yval, round(bar.get_height(), round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
         # remove left hand axis labels
         plt.tick_params(labelleft = False, left = False) 
     # make all text and labels the same size: 6

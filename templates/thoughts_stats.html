@@ -4,9 +4,11 @@
 {% block title %}Thoughts - Stats - My App{% endblock %}
 
 {% block content %}
-
 {% include 'base_thoughts.html' %}
-    <p>Thoughts Stats</p>
+    <br/><br/><br/>
+    <h6 class="center">Thoughts by Year</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ thoughts_by_year }}">
+    </div>
 
-
-    {% endblock %}
+{% endblock %}
