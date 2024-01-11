@@ -27,7 +27,7 @@
                         <td>{{ run.distance }}</td>
                         <td>{{ run.time }}</td>
                         <td>{{ run.location }}</td>
-                        <td>{{ run.average_time_per_km }}</td>
+                        <td class="{% if run.pace == 'fast' %}fast{% elif run.pace == 'med' %}medium{% elif run.pace == 'slow' %}slow{% endif %}">{{ run.average_time_per_km }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

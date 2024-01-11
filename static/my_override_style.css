@@ -53,3 +53,18 @@ li {
 .row {
     flex-wrap: nowrap;
 }
+
+
+
+/** Conditional formatting for the History Tables **/
+.fast {
+    background-color: #98f797;
+  }
+
+  .medium {
+    background-color: #f9dfd5;
+  }
+
+  .slow {
+    background-color: #eea081;
+  }

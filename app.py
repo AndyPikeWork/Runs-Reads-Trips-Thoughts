@@ -6,7 +6,8 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from io import BytesIO
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta, time
+import pandas as pd
 
 
 app = Flask(__name__)
@@ -78,28 +79,46 @@ def index():
     return render_template('index.html')
 
 
-# STATS
+# STATS ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/stats', methods=['GET', 'POST'])
 def runs_stats():
-    return render_template('runs_stats.html')
+    runs = Runs.query.all()
+
+    # get all the years (inc. duplicates)
+    years_array = [int(run.date.split('-')[0]) for run in runs]
+    years = group_and_rank(years_array,"FALSE", 10)
+    runs_by_year = make_graph(years, "hbar", 0.2, 0, "NULL","NULL")
+
+    ave_array = [run.average_time_per_km for run in runs]
+    mean_times_per_year = group_with_agg(years_array, ave_array, "ave", "time")
+    mean_times_per_year = make_graph(mean_times_per_year, "hbar", 0.2, 2, 5.5, 7)
+
+    distance_array = [run.distance for run in runs]
+    total_distance_per_year = group_with_agg(years_array, distance_array, "sum", "whole")
+    total_distance_per_year = make_graph(total_distance_per_year, "hbar", 0.2, 0, "NULL", "NULL")
+
+    return render_template('runs_stats.html', runs_by_year=runs_by_year,mean_times_per_year=mean_times_per_year,total_distance_per_year=total_distance_per_year)
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
 def reads_stats():
     reads = Reads.query.all()
+
     # get all the years (inc. duplicates)
     years = [int(read.date_ended.split('-')[0]) for read in reads]
-    years = sort_and_rank(years,"FALSE", 10)
-    books_by_year = make_graph(years, "bar")
+    years = group_and_rank(years,"FALSE", 10)
+    books_by_year = make_graph(years, "bar", 0.2, 0, "NULL", "NULL")
+
     # get top 5 categories by books read
     categories = [read.subcategory for read in reads]
-    categories = sort_and_rank(categories, "TRUE", 5)
-    books_by_category = make_graph(categories, "hbar", 0.5)
+    categories = group_and_rank(categories, "TRUE", 5)
+    books_by_category = make_graph(categories, "hbar", 0.5, 0, "NULL", "NULL")
+
     # get top 5 writers by books read
     authors = [read.author for read in reads]
-    authors = sort_and_rank(authors, "TRUE", 5)
-    books_by_author = make_graph(authors, "hbar", 0.5)
+    authors = group_and_rank(authors, "TRUE", 5)
+    books_by_author = make_graph(authors, "hbar", 0.5, 0, "NULL", "NULL")
 
     return render_template('reads_stats.html', books_by_year=books_by_year, books_by_category=books_by_category,books_by_author=books_by_author) 
 
@@ -112,12 +131,27 @@ def thoughts_stats():
     return render_template('thoughts_stats.html')
 
 
-# HISTORY
+# HISTORY ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/history', methods=['GET', 'POST'])
 def runs_history():
     runs = Runs.query.all()
+
+    for run in runs:
+        pace = datetime.strptime(run.average_time_per_km, '%H:%M:%S').time()
+        fast = datetime.strptime('00:06:00', '%H:%M:%S').time()
+        med = datetime.strptime('00:07:00', '%H:%M:%S').time()
+        slow = datetime.strptime('00:08:00', '%H:%M:%S').time()
+
+        if pace < fast:
+            run.pace = "fast"
+        elif pace < med:
+            run.pace = "med"
+        elif pace < slow:
+            run.pace = "slow"
+    
+              
     return render_template('runs_history.html',runs=runs)
 
 @app.route('/reads/history', methods=['GET', 'POST'])
@@ -133,7 +167,7 @@ def trips_history():
 def thoughts_history():
     return render_template('thoughts_history.html')
 
-# NEW
+# NEW ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/new', methods=['GET', 'POST'])
@@ -147,7 +181,6 @@ def runs_new():
             date_added = datetime.today().strftime('%Y-%m-%d')
             average_time_per_km = 6.50
             runs_entry = Runs(date=date, time=time, distance=distance, location=location, date_added=date_added, average_time_per_km=average_time_per_km)
-            print(runs_entry)
             db.session.add(runs_entry)
             db.session.commit()
             # Redirect to the runs_history page after successful form submission
@@ -173,7 +206,6 @@ def reads_new():
             date_added = datetime.today().strftime('%Y-%m-%d')
             
             reads_entry = Reads(date_started=date_started, date_ended=date_ended, title=title,author=author,pages=pages,category=category,subcategory=subcategory,country=country,date_added=date_added)
-            print(reads_entry)
             db.session.add(reads_entry)
             db.session.commit()
             # Redirect to the reads_history page after successful form submission
@@ -192,24 +224,25 @@ def trips_new():
 def thoughts_new():
     return render_template('thoughts_new.html')
 
+# FUNCTIONS -----------------------------------------------------------------------------------------------------
 
-
-def make_graph(data, chart_type, label_size=0.2):
-    print(data)
+def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NULL", max_range="NULL"):
     # split out the inbound data into category (x-axis) and the values (y-axis)
     categories, value = zip(*data)
     # Determine the size of the chart
-    fig, ax = plt.subplots(figsize=(3, 2))
+    plt.subplots(figsize=(3, 2))
     # For each occurence of the inputted category, make a column in the chart
     # Whether it's a Horizontal Bar Chart
     if chart_type == "hbar":
+        if min_range != "NULL":
+            plt.xlim(min_range,max_range)
         bars = plt.barh(categories,value,color='lightblue')  
         for bar in bars:
             # where to position the data label
             yval = bar.get_y() + bar.get_height() / 2
             xval = bar.get_width() + 0.1    
             # for each bar, add a data label:
-            plt.text(xval, yval, round(xval - 0.5), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
+            plt.text(xval, yval, round(xval - 0.5,round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
             # adjust the size of the label area to accomodate larger names (e.g. book titles, as opposed to years)
             plt.subplots_adjust(left=label_size)
             # remove left hand axis labels
@@ -218,13 +251,15 @@ def make_graph(data, chart_type, label_size=0.2):
             plt.gca().invert_yaxis()
     # If it's a Vertical Bar Chart   
     elif chart_type == "bar":
+        if min_range != "NULL":
+            plt.ylim(min_range, max_range)
         bars = plt.bar(categories,value,color='lightblue')
         for bar in bars:
             # where to position the data label
             yval = bar.get_height() + 0.5  
             xval = bar.get_x() + bar.get_width() / 2
             # for each bar, add a data label:
-            plt.text(xval, yval, round(yval - 0.5), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
+            plt.text(xval, yval, round(yval - 0.5, round_results), va='center', ha='left', fontsize=5, fontfamily='monospace', weight='light')
         # remove left hand axis labels
         plt.tick_params(labelleft = False, left = False) 
     # make all text and labels the same size: 6
@@ -240,7 +275,7 @@ def make_graph(data, chart_type, label_size=0.2):
     plot_url = base64.b64encode(img.getvalue()).decode()
     return plot_url
 
-def sort_and_rank(categories, sort_by_count, top_number):
+def group_and_rank(categories, sort_by_count, top_number):
     # Initialize an empty dictionary to store counts
     category_counts = {}
     # Count the occurrences of each category
@@ -259,6 +294,48 @@ def sort_and_rank(categories, sort_by_count, top_number):
     return aggregated_array
 
 
+
+
+def group_with_agg(categories, values, agg_type, data_type):
+
+    # Create a dictionary to store aggregated data
+    aggregated_data = {}
+    i = 0
+    # Aggregate and find the mean of "average_time" per year
+    for category in categories:
+        # initiate 
+        if category not in aggregated_data:
+            if data_type == "time":
+                aggregated_data[category] = [pd.Timedelta(0),0]
+            elif data_type == "whole":
+                aggregated_data[category] = [0,0]
+        
+        if data_type == "time":
+            # the total time
+            aggregated_data[category][0] += pd.to_timedelta(values[i])
+        elif data_type == "whole":
+            aggregated_data[category][0] += values[i]
+        # the count (occurences)
+        aggregated_data[category][1] += 1
+        i += 1
+
+    if agg_type == "ave":
+        # Calculate the mean for each category
+        for category, data in aggregated_data.items():
+            data[0] = data[0] / data[1]
+
+    if data_type == "time":
+        result = [(category, convert_time_to_float(data[0])) for category, data in aggregated_data.items()]
+    elif data_type == "whole":
+        result = [(category, data[0]) for category, data in aggregated_data.items()]
+
+    return result
+
+def convert_time_to_float(time):
+    total_seconds = time.total_seconds()
+    total_minutes = total_seconds / 60
+    return round(total_minutes, 2)  # rounding to 2 decimal places
+
 if __name__ == '__main__':
     # Create the database tables before running the app
     with app.app_context():
@@ -271,4 +348,3 @@ if __name__ == '__main__':
     # Run the Flask app in debug mode
     app.run(debug=True)
 
-print("start")

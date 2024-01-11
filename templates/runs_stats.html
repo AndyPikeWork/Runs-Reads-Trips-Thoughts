@@ -1,12 +1,22 @@
-<!-- runs_stats.html -->
+<!-- home.html -->
 {% extends 'base.html' %}
 
-{% block title %}Runs - Stats - My App{% endblock %}
+{% block title %}Runs - History - My App{% endblock %}
 
 {% block content %}
-
 {% include 'base_runs.html' %}
-    <p>Runs Stats</p>
+    <br/><br/><br/>
+    <h6 class="center">Runs by Year</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ runs_by_year }}">
+    </div><br/>
+    <h6 class="center">Average times by Year</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ mean_times_per_year }}">
+    </div>
+    <h6 class="center">Total distance by Year</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ total_distance_per_year }}">
+    </div>
 
-
-    {% endblock %}
+{% endblock %}
