@@ -222,7 +222,7 @@ def trips_stats():
     
     country_cnts = make_graph(country_list[-10:], "hbar", 0.5, 0, "NULL", "NULL",5, "FALSE")
 
-    # map of places
+    """ # map of places
     lat = [place.lat for place in places]
     lon = [place.lon for place in places]  
     
@@ -231,9 +231,9 @@ def trips_stats():
     map_africa = make_map(lat,lon, "africa")
     map_north_america = make_map(lat,lon, "north america")
     map_south_america = make_map(lat,lon, "south america")
-    map_asia = make_map(lat,lon, "asia")
+    map_asia = make_map(lat,lon, "asia") """
 
-    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts, map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
+    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts)#, map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
 
 @app.route('/thoughts/stats', methods=['GET', 'POST'])
 def thoughts_stats():
@@ -500,7 +500,7 @@ def group_with_agg(categories, values, agg_type, data_type):
     result = sorted(list(result),key=lambda x: x[0])
 
     return result
-
+""" 
 def make_map(lat, lon, continent):
     # plt.subplots(figsize=(3.6, 3)) - for Basemap
     fig, ax = plt.subplots(subplot_kw={'projection': ccrs.EuroPP()})
@@ -556,7 +556,7 @@ def make_map(lat, lon, continent):
     img.seek(0)
     map_url = base64.b64encode(img.getvalue()).decode()
     return map_url
-
+ """
 def convert_time_to_float(time):
     total_seconds = time.total_seconds()
     total_minutes = total_seconds / 60
