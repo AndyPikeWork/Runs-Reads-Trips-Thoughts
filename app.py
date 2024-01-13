@@ -225,13 +225,13 @@ def trips_stats():
     lon = [place.lon for place in places]  
     
     map_world = make_map(lat,lon, "world")
-    map_europe = make_map(lat,lon, "europe")
-    map_africa = make_map(lat,lon, "africa")
-    map_north_america = make_map(lat,lon, "north america")
-    map_south_america = make_map(lat,lon, "south america")
-    map_asia = make_map(lat,lon, "asia")
+    #map_europe = make_map(lat,lon, "europe")
+    #map_africa = make_map(lat,lon, "africa")
+    #map_north_america = make_map(lat,lon, "north america")
+    #map_south_america = make_map(lat,lon, "south america")
+    #map_asia = make_map(lat,lon, "asia")
 
-    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts, map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
+    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts, map_world=map_world)#, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
 
 @app.route('/thoughts/stats', methods=['GET', 'POST'])
 def thoughts_stats():
