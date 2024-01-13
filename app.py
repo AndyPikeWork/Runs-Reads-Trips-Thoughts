@@ -8,7 +8,9 @@ from io import BytesIO
 import base64
 from datetime import datetime, timedelta, time
 import pandas as pd
-from mpl_toolkits.basemap import Basemap
+#from mpl_toolkits.basemap import Basemap
+import cartopy.crs as ccrs #replaced Basemap with this as lighter
+
 from jinja2.utils import markupsafe 
 markupsafe.Markup()
 #Markup('')
@@ -500,7 +502,8 @@ def group_with_agg(categories, values, agg_type, data_type):
     return result
 
 def make_map(lat, lon, continent):
-    plt.subplots(figsize=(3.6, 3))
+    # plt.subplots(figsize=(3.6, 3)) - for Basemap
+    fig, ax = plt.subplots(subplot_kw={'projection': ccrs.EuroPP()})
 
             # llcrnrlat - lower left corner latitude
             # llcrnrlon - lower left corner longitude
@@ -508,30 +511,43 @@ def make_map(lat, lon, continent):
             # urcrnrlon - upper right corner longitude
     
     if continent == "world":
-            m = Basemap(projection='mill', llcrnrlat=-90, llcrnrlon=-180, urcrnrlat=90, urcrnrlon=180, resolution='c')
+            #m = Basemap(projection='mill', llcrnrlat=-90, llcrnrlon=-180, urcrnrlat=90, urcrnrlon=180, resolution='c')
+            ax.set_extent([-90, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     elif continent == "europe":
-            m = Basemap(projection='mill', llcrnrlat=29, llcrnrlon=-33, urcrnrlat=70, urcrnrlon=40, resolution='c')
+            #m = Basemap(projection='mill', llcrnrlat=29, llcrnrlon=-33, urcrnrlat=70, urcrnrlon=40, resolution='c')
+            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     elif continent == "africa":
-            m = Basemap(projection='mill', llcrnrlat=-37, llcrnrlon=-20, urcrnrlat=41, urcrnrlon=60, resolution='c')
+            #m = Basemap(projection='mill', llcrnrlat=-37, llcrnrlon=-20, urcrnrlat=41, urcrnrlon=60, resolution='c')
+            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     elif continent == "south america":
-            m = Basemap(projection='mill', llcrnrlat=-60, llcrnrlon=-90, urcrnrlat=15, urcrnrlon=-35, resolution='c')
+            #m = Basemap(projection='mill', llcrnrlat=-60, llcrnrlon=-90, urcrnrlat=15, urcrnrlon=-35, resolution='c')
+            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     elif continent == "north america":
-            m = Basemap(projection='mill', llcrnrlat=10, llcrnrlon=-170, urcrnrlat=70, urcrnrlon=-50, resolution='c')
+            #m = Basemap(projection='mill', llcrnrlat=10, llcrnrlon=-170, urcrnrlat=70, urcrnrlon=-50, resolution='c')
+            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     elif continent == "asia":
-            m = Basemap(projection='mill', llcrnrlat=-10, llcrnrlon=41, urcrnrlat=70, urcrnrlon=150, resolution='c') 
+            #m = Basemap(projection='mill', llcrnrlat=-10, llcrnrlon=41, urcrnrlat=70, urcrnrlon=150, resolution='c') 
+            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+
     
 
 
     for i in range(len(lat)):
         # Convert latitude and longitude to x, y coordinates
-        x, y = m(float(lon[i]), float(lat[i]))
+        #x, y = m(float(lon[i]), float(lat[i]))
         # Plot points on the map
-        m.scatter(x, y, s=3, color='red', marker='.', label='Cities')
+        ax.scatter(float(lon[i]), float(lat[i]), color='red', marker='o', label='Cities')
+        #m.scatter(x, y, s=3, color='red', marker='.', label='Cities')
 
     # Draw coastlines, countries, and states
-    m.drawcoastlines(linewidth=0.1)
-    m.drawcountries(linewidth=0.1)
-
+    # m.drawcoastlines(linewidth=0.1) - for Basemap
+    # m.drawcountries(linewidth=0.1) - for Basemap
+    ax.coastlines()
     
 
     img = BytesIO()
