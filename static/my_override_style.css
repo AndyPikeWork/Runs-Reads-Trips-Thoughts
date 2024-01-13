@@ -11,6 +11,19 @@
     table-layout: fixed;
 }
 
+.trips_stats_table {
+  margin: 4px;
+}
+
+.trips_stats_table th, td {
+  width: 16.7%;
+}
+
+.trips_stats_table td {
+  background-color: #F8F8F8;
+}
+
+
 /* remove the bullet points from the list */
 ul {
     list-style: none;

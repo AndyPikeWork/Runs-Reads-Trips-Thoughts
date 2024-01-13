@@ -4,7 +4,40 @@
 {% block title %}Home - My App{% endblock %}
 
 {% block content %}
+{% include 'base_thoughts.html' %}
+<br/><br/>
+<table class="table override_table">
+    <tbody>
+        <tr>
+            <td>Books Read:</td>
+            <td>{{ number_of_books }}</td>
+        </tr>
+        <tr>
+            <td>Pages Read:</td>
+            <td>{{ number_of_pages }}</td>
+        </tr>
+        <tr>
+            <td>Runs:</td>
+            <td>{{ number_of_runs }}</td>
+        </tr>
+        <tr>
+            <td>Kilometers run:</td>
+            <td>{{ km_run }}</td>
+        </tr>
+        <tr>
+            <td>Unique trips made:</td>
+            <td>{{ trips_made }}</td>
+        </tr>
+        <tr>
+            <td>Unique places visited:</td>
+            <td>{{ places_visited }}</td>
+        </tr>
+        <tr>
+            <td>Unique coutnries visited:</td>
+            <td>{{ countries_visited }}</td>
+        </tr>
 
-<p>Home</p>
+</table>
 
-    {% endblock %}
+
+{% endblock %}

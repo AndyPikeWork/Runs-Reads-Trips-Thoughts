@@ -6,7 +6,59 @@
 {% block content %}
 {% include 'base_trips.html' %}
 
-    <p>Trips Stats</p>
+<br/><br/><br/>
+
+<h6 class="center">Places visited by Year</h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ places_by_year }}">
+</div>
 
 
-    {% endblock %}
+
+<h6 class="center">Countries visited</h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ country_cnts }}">
+</div>
+
+<h6 class="center">Countries visited by Year</h6>
+
+<table class="trips_stats_table">
+    {% for year, countries_set in countries_by_year %}
+        <tr style="border-top: 1px solid lightgrey">
+            <th>{{ year }}</th>
+            {% for country in countries_set %}
+                <td>{{ country }}</td>
+                <!-- force it to have 5 columns only before starting a new role -->
+                {% if loop.index % 5 == 0 %}
+                    </tr><tr><td style="background-color: white;"></td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+    {% endfor %}
+</table>
+
+<h6 class="center">Places visited: World </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_world }}">
+</div>
+<h6 class="center">Places visited: Europe </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_europe }}">
+</div>
+<h6 class="center">Places visited: Asia </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_asia }}">
+</div>
+<h6 class="center">Places visited: Africa </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_africa }}">
+</div>
+<h6 class="center">Places visited: South America </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_south_america }}">
+</div>
+<h6 class="center">Places visited: North America </h6>
+<div class = "center">
+    <img src="data:image/png;base64,{{ map_north_america }}">
+</div>
+{% endblock %}
