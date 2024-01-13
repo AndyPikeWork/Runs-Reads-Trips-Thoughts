@@ -9,7 +9,7 @@ import base64
 from datetime import datetime, timedelta, time
 import pandas as pd
 #from mpl_toolkits.basemap import Basemap
-import cartopy.crs as ccrs #replaced Basemap with this as lighter
+#import cartopy.crs as ccrs #replaced Basemap with this as lighter
 
 from jinja2.utils import markupsafe 
 markupsafe.Markup()
