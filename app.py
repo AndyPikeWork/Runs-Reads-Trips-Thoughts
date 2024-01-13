@@ -9,6 +9,9 @@ import base64
 from datetime import datetime, timedelta, time
 import pandas as pd
 from mpl_toolkits.basemap import Basemap
+from jinja2.utils import markupsafe 
+markupsafe.Markup()
+
 
 
 
