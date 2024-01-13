@@ -280,7 +280,8 @@ def reads_history():
 
 @app.route('/trips/history', methods=['GET', 'POST'])
 def trips_history():
-    trips = Trips.query.all()
+    trips = Trips.query.order_by(Trips.date_start.desc()).all()
+
     return render_template('trips_history.html',trips=trips)
 
 @app.route('/thoughts/history', methods=['GET', 'POST'])
