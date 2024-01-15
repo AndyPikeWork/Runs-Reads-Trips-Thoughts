@@ -498,7 +498,7 @@ def group_with_agg(categories, values, agg_type, data_type):
     
     
     result = sorted(list(result),key=lambda x: x[0])
-
+    
     return result
 
 def make_map(lat, lon, continent):

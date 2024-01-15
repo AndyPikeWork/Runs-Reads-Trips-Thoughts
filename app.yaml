@@ -1,0 +1,18 @@
+runtime: python39  # Choose the appropriate Python version
+
+entrypoint: gunicorn -b :$PORT app:app  # Replace "your_flask_app" with your actual Flask app module and "app" with your Flask app instance
+
+instance_class: F1  # Choose the appropriate instance class for your app
+
+env_variables:
+  FLASK_ENV: production  # Set Flask environment to production
+
+automatic_scaling:
+  target_cpu_utilization: 0.30  # Adjust as needed
+
+handlers:
+- url: /static
+  static_dir: static/  # Assuming your static files are in a "static" folder
+
+- url: /.*
+  script: auto
