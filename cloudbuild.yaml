@@ -7,8 +7,7 @@ instance_class: F1  # Choose the appropriate instance class for your app
 env_variables:
   FLASK_ENV: production  # Set Flask environment to production
 
-automatic_scaling:
-  target_cpu_utilization: 0.30  # Adjust as needed
+
 
 handlers:
 - url: /static
