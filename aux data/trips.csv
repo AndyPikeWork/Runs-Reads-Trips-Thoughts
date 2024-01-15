@@ -1,0 +1,172 @@
+﻿trip_name,date_start,date_end,place,place_country,place_continent,lat,lon,date_added
+2007 Jun France,06/06/2007,08/06/2007,Paris,France,Europe,48.856613,2.352222,12/01/2024
+2008 Mar Belgium,09/03/2008,11/03/2008,Brussels,Belgium,Europe,50.850346,4.351721,12/01/2024
+2008 Jun Scotland,07/06/2008,08/06/2008,Edinburgh,Scotland,Europe,55.953251,-3.188267,12/01/2024
+2008 Sep Wales,19/09/2008,21/09/2008,Snowdonia,Wales,Europe,53.068483,-4.076177,12/01/2024
+2009 Mar Holland,03/03/2009,05/03/2009,Amsterdam,Holland,Europe,52.373169,4.89066,12/01/2024
+2010 Jun Portugal,04/06/2010,09/06/2010,Algarve,Portugal,Europe,37.053757,-7.931937,12/01/2024
+2011 Mar Spain,19/03/2011,21/03/2011,Madrid,Spain,Europe,40.416775,-3.70379,12/01/2024
+2011 Sep Spain,09/09/2011,12/09/2011,Torremolinos,Spain,Europe,36.624319,-4.499792,12/01/2024
+2011 Dec Ireland,02/12/2011,04/12/2011,Dublin,Ireland,Europe,53.349804,-6.26031,12/01/2024
+2012 Jan Germany,28/01/2012,30/01/2012,Berlin,Germany,Europe,52.520008,13.404954,12/01/2024
+2012 Feb England Lake District,15/02/2012,19/02/2012,Lake District,England,England,54.347764,-2.936579,12/01/2024
+2012 Feb Italy,19/02/2012,24/02/2012,Rome,Italy,Europe,41.902782,12.496365,12/01/2024
+2012 Jun Greece,24/06/2012,01/07/2012,Corfu,Greece,Europe,39.591337,19.859619,12/01/2024
+2012 Jun England Cornwall,02/06/2012,05/06/2012,Cornwall,England,England,50.3609,-4.744299,12/01/2024
+2012 Sep Sweden & Denmark,22/09/2012,24/09/2012,Malmo,Sweden,Europe,55.60331,13.00131,12/01/2024
+2012 Sep Sweden & Denmark,22/09/2012,24/09/2012,Copenhagen,Denmark,Europe,55.676098,12.568337,12/01/2024
+2012 Dec Hungary,09/12/2012,11/12/2012,Budapest,Hungary,Europe,47.497913,19.040236,12/01/2024
+2013 Mar England Bristol,30/03/2013,01/04/2013,Bristol,England,England,51.455311,-2.5919,12/01/2024
+2013 Apr Morocco,12/04/2013,15/04/2013,Marrakech,Morocco,Africa,31.629473,-7.981084,12/01/2024
+2013 Jul Belgium,14/07/2013,14/07/2013,Bruges,Belgium,Europe,51.209419,3.2252,12/01/2024
+2013 Aug Greece,24/08/2013,02/09/2013,Athens,Greece,Europe,37.98381,23.727539,12/01/2024
+2013 Aug Greece,24/08/2013,02/09/2013,Milos,Greece,Europe,36.743889,24.42326,12/01/2024
+2013 Aug Greece,24/08/2013,02/09/2013,Kythnos,Greece,Europe,37.391223,24.426028,12/01/2024
+2013 Aug Spain,07/08/2013,09/08/2013,Barcelona,Spain,Europe,41.385063,2.173404,12/01/2024
+2013 Sep Wales,22/09/2013,22/09/2013,Aberaeron,Wales,Europe,52.243176,-4.260015,12/01/2024
+2013 Nov England New Forest,16/11/2013,17/11/2013,New Forest,England,England,50.855626,-1.595661,12/01/2024
+2014 Dec Italy,24/12/2014,27/12/2014,Venice,Italy,Europe,45.440845,12.315515,12/01/2024
+2014 Mar Malaysia,07/03/2014,23/03/2014,Kuala Lumpur,Malaysia,Asia,3.139003,101.686852,12/01/2024
+2014 Mar Malaysia,07/03/2014,23/03/2014,Sabah,Malaysia,Asia,5.74225,117.305069,12/01/2024
+2014 Mar Malaysia,07/03/2014,23/03/2014,Sarawak,Malaysia,Asia,1.553278,110.359215,12/01/2024
+2014 Apr Canada,21/04/2014,01/05/2014,Toronto,Canada,North America,43.653225,-79.383186,12/01/2024
+2014 May Czech Republic,23/05/2014,26/05/2014,Prague,Czech Republic,Europe,50.075539,14.4378,12/01/2024
+2014 May England Isle of Wight,04/05/2014,05/05/2014,Isle Of Wight,England,England,50.671048,-1.332711,12/01/2024
+2014 May England Northumberland,16/05/2014,18/05/2014,Northumberland,England,England,55.621867,-1.620056,12/01/2024
+2014 May Scotland,17/05/2014,17/05/2014,St Abbs,Scotland,Europe,55.898398,-2.130787,12/01/2024
+2014 Aug Greece,07/08/2014,14/08/2014,Zakynthos,Greece,Europe,37.782505,20.895033,12/01/2024
+2014 Nov Slovakia & Austria,20/11/2014,24/11/2014,Bratislava,Slovakia,Europe,48.148598,17.107748,12/01/2024
+2014 Nov Slovakia & Austria,20/11/2014,24/11/2014,Vienna,Austria,Europe,48.208176,16.373819,12/01/2024
+2014 Nov England Peak District,09/11/2014,09/11/2014,Peak District,England,England,53.315827,-1.727034,12/01/2024
+2015 Jan Iceland,29/01/2015,02/02/2015,Rejkavik,Iceland,Europe,64.126518,-21.817438,12/01/2024
+2015 Feb Ireland,26/02/2015,28/02/2015,County Clare,Ireland,Europe,52.971882,-9.42651,12/01/2024
+2015 Mar Malta,06/03/2015,10/03/2015,Malta,Malta,Europe,35.898907,14.514553,12/01/2024
+2015 May Spain,14/05/2015,22/05/2015,La Palma,Spain,Europe,28.68326,-17.76396,12/01/2024
+2015 Aug Switzerland,26/08/2015,31/08/2015,Geneva,Switzerland,Europe,46.204391,6.143158,12/01/2024
+2015 Aug Switzerland,26/08/2015,31/08/2015,Zermatt,Switzerland,Europe,46.020714,7.749117,12/01/2024
+2015 Aug Switzerland,26/08/2015,31/08/2015,Basel,Switzerland,Europe,47.559601,7.588576,12/01/2024
+2015 Aug Switzerland,26/08/2015,31/08/2015,Bern,Switzerland,Europe,46.948,7.44813,12/01/2024
+2015 Oct Bosnia & Croatia,03/10/2015,07/10/2015,Mostar,Bosnia,Europe,43.33727,17.8158,12/01/2024
+2015 Oct Bosnia & Croatia,03/10/2015,07/10/2015,Dubrovnik,Croatia,Europe,42.6419,18.10649,12/01/2024
+2015 Nov England Manchester,21/11/2015,22/11/2015,Manchester,England,England,53.480759,-2.242631,12/01/2024
+2015 Dec Bulgaria,28/12/2015,31/12/2015,Sofia,Bulgaria,Europe,42.697708,23.321867,12/01/2024
+2015 Dec Scotland,05/12/2015,06/12/2015,Aberdeen,Scotland,Europe,57.14748,-2.0954,12/01/2024
+2016 Jan Poland,29/01/2016,02/02/2016,Krakow,Poland,Europe,50.05481,19.927839,12/01/2024
+2016 Feb England York & Whitby,26/02/2016,28/02/2016,York,England,England,53.959965,-1.087298,12/01/2024
+2016 Feb England York & Whitby,26/02/2016,28/02/2016,Whitby,England,England,54.48508,-0.61707,12/01/2024
+2016 Apr Greece,30/04/2016,04/05/2016,Santorini,Greece,Europe,36.418632,25.431732,12/01/2024
+2016 Apr England Stratford,21/04/2016,22/04/2016,Stratford Upon Avon,England,England,52.19157,-1.70699,12/01/2024
+2016 Apr England Minsmere,02/04/2016,02/04/2016,Minsmere,England,England,52.283873,1.634137,12/01/2024
+2016 Jun Greece,29/06/2016,04/07/2016,Athens,Greece,Europe,37.98381,23.727539,12/01/2024
+2016 Jun Greece,29/06/2016,04/07/2016,Kefalonia,Greece,Europe,38.17813,20.48561,12/01/2024
+2016 Aug Romania,18/08/2016,21/08/2016,Bucharest,Romania,Europe,44.426765,26.102537,12/01/2024
+2016 Aug England Dorset,13/08/2016,14/08/2016,"Lulworth, Dorset",England,England,50.62623,-2.24636,12/01/2024
+2016 Nov England Nottingham,26/11/2016,27/11/2016,Nottingham,England,England,52.954784,-1.158109,12/01/2024
+2016 Oct South America,28/10/2016,05/11/2016,Cusco,Peru,South America,-13.53195,-71.967461,12/01/2024
+2016 Oct South America,28/10/2016,05/11/2016,Inca Trail,Peru,South America,-13.1631,-72.545,12/01/2024
+2016 Oct South America,28/10/2016,05/11/2016,Puno,Peru,South America,-15.83915,-70.029167,12/01/2024
+2016 Oct South America,05/11/2016,10/11/2016,Uyuni,Bolivia,South America,-20.4604,-66.8261,12/01/2024
+2016 Oct South America,05/11/2016,10/11/2016,La Paz,Bolivia,South America,-16.4897,-68.1193,12/01/2024
+2016 Oct South America,10/11/2016,12/11/2016,Santiago,Chile,South America,-33.448891,-70.669266,12/01/2024
+2016 Oct South America,10/11/2016,12/11/2016,San Pedro,Chile,South America,-33.89121,-71.46396,12/01/2024
+2016 Dec Slovenia,09/12/2016,11/12/2016,Ljubljana,Slovenia,Europe,46.05143,14.50597,12/01/2024
+2017 Jan Portugal,13/01/2017,15/01/2017,Lisbon,Portugal,Europe,38.722252,-9.139337,12/01/2024
+2017 Feb USA,23/02/2017,27/02/2017,New York,USA,North America,40.712776,-74.005974,12/01/2024
+2017 Feb Norway,03/02/2017,05/02/2017,Bergen,Norway,Europe,60.391262,5.322054,12/01/2024
+2017 Apr Macedonia,14/04/2017,17/04/2017,Ohrid,Macedonia,Europe,41.11838,20.79999,12/01/2024
+2017 May Monaco,06/05/2017,07/05/2017,Monaco,Monaco,Europe,43.738419,7.424616,12/01/2024
+2017 May France,07/05/2017,07/05/2017,Nice,France,Europe,43.710175,7.261953,12/01/2024
+2017 Jun Northern Ireland,23/06/2017,25/06/2017,Belfast,Northern Ireland,Europe,54.597286,-5.93012,12/01/2024
+2017 Jun Northern Ireland,23/06/2017,25/06/2017,Antrim,Northern Ireland,Europe,55.2408,-6.5116,12/01/2024
+2017 Jun Spain,10/06/2017,11/06/2017,Majorca,Spain,Europe,39.56945,2.64995,12/01/2024
+2017 Aug Cyprus,12/08/2017,19/08/2017,Paphos,Cyprus,Europe,34.772,32.4297,12/01/2024
+2017 Aug Cyprus,12/08/2017,19/08/2017,Troodos,Cyprus,Europe,34.84793,32.80705,12/01/2024
+2017 Aug Cyprus,12/08/2017,19/08/2017,Limassol,Cyprus,Europe,34.669628,33.038212,12/01/2024
+2017 Aug Cyprus,12/08/2017,19/08/2017,Famagusta,Cyprus,Europe,34.9889,34.00026,12/01/2024
+2017 Aug India,27/08/2017,02/09/2017,Kochi,India,Asia,9.93925,76.259628,12/01/2024
+2017 Aug India,27/08/2017,02/09/2017,Munnar,India,Asia,10.0875,77.0617,12/01/2024
+2017 Aug India,27/08/2017,02/09/2017,Thekkady,India,Asia,9.60177,77.17082,12/01/2024
+2017 Aug India,27/08/2017,02/09/2017,Aleppy,India,Asia,9.4981,76.3388,12/01/2024
+2017 Sep Germany,03/09/2017,03/09/2017,Dusseldorf,Germany,Europe,51.2277,6.7735,12/01/2024
+2017 Sep England Cotswolds,23/09/2017,24/09/2017,Cotswolds,England,England,51.795,-1.8839,12/01/2024
+2017 Oct Finland & Estonia,13/10/2017,14/10/2017,Helsinki,Finland,Europe,60.1699,24.9384,12/01/2024
+2017 Oct Finland & Estonia,13/10/2017,14/10/2017,Nuuksio,Finland,Europe,60.2768,24.5897,12/01/2024
+2017 Oct Finland & Estonia,14/10/2017,17/10/2017,Tallinn,Estonia,Europe,59.437,24.7536,12/01/2024
+2017 Dec South Africa,22/12/2017,30/12/2017,Cape Town,South Africa,Africa,-33.9249,18.4241,12/01/2024
+2017 Dec South Africa,22/12/2017,30/12/2017,Garden Route,South Africa,Africa,-34.0507,24.9102,12/01/2024
+2017 Dec South Africa,22/12/2017,30/12/2017,Addo,South Africa,Africa,-33.5267,25.7117,12/01/2024
+2017 Dec Luxemburg,08/12/2017,11/12/2017,Luxemburg City,Luxemburg,Europe,49.6116,6.1319,12/01/2024
+2018 Jan Jersey,20/01/2018,21/01/2018,Jersey,Jersey,England,49.2144,-2.1312,12/01/2024
+2018 Jan Italy,31/01/2018,03/02/2018,Florence,Italy,Europe,43.7696,11.2558,12/01/2024
+2018 Jan Italy,31/01/2018,03/02/2018,Rome,Italy,Europe,41.9028,12.4964,12/01/2024
+2018 Mar Portugal,19/03/2018,27/03/2018,Madeira,Portugal,Europe,32.7607,-16.9595,12/01/2024
+2018 Apr Spain,13/04/2018,15/04/2018,Murcia,Spain,Europe,37.9922,-1.1307,12/01/2024
+2018 Apr Spain,13/04/2018,15/04/2018,Elche,Spain,Europe,38.2699,-0.7126,12/01/2024
+2018 May France,11/05/2018,13/05/2018,Hauts-De-France,France,Europe,50.4801,2.7937,12/01/2024
+2018 Jun Iceland,22/06/2018,24/06/2018,Rejkavik,Iceland,Europe,64.126518,-21.817438,12/01/2024
+2018 Jul England Suffolk,14/07/2018,14/07/2018,Suffolk,England,England,52.152362,1.601548,12/01/2024
+2018 Jul Greece,25/07/2018,29/07/2018,Thassos,Greece,Europe,40.6845,24.6484,12/01/2024
+2018 Aug Italy,14/08/2018,19/08/2018,Sicily,Italy,Europe,38.1157,13.3615,12/01/2024
+2018 Sep France,21/09/2018,23/09/2018,Dieppe,France,Europe,49.923,1.0775,12/01/2024
+2018 Oct Iceland,24/10/2018,26/10/2018,Rejkavik,Iceland,Europe,64.126518,-21.817438,12/01/2024
+2018 Nov Wales,03/11/2018,04/11/2018,Brecon Beacons,Wales,Europe,51.8815,-3.4435,12/01/2024
+2018 Nov UAE,14/11/2018,15/11/2018,Dubai,UAE,Asia,25.2048,55.2708,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Kyoto,Japan,Asia,35.0116,135.768,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Hiroshima,Japan,Asia,34.3852,132.4553,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Itsukushima,Japan,Asia,34.2797,132.3114,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Koyasan,Japan,Asia,34.2167,135.5833,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Hakone,Japan,Asia,35.2324,139.1069,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Tokyo,Japan,Asia,35.6895,139.6917,12/01/2024
+2018 Nov Japan,16/11/2018,25/11/2018,Nikko,Japan,Asia,36.7199,139.6982,12/01/2024
+2018 Dec France,31/12/2018,03/01/2019,Bordeaux,France,Europe,44.836151,-0.580816,12/01/2024
+2019 Jan Holland,11/01/2019,14/01/2019,Amsterdam,Holland,Europe,52.373169,4.89066,12/01/2024
+2019 Jan Scotland,30/01/2019,03/02/2019,Highlands,Scotland,Europe,57.2999988,-4.4499982,12/01/2024
+2019 Jan Scotland,30/01/2019,03/02/2019,Isle Of Skye,Scotland,Europe,57.5071,-6.1831,12/01/2024
+2019 Mar Italy,30/03/2019,02/04/2019,Sardinia,Italy,Europe,40.3036,9.5375,12/01/2024
+2019 Apr Greece,24/04/2019,28/04/2019,Crete,Greece,Europe,35.3387,25.1442,12/01/2024
+2019 Jun Mauritius,16/06/2019,24/06/2019,Pamplemousses,Mauritius,Asia,-20.0463149,57.5258882,12/01/2024
+2019 Jun Mauritius,16/06/2019,24/06/2019,Black River,Mauritius,Asia,-20.4448,57.3288,12/01/2024
+2019 Jul Greece,12/07/2019,15/07/2019,Thessaloniki,Greece,Europe,40.6401,22.9444,12/01/2024
+2019 Sep USA,05/09/2019,10/09/2019,Las Vegas,USA,North America,36.1699,-115.1398,12/01/2024
+2019 Sep USA,05/09/2019,10/09/2019,Arizona,USA,North America,36.107,-112.113,12/01/2024
+2019 Oct Greece,12/10/2019,16/10/2019,Rhodes: Rhodes Town,Greece,Europe,36.2433,27.9718,12/01/2024
+2019 Oct Greece,12/10/2019,12/10/2019,Rhodes: Lindos,Greece,Europe,36.0918,28.0857,12/01/2024
+2019 Oct Greece,12/10/2019,16/10/2019,Rhodes: Eleousa,Greece,Europe,36.2751,28.0376,12/01/2024
+2019 Nov Lithuania,30/11/2019,02/12/2019,Vilnius,Lithuania,Europe,54.6872,25.2797,12/01/2024
+2019 Nov Lithuania,30/11/2019,02/12/2019,Kaunas,Lithuania,Europe,54.8985,23.9036,12/01/2024
+2019 Nov Lithuania,30/11/2019,02/12/2019,Hill Of Crosses,Lithuania,Europe,56.0152,23.4165,12/01/2024
+2019 Nov Latvia,30/11/2019,02/12/2019,Rundale Palace,Latvia,Europe,56.4134,24.0245,12/01/2024
+2019 Nov Latvia,30/11/2019,02/12/2019,Riga,Latvia,Europe,56.9496,24.1052,12/01/2024
+2019 Dec Scotland,31/12/2019,02/01/2020,Glasgow,Scotland,Europe,55.8642,-4.2518,12/01/2024
+2019 Dec Scotland,31/12/2019,02/01/2020,Balloch,Scotland,Europe,56.0027,-4.5801,12/01/2024
+2020 Jan France,31/01/2020,02/02/2020,Marseille,France,Europe,43.2965,5.3698,12/01/2024
+2020 Jan France,31/01/2020,02/02/2020,Cassis,France,Europe,43.2151,5.5371,12/01/2024
+2021 Jul Cyprus,31/07/2021,21/08/2021,Limassol,Cyprus,Europe,34.669628,33.038212,12/01/2024
+2021 Jul Cyprus,31/07/2021,21/08/2021,Paphos,Cyprus,Europe,34.772,32.4297,12/01/2024
+2021 Jul Cyprus,31/07/2021,21/08/2021,Famagusta,Cyprus,Europe,34.9889,34.00026,12/01/2024
+2021 Jul Cyprus,31/07/2021,21/08/2021,Akamas,Cyprus,Europe,35.05,32.3,12/01/2024
+2021 Jul Cyprus,31/07/2021,21/08/2021,Troodos,Cyprus,Europe,34.84793,32.80705,12/01/2024
+2021 Oct Spain,05/10/2021,11/10/2021,Fuerteventura,Spain,Europe,28.3587,-14.0537,12/01/2024
+2021 Oct Spain,07/10/2021,07/10/2021,Lanzarote,Spain,Europe,29.0469,-13.59,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Tivat,Montenegro,Europe,42.435,18.7066,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Skadar,Montenegro,Europe,42.1837,19.2915,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Perast,Montenegro,Europe,42.4899,18.7185,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Kotor,Montenegro,Europe,42.4247,18.7712,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Cetinje,Montenegro,Europe,42.3931,18.9116,12/01/2024
+2022 Feb Montenegro,01/02/2022,05/02/2022,Budva,Montenegro,Europe,42.2911,18.8403,12/01/2024
+2022 Mar Cyprus,23/03/2022,27/03/2022,Paphos,Cyprus,Europe,34.772,32.4297,12/01/2024
+2022 Mar Cyprus,23/03/2022,27/03/2022,Limassol,Cyprus,Europe,34.669628,33.038212,12/01/2024
+2022 Mar Iceland,31/03/2022,03/04/2022,Iceland,Iceland,Europe,64.126518,-21.817438,12/01/2024
+2022 May England Salisbury,05/05/2022,05/05/2022,Salisbury,England,Europe,51.0688,-1.7945,12/01/2024
+2022 Jun England Dorset,18/06/2022,18/06/2022,Bournemouth,England,Europe,50.722,-1.8667,12/01/2024
+2022 Jul Greece,04/07/2022,11/07/2022,Skiathos,Greece,Europe,39.1635,23.4902,12/01/2024
+2022 Jul Greece,04/07/2022,11/07/2022,Skopolos,Greece,Europe,39.1251,23.68,12/01/2024
+2022 Jul England Dorset,30/07/2022,31/07/2022,"Corfe Castle, Dorset",England,Europe,50.6395,-2.0566,12/01/2024
+2022 Aug France,20/08/2022,21/08/2022,Paris,France,Europe,48.8674,2.7836,12/01/2024
+2022 Nov Ireland,17/11/2022,20/11/2022,Cork,Ireland,Europe,51.8985,-8.4756,12/01/2024
+2022 Nov Ireland,17/11/2022,20/11/2022,Blarney,Ireland,Europe,51.9338,-8.5612,12/01/2024
+2023 Feb Spain,22/02/2023,01/03/2023,Tenerife,Spain,Europe,28.2409,-16.8378,12/01/2024
+2023 Sep France,30/09/2023,30/09/2023,Montpellier,France,Europe,43.6108,3.8767,12/01/2024
+2023 Sep France,30/09/2023,30/09/2023,Palavas,France,Europe,43.5289,3.9335,12/01/2024
+2023 Dec Cyprus,31/12/2023,09/01/2024,Troodos,Cyprus,Europe,34.84793,32.80705,12/01/2024
+2023 Dec Cyprus,31/12/2023,09/01/2024,Limassol,Cyprus,Europe,34.669628,33.038212,12/01/2024

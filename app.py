@@ -8,7 +8,7 @@ from io import BytesIO
 import base64
 from datetime import datetime, timedelta, time
 import pandas as pd
-#from mpl_toolkits.basemap import Basemap
+from mpl_toolkits.basemap import Basemap
 #import cartopy.crs as ccrs #replaced Basemap with this as lighter
 
 from jinja2.utils import markupsafe 
@@ -219,10 +219,9 @@ def trips_stats():
 
 
     #country_list = sorted(country_list, key=lambda item: item[1], reverse=True)[:10]
-    
     country_cnts = make_graph(country_list[-10:], "hbar", 0.5, 0, "NULL", "NULL",5, "FALSE")
 
-    """ # map of places
+    # map of places
     lat = [place.lat for place in places]
     lon = [place.lon for place in places]  
     
@@ -231,9 +230,9 @@ def trips_stats():
     map_africa = make_map(lat,lon, "africa")
     map_north_america = make_map(lat,lon, "north america")
     map_south_america = make_map(lat,lon, "south america")
-    map_asia = make_map(lat,lon, "asia") """
+    map_asia = make_map(lat,lon, "asia") 
 
-    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts)#, map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
+    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts, map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
 
 @app.route('/thoughts/stats', methods=['GET', 'POST'])
 def thoughts_stats():
@@ -501,10 +500,10 @@ def group_with_agg(categories, values, agg_type, data_type):
     result = sorted(list(result),key=lambda x: x[0])
 
     return result
-""" 
+
 def make_map(lat, lon, continent):
-    # plt.subplots(figsize=(3.6, 3)) - for Basemap
-    fig, ax = plt.subplots(subplot_kw={'projection': ccrs.EuroPP()})
+    plt.subplots(figsize=(3.6, 3)) 
+    #fig, ax = plt.subplots(subplot_kw={'projection': ccrs.EuroPP()})
 
             # llcrnrlat - lower left corner latitude
             # llcrnrlon - lower left corner longitude
@@ -512,43 +511,43 @@ def make_map(lat, lon, continent):
             # urcrnrlon - upper right corner longitude
     
     if continent == "world":
-            #m = Basemap(projection='mill', llcrnrlat=-90, llcrnrlon=-180, urcrnrlat=90, urcrnrlon=180, resolution='c')
-            ax.set_extent([-90, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=-90, llcrnrlon=-180, urcrnrlat=90, urcrnrlon=180, resolution='c')
+            #ax.set_extent([-90, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     elif continent == "europe":
-            #m = Basemap(projection='mill', llcrnrlat=29, llcrnrlon=-33, urcrnrlat=70, urcrnrlon=40, resolution='c')
-            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=29, llcrnrlon=-33, urcrnrlat=70, urcrnrlon=40, resolution='c')
+            #ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     elif continent == "africa":
-            #m = Basemap(projection='mill', llcrnrlat=-37, llcrnrlon=-20, urcrnrlat=41, urcrnrlon=60, resolution='c')
-            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=-37, llcrnrlon=-20, urcrnrlat=41, urcrnrlon=60, resolution='c')
+            #ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     elif continent == "south america":
-            #m = Basemap(projection='mill', llcrnrlat=-60, llcrnrlon=-90, urcrnrlat=15, urcrnrlon=-35, resolution='c')
-            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=-60, llcrnrlon=-90, urcrnrlat=15, urcrnrlon=-35, resolution='c')
+            #ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     elif continent == "north america":
-            #m = Basemap(projection='mill', llcrnrlat=10, llcrnrlon=-170, urcrnrlat=70, urcrnrlon=-50, resolution='c')
-            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=10, llcrnrlon=-170, urcrnrlat=70, urcrnrlon=-50, resolution='c')
+            #ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     elif continent == "asia":
-            #m = Basemap(projection='mill', llcrnrlat=-10, llcrnrlon=41, urcrnrlat=70, urcrnrlon=150, resolution='c') 
-            ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
+            m = Basemap(projection='mill', llcrnrlat=-10, llcrnrlon=41, urcrnrlat=70, urcrnrlon=150, resolution='c') 
+            #ax.set_extent([-10, 40, 35, 70])  # [lon_min, lon_max, lat_min, lat_max]
 
     
 
 
     for i in range(len(lat)):
         # Convert latitude and longitude to x, y coordinates
-        #x, y = m(float(lon[i]), float(lat[i]))
+        x, y = m(float(lon[i]), float(lat[i]))
         # Plot points on the map
-        ax.scatter(float(lon[i]), float(lat[i]), color='red', marker='o', label='Cities')
-        #m.scatter(x, y, s=3, color='red', marker='.', label='Cities')
+        #ax.scatter(float(lon[i]), float(lat[i]), color='red', marker='o', label='Cities')
+        m.scatter(x, y, s=3, color='red', marker='.', label='Cities')
 
     # Draw coastlines, countries, and states
-    # m.drawcoastlines(linewidth=0.1) - for Basemap
-    # m.drawcountries(linewidth=0.1) - for Basemap
-    ax.coastlines()
+    m.drawcoastlines(linewidth=0.1) 
+    m.drawcountries(linewidth=0.1) 
+    #ax.coastlines()
     
 
     img = BytesIO()
@@ -557,7 +556,7 @@ def make_map(lat, lon, continent):
     img.seek(0)
     map_url = base64.b64encode(img.getvalue()).decode()
     return map_url
- """
+ 
 def convert_time_to_float(time):
     total_seconds = time.total_seconds()
     total_minutes = total_seconds / 60
@@ -576,5 +575,5 @@ if __name__ == '__main__':
             print(f"Error creating database tables: {str(e)}") 
 
     # Run the Flask app in debug mode
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
