@@ -113,7 +113,7 @@ def index():
     return render_template('index.html',number_of_books=number_of_books, number_of_pages=number_of_pages,number_of_runs=number_of_runs,km_run=km_run,trips_made=trips_made, places_visited=places_visited, countries_visited=countries_visited)
 
 
-# STATS ---------------------------------------------------------------------------------------------------
+# STATS --------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/stats', methods=['GET', 'POST'])
