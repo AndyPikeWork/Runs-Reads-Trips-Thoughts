@@ -8,7 +8,7 @@ from mpl_toolkits.basemap import Basemap
 
 def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NULL", max_range="NULL",img_height=2, value_sorted="TRUE"):
     # split out the inbound data into category (x-axis) and the values (y-axis)
-    categories, value = zip(*data)
+    categories, value = zip(*[(row[0], row[1]) for row in data])
     # Determine the size of the chart
     plt.subplots(figsize=(3, img_height))
     # For each occurence of the inputted category, make a column in the chart
@@ -76,9 +76,10 @@ def group_and_rank(categories, sort_by_count, top_number):
         # sort by the index (e.g. year)
         aggregated_array = list(category_counts.items())
         aggregated_array = sorted(aggregated_array, key=lambda item: item[0])
-        
-        
-    return aggregated_array
+
+    ranked_array = create_weights(aggregated_array)   
+    print(*ranked_array)
+    return ranked_array
 
 
 
@@ -117,9 +118,10 @@ def group_with_agg(categories, values, agg_type, data_type):
         result = [(category, data[0]) for category, data in aggregated_data.items()]
     
     
-    result = sorted(list(result),key=lambda x: x[0])
-    
-    return result
+    result = sorted(list(result),key=lambda x: x[0], reverse=True)
+    ranked_array = create_weights(result)   
+
+    return ranked_array
 
 def make_map(lat, lon, continent):
     plt.subplots(figsize=(3.6, 3)) 
@@ -184,3 +186,25 @@ def convert_time_to_float(time):
 
 def add_thousand_comma(value):
     return '{:,}'.format(value)
+
+
+def create_weights(data):
+    max_val = max(val[1] for val in data)
+    min_val = max(val[1] for val in data)
+    weighted_data = []
+    category = ""
+    for row in data:
+        proportion = int((row[1]/max_val)*100)
+        #print(proportion)
+        if proportion == 100:
+             category = "bar_High"
+        elif row[1] == min_val:
+             category = "bar_Low"
+        else:
+             category = "bar_Med"
+
+        weighted_row = [row[0], row[1], proportion, category]  # Include both original and proportion
+        print(*weighted_row)
+        weighted_data.append(weighted_row)
+        
+    return weighted_data

@@ -4,7 +4,6 @@
 
 .center {
     text-align: center;
-    font-weight: bold;
 }
 
 .override_table {
@@ -96,4 +95,66 @@ li {
   }
   .rate_5 {
     background-color: #a69266;
+  }
+
+
+
+/** Charts CSS **/
+
+  .chart {
+    width: 300px;
+    margin: 20px;
+    background-color: #fff;
+    /*border-radius: 5px;*/
+    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+  }
+
+  .bar-container {
+    display: flex;
+    align-items: center;
+    padding: 1px;
+  }
+
+  .bar {
+    height: 20px;
+    /**background-color: #3498db;**/
+    border-radius: 5px;
+    position: relative;
+  }
+
+  .bar::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+  }
+
+  .value {
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: gray;
+  }
+
+  .label {
+    font-size: 10px;
+    color: #333;
+    margin-right: 10px;
+  }
+
+
+  /** Colours of the bars, based on highest, medium or low **/
+  .bar_High {
+    background-color: darkblue;
+  }
+
+  .bar_Med {
+    background-color: #3498db;
+  }
+
+  .bar_Low {
+    background-color: lightblue;
   }

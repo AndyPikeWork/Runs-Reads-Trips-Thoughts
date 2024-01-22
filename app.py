@@ -1,3 +1,9 @@
+# To deploy from GitHub to PythonAnywhere:
+
+# $ git clone https://github.com/<your-github-username>/my-first-blog.git <your-pythonanywhere-username>.pythonanywhere.com
+# $ git clone https://github.com/AndyPikeWork/Runs-Reads-Trips-Thoughts.git Runs-Reads-Trips-Thoughts
+# Have to delete the Runs-Reads-Trips-Thoughts directory 
+
 # app.py
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
@@ -127,18 +133,21 @@ def runs_stats():
     
     # get all the years (inc. duplicates)
     years_array = [run.date.split('-')[0] for run in runs]
-    years = f.group_and_rank(years_array,"FALSE", 1000)
-    runs_by_year = f.make_graph(years, "hbar", 0.2, 0, "NULL","NULL", 2, "FALSE")
+    years_of_runs = f.group_and_rank(years_array,"FALSE", 1000)
+    # To make a Matplot lib chart (don't forget to pass runs_by_year on to the render function)
+    #runs_by_year = f.make_graph(years_of_runs, "hbar", 0.2, 0, "NULL","NULL", 2, "FALSE")
 
     ave_array = [run.average_time_per_km for run in runs]
-    mean_times_per_year = f.group_with_agg(years_array, ave_array, "ave", "time")
-    mean_times_per_year = f.make_graph(mean_times_per_year, "hbar", 0.2, 2, 5.5, 7, 2, "FALSE")
+    ave_times_per_year = f.group_with_agg(years_array, ave_array, "ave", "time")
+    # To make a Matplot lib chart (don't forget to pass mean_times_per_year on to the render function)
+    #mean_times_per_year = f.make_graph(ave_times_per_year, "hbar", 0.2, 2, 5.5, 7, 2, "FALSE")
 
     distance_array = [run.distance for run in runs]
-    total_distance_per_year = f.group_with_agg(years_array, distance_array, "sum", "whole")
-    total_distance_per_year = f.make_graph(total_distance_per_year, "hbar", 0.2, 0, "NULL", "NULL", 2, "FALSE")
+    total_distance_per_year_data = f.group_with_agg(years_array, distance_array, "sum", "whole")
+    # To make a Matplot lib chart (don't forget to pass total_distance_per_year on to the render function)
+    #total_distance_per_year = f.make_graph(total_distance_per_year_data, "hbar", 0.2, 0, "NULL", "NULL", 2, "FALSE")
 
-    return render_template('runs_stats.html', runs_by_year=runs_by_year,mean_times_per_year=mean_times_per_year,total_distance_per_year=total_distance_per_year)
+    return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year)
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
 def reads_stats():

@@ -5,6 +5,53 @@
 
 {% block content %}
 {% include 'base_runs.html' %}
+<br/><br/>
+    <h6 class="center">Distance by Year</h6>
+    <div class="center">
+        <div class="chart">
+        {% for year_values in total_distance_per_year_data %}
+            <div class="bar-container">
+                <div class="label">{{year_values[0]}}</div>
+                <div class="bar {{year_values[3]}}" style="width: {{year_values[2]}}%">
+                    <div class="value">{{year_values[1]}}</div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <h6 class="center">Runs by Year</h6>
+    <div class="center">
+        <div class="chart">
+        {% for year_runs in years_of_runs %}
+            <div class="bar-container">
+                <div class="label">{{year_runs[0]}}</div>
+                <div class="bar {{year_runs[3]}}" style="width: {{year_runs[2]}}%">
+                    <div class="value">{{year_runs[1]}}</div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+    <h6 class="center">Average times by Year</h6>
+    <div class="center">
+        <div class="chart">
+        {% for year_ave in ave_times_per_year %}
+            <div class="bar-container">
+                <div class="label">{{year_ave[0]}}</div>
+                <div class="bar {{year_ave[3]}}" style="width: {{year_ave[2]}}%">
+                    <div class="value">{{year_ave[1]}}</div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </div>
+
+
+
+<!--
+    MATPLOT-LIB Graphs
     <br/><br/><br/>
     <h6 class="center">Runs by Year</h6>
     <div class = "center">
@@ -18,5 +65,8 @@
     <div class = "center">
         <img src="data:image/png;base64,{{ total_distance_per_year }}">
     </div>
-
+-->
 {% endblock %}
+
+
+
