@@ -4,6 +4,7 @@
 
 .center {
     text-align: center;
+    margin: auto;
 }
 
 .override_table {
@@ -103,7 +104,7 @@ li {
 
   .chart {
     width: 300px;
-    margin: 20px;
+    margin: 10px;
     background-color: #fff;
     /*border-radius: 5px;*/
     /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
@@ -133,18 +134,26 @@ li {
 
   .value {
     position: absolute;
-    right: -15px;
+    right: -20px;
     top: 50%;
     transform: translateY(-50%);
     color: gray;
   }
 
-  .label {
+  .small-label {
+    text-align: centre;
     font-size: 10px;
     color: #333;
     margin-right: 10px;
+    min-width: 20px;
   }
-
+  .big-label {
+    text-align: left;
+    font-size: 10px;
+    color: #333;
+    margin-right: 10px;
+    min-width: 100px;
+  }
 
   /** Colours of the bars, based on highest, medium or low **/
   .bar_High {

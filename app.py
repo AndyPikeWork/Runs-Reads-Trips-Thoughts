@@ -1,8 +1,11 @@
 # To deploy from GitHub to PythonAnywhere:
 
+# Example:
 # $ git clone https://github.com/<your-github-username>/my-first-blog.git <your-pythonanywhere-username>.pythonanywhere.com
-# $ git clone https://github.com/AndyPikeWork/Runs-Reads-Trips-Thoughts.git Runs-Reads-Trips-Thoughts
+# Actual:
+# git clone https://github.com/AndyPikeWork/Runs-Reads-Trips-Thoughts.git Runs-Reads-Trips-Thoughts
 # Have to delete the Runs-Reads-Trips-Thoughts directory 
+# Refresh the site on the Web tab of PythonAnywhere
 
 # app.py
 from flask import Flask, render_template, request, redirect, url_for
@@ -15,7 +18,7 @@ markupsafe.Markup()
 import functions as f
 
 # Swich betwen 'local' and 'prod'
-mode = "prod"
+mode = "local"
 
 
 app = Flask(__name__)
@@ -138,12 +141,12 @@ def runs_stats():
     #runs_by_year = f.make_graph(years_of_runs, "hbar", 0.2, 0, "NULL","NULL", 2, "FALSE")
 
     ave_array = [run.average_time_per_km for run in runs]
-    ave_times_per_year = f.group_with_agg(years_array, ave_array, "ave", "time")
+    ave_times_per_year = f.group_with_agg(years_array, ave_array, 100, "ave", "time", "lowest")
     # To make a Matplot lib chart (don't forget to pass mean_times_per_year on to the render function)
     #mean_times_per_year = f.make_graph(ave_times_per_year, "hbar", 0.2, 2, 5.5, 7, 2, "FALSE")
 
     distance_array = [run.distance for run in runs]
-    total_distance_per_year_data = f.group_with_agg(years_array, distance_array, "sum", "whole")
+    total_distance_per_year_data = f.group_with_agg(years_array, distance_array, 100, "sum", "whole")
     # To make a Matplot lib chart (don't forget to pass total_distance_per_year on to the render function)
     #total_distance_per_year = f.make_graph(total_distance_per_year_data, "hbar", 0.2, 0, "NULL", "NULL", 2, "FALSE")
 
@@ -155,25 +158,25 @@ def reads_stats():
 
     # get all the years (inc. duplicates)
     reads_years_array = [read.date_ended.split('-')[0] for read in reads]
-    years_grouped = f.group_and_rank(reads_years_array,"FALSE", 1000)
-    books_by_year = f.make_graph(years_grouped, "hbar", 0.2, 0, "NULL", "NULL", 3, "FALSE")
+    years_grouped = f.group_and_rank(reads_years_array,"FALSE", 10,"highest")
+    #books_by_year = f.make_graph(years_grouped, "hbar", 0.2, 0, "NULL", "NULL", 3, "FALSE")
 
     # pages read per year
     pages_array = [read.pages for read in reads]
-    pages_per_year = f.group_with_agg(reads_years_array, pages_array, "sum", "whole")
-    pages_per_year = f.make_graph(pages_per_year, "hbar", 0.2, 0, "NULL", "NULL", 3, "FALSE")
+    pages_per_year = f.group_with_agg(reads_years_array, pages_array, 10, "sum", "whole","highest")
+    #pages_per_year = f.make_graph(pages_per_year, "hbar", 0.2, 0, "NULL", "NULL", 3, "FALSE")
 
     # get top 5 categories by books read
-    categories = [read.subcategory for read in reads]
-    categories = f.group_and_rank(categories, "TRUE", 5)
-    books_by_category = f.make_graph(categories, "hbar", 0.5, 0, "NULL", "NULL",2, "TRUE")
+    #categories = [read.subcategory for read in reads]
+    #categories = f.group_and_rank(categories, "TRUE", 5)
+    #books_by_category = f.make_graph(categories, "hbar", 0.5, 0, "NULL", "NULL",2, "TRUE")
 
     # get top 5 writers by books read
     authors = [read.author for read in reads]
-    authors = f.group_and_rank(authors, "TRUE", 5)
-    books_by_author = f.make_graph(authors, "hbar", 0.5, 0, "NULL", "NULL",2, "TRUE")
+    authors = f.group_and_rank(authors, "TRUE", 10, "highest")
+    #books_by_author = f.make_graph(authors, "hbar", 0.5, 0, "NULL", "NULL",2, "TRUE")
 
-    return render_template('reads_stats.html', books_by_year=books_by_year, pages_per_year=pages_per_year,books_by_category=books_by_category,books_by_author=books_by_author) 
+    return render_template('reads_stats.html', years_grouped=years_grouped, pages_per_year=pages_per_year,authors=authors) 
 
 @app.route('/trips/stats', methods=['GET', 'POST'])
 def trips_stats():
@@ -186,7 +189,7 @@ def trips_stats():
     # places by year
     years = [place.date_start.split('-')[0] for place in places]
     years_grouped = f.group_and_rank(years,"FALSE", 10)
-    places_by_year = f.make_graph(years_grouped, "hbar", 0.2, 0, "NULL", "NULL",5, "FALSE")
+    #places_by_year = f.make_graph(years_grouped, "hbar", 0.2, 0, "NULL", "NULL",5, "FALSE")
 
     # Unique countries by year
 
@@ -226,10 +229,11 @@ def trips_stats():
     country_list = list(country_count.items())
     country_list = sorted(country_list, key=lambda x: x[1])
 
-    #country_list = sorted(country_list, key=lambda item: item[1], reverse=True)[:10]
-    country_cnts = f.make_graph(country_list[-10:], "hbar", 0.5, 0, "NULL", "NULL",5, "FALSE")
+    country_list = sorted(country_list, key=lambda item: item[1], reverse=True)[:10]
+    countries = f.create_weights(country_list, "highest") 
+    #country_cnts = f.make_graph(country_list[-10:], "hbar", 0.5, 0, "NULL", "NULL",5, "FALSE")
 
-    return render_template('trips_stats.html', places_by_year=places_by_year,countries_by_year=countries_by_year, country_cnts=country_cnts)
+    return render_template('trips_stats.html', years_grouped=years_grouped,countries_by_year=countries_by_year, countries=countries)
 
 @app.route('/trips/maps', methods=['GET', 'POST'])
 def trips_maps():
@@ -256,7 +260,7 @@ def thoughts_stats():
     # get all the thoughts by category 
     thoughts_by_category = [thought.category for thought in thoughts]
     thoughts_by_category = f.group_and_rank(thoughts_by_category,"FALSE", 10)
-    thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
+    #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
 
     return render_template('thoughts_stats.html', thoughts_by_category=thoughts_by_category)
 

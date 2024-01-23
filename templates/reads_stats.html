@@ -5,6 +5,48 @@
 
 {% block content %}
 {% include 'base_reads.html' %}
+<br/><br/>
+<h6 class="center">Books by Year</h6>
+<div class="center">
+    <div class="chart center">
+    {% for year_books in years_grouped %}
+        <div class="bar-container">
+            <div class="small-label">{{year_books[0]}}</div>
+            <div class="bar {{year_books[3]}}" style="width: {{year_books[2]}}%">
+                <div class="value">{{year_books[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<br/><br/>
+<h6 class="center">Pages by Year</h6>
+<div class="center">
+    <div class="chart center">
+    {% for year_pages in pages_per_year %}
+        <div class="bar-container">
+            <div class="small-label">{{year_pages[0]}}</div>
+            <div class="bar {{year_pages[3]}}" style="width: {{year_pages[2]}}%">
+                <div class="value">{{year_pages[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+<br/><br/>
+<h6 class="center">Most read authors</h6>
+<div class="chart center">
+{% for author in authors %}
+    <div class="bar-container">
+        <div class="big-label">{{author[0]}}</div>
+        <div class="bar {{author[3]}}" style="width: {{author[2]}}%">
+            <div class="value">{{author[1]}}</div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+<!--
     <br/><br/><br/>
     <h6 class="center">Books by Year</h6>
     <div class = "center">
@@ -22,5 +64,5 @@
     <div class = "center">
         <img src="data:image/png;base64,{{ books_by_author }}">
     </div>
-
+-->
 {% endblock %}

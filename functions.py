@@ -57,7 +57,7 @@ def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NUL
     plot_url = base64.b64encode(img.getvalue()).decode()
     return plot_url
 
-def group_and_rank(categories, sort_by_count, top_number):
+def group_and_rank(categories, sort_by_count, top_number, highlight="highest"):
 
     # Initialize an empty dictionary to store counts
     category_counts = {}
@@ -75,16 +75,15 @@ def group_and_rank(categories, sort_by_count, top_number):
     elif sort_by_count == "FALSE":
         # sort by the index (e.g. year)
         aggregated_array = list(category_counts.items())
-        aggregated_array = sorted(aggregated_array, key=lambda item: item[0])
+        aggregated_array = sorted(aggregated_array, key=lambda item: item[0], reverse=True)[:top_number]
 
-    ranked_array = create_weights(aggregated_array)   
-    print(*ranked_array)
+    ranked_array = create_weights(aggregated_array, highlight)   
     return ranked_array
 
 
 
 
-def group_with_agg(categories, values, agg_type, data_type):
+def group_with_agg(categories, values, top_number, agg_type, data_type,highlight="highest"):
 
     # Create a dictionary to store aggregated data
     aggregated_data = {}
@@ -118,8 +117,8 @@ def group_with_agg(categories, values, agg_type, data_type):
         result = [(category, data[0]) for category, data in aggregated_data.items()]
     
     
-    result = sorted(list(result),key=lambda x: x[0], reverse=True)
-    ranked_array = create_weights(result)   
+    result = sorted(list(result),key=lambda x: x[0], reverse=True)[:top_number]
+    ranked_array = create_weights(result, highlight)   
 
     return ranked_array
 
@@ -169,9 +168,10 @@ def make_map(lat, lon, continent):
     # Draw coastlines, countries, and states
     m.drawcoastlines(linewidth=0.1) 
     m.drawcountries(linewidth=0.1) 
+    m.drawmapboundary(fill_color='#f0f7fe') 
+    m.fillcontinents(color='#fff8f0',lake_color='#f0f7fe')
     #ax.coastlines()
     
-
     img = BytesIO()
     plt.savefig(img, format='png')
     plt.close()
@@ -188,23 +188,28 @@ def add_thousand_comma(value):
     return '{:,}'.format(value)
 
 
-def create_weights(data):
+def create_weights(data, highlight):
     max_val = max(val[1] for val in data)
-    min_val = max(val[1] for val in data)
+    min_val = min(val[1] for val in data)
     weighted_data = []
     category = ""
     for row in data:
         proportion = int((row[1]/max_val)*100)
         #print(proportion)
         if proportion == 100:
-             category = "bar_High"
+            if highlight == "highest":
+                category = "bar_High"
+            else:
+                category = "bar_Med"
         elif row[1] == min_val:
-             category = "bar_Low"
+            if highlight == "lowest":
+                category = "bar_High"
+            else: 
+                category = "bar_Med"
         else:
              category = "bar_Med"
 
         weighted_row = [row[0], row[1], proportion, category]  # Include both original and proportion
-        print(*weighted_row)
         weighted_data.append(weighted_row)
         
     return weighted_data

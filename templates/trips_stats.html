@@ -6,22 +6,49 @@
 {% block content %}
 {% include 'base_trips.html' %}
 
-<br/><br/><br/>
+<br/><br/>
+<h6 class="center">Places visited by Year</h6>
+<div class="center">
+    <div class="chart center">
+    {% for year_trips in years_grouped %}
+        <div class="bar-container">
+            <div class="small-label">{{year_trips[0]}}</div>
+            <div class="bar {{year_trips[3]}}" style="width: {{year_trips[2]}}%">
+                <div class="value">{{year_trips[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<br/><br/>
 
+<h6 class="center">Countries visited</h6>
+<div class="center">
+    <div class="chart center">
+    {% for country in countries %}
+        <div class="bar-container">
+            <div class="big-label">{{country[0]}}</div>
+            <div class="bar {{country[3]}}" style="width: {{country[2]}}%">
+                <div class="value">{{country[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<!--
 <h6 class="center">Places visited by Year</h6>
 <div class = "center">
     <img src="data:image/png;base64,{{ places_by_year }}">
 </div>
 
-
-
+<br/><br/>
 <h6 class="center">Countries visited</h6>
 <div class = "center">
     <img src="data:image/png;base64,{{ country_cnts }}">
 </div>
-
+-->
+<br/><br/>
 <h6 class="center">Countries visited by Year</h6>
-
 <table class="trips_stats_table">
     {% for year, countries_set in countries_by_year %}
         <tr style="border-top: 1px solid lightgrey">
