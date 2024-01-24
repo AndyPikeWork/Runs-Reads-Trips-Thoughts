@@ -114,6 +114,7 @@ li {
     display: flex;
     align-items: center;
     padding: 1px;
+    min-width: 200px;
   }
 
   .bar {
@@ -130,6 +131,7 @@ li {
     top: 50%;
     transform: translateY(-50%);
     color: #333;
+    
   }
 
   .value {

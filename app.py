@@ -18,7 +18,7 @@ markupsafe.Markup()
 import functions as f
 
 # Swich betwen 'local' and 'prod'
-mode = "local"
+mode = "prod"
 
 
 app = Flask(__name__)
@@ -150,7 +150,15 @@ def runs_stats():
     # To make a Matplot lib chart (don't forget to pass total_distance_per_year on to the render function)
     #total_distance_per_year = f.make_graph(total_distance_per_year_data, "hbar", 0.2, 0, "NULL", "NULL", 2, "FALSE")
 
-    return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year)
+    list_5k = [run for run in runs if run.distance == 5]
+    sorted_list_5k = sorted(list_5k, key=lambda x: x.time)[:10]
+
+    
+    list_10k = [run for run in runs if run.distance == 10]
+    sorted_list_10k = sorted(list_10k, key=lambda x: x.time)[:10]
+
+    #sorted_list_10k = sorted(list_10k, key=lambda x: x.time)[:5]
+    return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year,sorted_list_5k=sorted_list_5k,sorted_list_10k=sorted_list_10k)
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
 def reads_stats():

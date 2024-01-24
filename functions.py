@@ -168,8 +168,8 @@ def make_map(lat, lon, continent):
     # Draw coastlines, countries, and states
     m.drawcoastlines(linewidth=0.1) 
     m.drawcountries(linewidth=0.1) 
-    m.drawmapboundary(fill_color='#f0f7fe') 
-    m.fillcontinents(color='#fff8f0',lake_color='#f0f7fe')
+    #m.drawmapboundary(fill_color='#f0f7fe') 
+    #m.fillcontinents(color='#fff8f0',lake_color='#f0f7fe')
     #ax.coastlines()
     
     img = BytesIO()
@@ -194,7 +194,8 @@ def create_weights(data, highlight):
     weighted_data = []
     category = ""
     for row in data:
-        proportion = int((row[1]/max_val)*100)
+        # its finally multiplied by 60% to reduce the overall size of the bar to fit with the labels etc
+        proportion = int((row[1]/max_val)*100)*0.8
         #print(proportion)
         if proportion == 100:
             if highlight == "highest":

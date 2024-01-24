@@ -7,8 +7,7 @@
 {% include 'base_runs.html' %}
 <br/><br/>
     <h6 class="center">Distance by Year</h6>
-    <div class="center">
-        <div class="chart center">
+    <div class="chart center">
         {% for year_values in total_distance_per_year_data %}
             <div class="bar-container">
                 <div class="small-label">{{year_values[0]}}</div>
@@ -17,12 +16,10 @@
                 </div>
             </div>
         {% endfor %}
-        </div>
     </div>
     <br/><br/>
     <h6 class="center">Runs by Year</h6>
-    <div class="center">
-        <div class="chart center">
+    <div class="chart center">
         {% for year_runs in years_of_runs %}
             <div class="bar-container">
                 <div class="small-label">{{year_runs[0]}}</div>
@@ -31,12 +28,10 @@
                 </div>
             </div>
         {% endfor %}
-        </div>
     </div>
     <br/><br/>
     <h6 class="center">Average times by Year</h6>
-    <div class="center">
-        <div class="chart center">
+    <div class="chart center">
         {% for year_ave in ave_times_per_year %}
             <div class="bar-container">
                 <div class="small-label">{{year_ave[0]}}</div>
@@ -48,7 +43,57 @@
         </div>
     </div>
 
+    <br/><br/>
+    <h6 class="center">Fastest 5ks</h6>
+    <br/>
+        <table class="table override_table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Date</th>
+                    <th>Location</th>
+                    <th>Time</th>
+                    <th>Average</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for runs in sorted_list_5k %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ runs.date }}</td>
+                        <td>{{ runs.location }}</td>
+                        <td>{{ runs.time }}</td>
+                        <td>{{ runs.average_time_per_km }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
+        <br/><br/>
+        <h6 class="center">Fastest 5ks</h6>
+        <br/>
+            <table class="table override_table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Time</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for runs in sorted_list_10k %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ runs.date }}</td>
+                            <td>{{ runs.location }}</td>
+                            <td>{{ runs.time }}</td>
+                            <td>{{ runs.average_time_per_km }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
 
 <!--
     MATPLOT-LIB Graphs
