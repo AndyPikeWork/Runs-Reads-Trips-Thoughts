@@ -8,6 +8,7 @@
 
 <br/><br/>
 <h6 class="center">Places visited by Year</h6>
+<br/>
 <div class="center">
     <div class="chart center">
     {% for year_trips in years_grouped %}
@@ -23,6 +24,7 @@
 <br/><br/>
 
 <h6 class="center">Countries visited</h6>
+<br/>
 <div class="center">
     <div class="chart center">
     {% for country in countries %}
@@ -49,7 +51,8 @@
 -->
 <br/><br/>
 <h6 class="center">Countries visited by Year</h6>
-<table class="trips_stats_table">
+<br/>
+<table class="trips_stats_table center">
     {% for year, countries_set in countries_by_year %}
         <tr style="border-top: 1px solid lightgrey">
             <th>{{ year }}</th>

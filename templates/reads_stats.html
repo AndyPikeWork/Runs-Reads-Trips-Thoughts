@@ -7,6 +7,7 @@
 {% include 'base_reads.html' %}
 <br/><br/>
 <h6 class="center">Books by Year</h6>
+<br/>
 <div class="center">
     <div class="chart center">
     {% for year_books in years_grouped %}
@@ -21,6 +22,7 @@
 </div>
 <br/><br/>
 <h6 class="center">Pages by Year</h6>
+<br/>
 <div class="center">
     <div class="chart center">
     {% for year_pages in pages_per_year %}
@@ -36,6 +38,7 @@
 
 <br/><br/>
 <h6 class="center">Most read authors</h6>
+<br/>
 <div class="chart center">
 {% for author in authors %}
     <div class="bar-container">

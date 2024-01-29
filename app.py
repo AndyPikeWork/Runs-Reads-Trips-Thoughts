@@ -6,6 +6,11 @@
 # git clone https://github.com/AndyPikeWork/Runs-Reads-Trips-Thoughts.git Runs-Reads-Trips-Thoughts
 # Have to delete the Runs-Reads-Trips-Thoughts directory 
 # Refresh the site on the Web tab of PythonAnywhere
+#
+# To run a local server
+#
+# In the Terminal, put: python -m flask run
+# then open on browser: http://127.0.0.1:5000
 
 # app.py
 from flask import Flask, render_template, request, redirect, url_for
@@ -18,7 +23,7 @@ markupsafe.Markup()
 import functions as f
 
 # Swich betwen 'local' and 'prod'
-mode = "prod"
+mode = "local"
 
 
 app = Flask(__name__)
@@ -152,10 +157,24 @@ def runs_stats():
 
     list_5k = [run for run in runs if run.distance == 5]
     sorted_list_5k = sorted(list_5k, key=lambda x: x.time)[:10]
-
+    latest = max(sorted_list_5k, key=lambda x: x.date)
     
+    for run in sorted_list_5k:
+        if run.date == latest.date:
+            run.is_latest = "bar_Low"
+        else: 
+            run.is_latest = "bar_None"
+
+
     list_10k = [run for run in runs if run.distance == 10]
     sorted_list_10k = sorted(list_10k, key=lambda x: x.time)[:10]
+    latest = max(sorted_list_10k, key=lambda x: x.date)
+    
+    for run in sorted_list_10k:
+        if run.date == latest.date:
+            run.is_latest = "bar_Low"
+        else: 
+            run.is_latest = "bar_None"
 
     #sorted_list_10k = sorted(list_10k, key=lambda x: x.time)[:5]
     return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year,sorted_list_5k=sorted_list_5k,sorted_list_10k=sorted_list_10k)
@@ -217,6 +236,7 @@ def trips_stats():
         countries_in_year[year].add(country)
 
     countries_by_year = list(countries_in_year.items())
+    countries_by_year = sorted(countries_by_year, key=lambda x: x[0], reverse=True)
 
     # Dictionary to store the count of unique country-trip combinations
     country_count = {}
@@ -266,7 +286,8 @@ def thoughts_stats():
     thoughts = Thoughts.query.all()
     
     # get all the thoughts by category 
-    thoughts_by_category = [thought.category for thought in thoughts]
+    thoughts_by_category = [category for thought in thoughts for category in thought.category.split(',')]
+
     thoughts_by_category = f.group_and_rank(thoughts_by_category,"FALSE", 10)
     #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
 

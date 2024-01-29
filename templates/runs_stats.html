@@ -7,6 +7,7 @@
 {% include 'base_runs.html' %}
 <br/><br/>
     <h6 class="center">Distance by Year</h6>
+    <br/>
     <div class="chart center">
         {% for year_values in total_distance_per_year_data %}
             <div class="bar-container">
@@ -19,6 +20,7 @@
     </div>
     <br/><br/>
     <h6 class="center">Runs by Year</h6>
+    <br/>
     <div class="chart center">
         {% for year_runs in years_of_runs %}
             <div class="bar-container">
@@ -31,6 +33,7 @@
     </div>
     <br/><br/>
     <h6 class="center">Average times by Year</h6>
+    <br/>
     <div class="chart center">
         {% for year_ave in ave_times_per_year %}
             <div class="bar-container">
@@ -58,7 +61,7 @@
             </thead>
             <tbody>
                 {% for runs in sorted_list_5k %}
-                    <tr>
+                    <tr class="{{runs.is_latest}}">
                         <td>{{ loop.index }}</td>
                         <td>{{ runs.date }}</td>
                         <td>{{ runs.location }}</td>
@@ -84,7 +87,7 @@
                 </thead>
                 <tbody>
                     {% for runs in sorted_list_10k %}
-                        <tr>
+                        <tr class="{{runs.is_latest}}">
                             <td>{{ loop.index }}</td>
                             <td>{{ runs.date }}</td>
                             <td>{{ runs.location }}</td>
@@ -97,6 +100,7 @@
 
 <!--
     MATPLOT-LIB Graphs
+
     <br/><br/><br/>
     <h6 class="center">Runs by Year</h6>
     <div class = "center">

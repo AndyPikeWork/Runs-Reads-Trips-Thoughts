@@ -8,9 +8,23 @@
 
 {% include 'base_reads.html' %}
 
+<!--- SEARCH (start) -->
+<script>
+    $(document).ready(function(){
+      $("#tbl_srch_input").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#reads_history_table tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+</script>
+<!--- SEARCH (end) -->
+
+<input class="form-control" id="tbl_srch_input" type="text" placeholder="Search..">
     
         <h1>Reads History</h1>
-        <table class="table override_table">
+        <table id="reads_history_table" class="table override_table">
             <thead>
                 <tr>
                     <th>Date</th>

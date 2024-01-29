@@ -195,7 +195,7 @@ def create_weights(data, highlight):
     category = ""
     for row in data:
         # its finally multiplied by 60% to reduce the overall size of the bar to fit with the labels etc
-        proportion = int((row[1]/max_val)*100)*0.8
+        proportion = int((row[1]/max_val)*100)*0.7
         #print(proportion)
         if proportion == 100:
             if highlight == "highest":
