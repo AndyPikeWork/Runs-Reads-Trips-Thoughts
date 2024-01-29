@@ -23,7 +23,7 @@ markupsafe.Markup()
 import functions as f
 
 # Swich betwen 'local' and 'prod'
-mode = "local"
+mode = "prod"
 
 
 app = Flask(__name__)
