@@ -100,6 +100,9 @@ class Thoughts(db.Model):
 with app.app_context():
     db.create_all()
 
+today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+
+
 # Route for handling form submissions
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -286,9 +289,9 @@ def thoughts_stats():
     thoughts = Thoughts.query.all()
     
     # get all the thoughts by category 
-    thoughts_by_category = [category for thought in thoughts for category in thought.category.split(',')]
+    thoughts_by_category = [category.strip() for thought in thoughts for category in thought.category.split(',')]
 
-    thoughts_by_category = f.group_and_rank(thoughts_by_category,"FALSE", 10)
+    thoughts_by_category = f.group_and_rank(thoughts_by_category,"TRUE", 10)
     #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
 
     return render_template('thoughts_stats.html', thoughts_by_category=thoughts_by_category)
@@ -345,7 +348,7 @@ def runs_new():
             distance = request.form['distance']
             location = request.form['location']
             date_added = datetime.today().strftime('%Y-%m-%d')
-            average_time_per_km = 6.50
+            average_time_per_km = f.average_time_per_kilometer(time, distance)
             runs_entry = Runs(date=date, time=time, distance=distance, location=location, date_added=date_added, average_time_per_km=average_time_per_km)
             db.session.add(runs_entry)
             db.session.commit()
@@ -355,7 +358,7 @@ def runs_new():
             # Handle database or form processing errors
             runs_entry = db.session.rollback()
             print(f"Error: {str(e)}")
-    return render_template('runs_new.html')
+    return render_template('runs_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd)
 
 @app.route('/reads/new', methods=['GET', 'POST'])
 def reads_new():

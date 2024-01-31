@@ -214,3 +214,22 @@ def create_weights(data, highlight):
         weighted_data.append(weighted_row)
         
     return weighted_data
+
+def time_to_seconds(time_str):
+    hours, minutes, seconds = map(int, time_str.split(':'))
+    total_seconds = hours * 3600 + minutes * 60 + seconds
+    return total_seconds
+
+def seconds_to_time(seconds):
+    hours, remainder = divmod(seconds, 3600)
+    minutes, seconds = divmod(remainder, 60)
+    return "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+
+def average_time_per_kilometer(time_str, distance):
+    total_seconds = time_to_seconds(time_str)
+    time_per_kilometer = total_seconds / int(distance)
+
+    # Convert time_per_kilometer back to "hh:mm:ss" format
+    avg_time_str = seconds_to_time(time_per_kilometer)
+
+    return avg_time_str
