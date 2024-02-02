@@ -1,0 +1,36 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Words - History - My App{% endblock %}
+
+
+{% block content %}
+
+{% include 'base_words.html' %}
+
+    
+        <h1>Words by Category</h1>
+        <table class="table override_table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Title</th>
+                    <th>Text</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for word in words %}
+                    <tr onclick="window.location='/words/note/{{ word.id }}';">
+                        <td>{{ word.note_date }}</td>
+                        <td>{{ word.note_title }}</td>
+                        <td>{{ word.note_text[:100] }}</td>
+                        <td>{{ word.note_type }}</td>
+                        <td>{{ word.note_category }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endblock %}
+

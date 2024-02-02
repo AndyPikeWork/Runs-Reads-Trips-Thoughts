@@ -173,3 +173,45 @@ li {
   .bar_None {
     background-color: white;
   }
+
+  /** VIEW AND EDIT NOTES **/
+
+  .note_title {
+    text-align: center;
+  }
+
+  .center_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .note_meta_centre_contents {
+    text-align: center;
+  }
+
+  .note_meta_label {
+    margin-left: 3px;
+    font-weight: light;
+    color: grey;
+  }
+
+  .note_meta_value {
+    margin-left: 3px;
+    font-weight: medium;
+    margin-right: 10px;
+  }
+
+  .note_text_p {
+    margin: 10px;
+  }
+ 
+  .edit_button {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: #4CAF50; /* Green color */
+    color: #fff; /* White text */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    text-align: center;
+  }

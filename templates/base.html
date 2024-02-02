@@ -8,6 +8,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="{{ url_for('static', filename='jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='field_values.js') }}"></script>
+    <script src="{{ url_for('static', filename='functions.js') }}"></script>
 
     <title>{% block title %}My App{% endblock %}</title>
 
@@ -20,7 +22,8 @@
             <li class="m-2 list-group-item {% if 'runs' in request.endpoint %}active{% endif %}"><a href="{{ url_for('runs_stats') }}">Runs</a></li>
             <li class="m-2 list-group-item {% if 'reads' in request.endpoint %}active{% endif %}"><a href="{{ url_for('reads_stats') }}">Reads</a></li>
             <li class="m-2 list-group-item {% if 'trips' in request.endpoint %}active{% endif %}"><a href="{{ url_for('trips_stats') }}">Trips</a></li>
-            <li class="m-2 list-group-item {% if 'thoughts' in request.endpoint %}active{% endif %}"><a href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>
+            <!--<li class="m-2 list-group-item {% if 'thoughts' in request.endpoint %}active{% endif %}"><a href="{{ url_for('thoughts_stats') }}">Thoughts</a></li>-->
+            <li class="m-2 list-group-item {% if 'words' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_stats') }}">Words</a></li>
         </ul>
         </nav>
     </div>

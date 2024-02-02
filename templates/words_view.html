@@ -1,0 +1,26 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Words - View Note - My App{% endblock %}
+
+
+{% block content %}
+
+{% include 'base_words.html' %}
+<br/>
+<h1 class="note_title">{{ note.note_title }}</h1>
+<br/>
+<div class="center_wrapper">
+    <div class="note_meta_centre_contents">
+        <span class="note_meta_label">Date</span><span class="note_meta_value">{{note.note_date}}</span>
+        <span class="note_meta_label">Type</span><span class="note_meta_value">{{note.note_type}}</span>
+        <span class="note_meta_label">Category</span><span class="note_meta_value">{{note.note_category}}</span>
+    </div>  
+</div>
+<br/>
+<p class="note_text_p">{{ note.note_text }}</p>
+<div class="center_wrapper">
+    <a class="edit_button" href="/words/note/{{ note.id }}/edit">Edit Note</a>
+</div>
+
+{% endblock %}

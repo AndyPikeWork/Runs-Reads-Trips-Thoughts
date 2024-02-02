@@ -19,11 +19,11 @@ from datetime import datetime, timedelta, time
 from jinja2.utils import markupsafe 
 markupsafe.Markup()
 #Markup('')
-# My python files:
+# My python functions:
 import functions as f
 
 # Swich betwen 'local' and 'prod'
-mode = "prod"
+mode = "local"
 
 
 app = Flask(__name__)
@@ -95,6 +95,18 @@ class Thoughts(db.Model):
     thought = db.Column(db.String(1000))
     category = db.Column(db.String(200))
     date_added = db.Column(db.String(20))
+
+class Words(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_added = db.Column(db.String(20))
+    note_date = db.Column(db.String(20))
+    note_type = db.Column(db.String(200))
+    note_category = db.Column(db.String(200))
+    note_title = db.Column(db.String(200))
+    note_text = db.Column(db.String(2000))
+    note_status = db.Column(db.String(200))
+    edit_date = db.Column(db.String(20))
+    note_tags = db.Column(db.String(200))
     
 
 with app.app_context():
@@ -296,6 +308,18 @@ def thoughts_stats():
 
     return render_template('thoughts_stats.html', thoughts_by_category=thoughts_by_category)
 
+@app.route('/words/stats', methods=['GET', 'POST'])
+def words_stats():
+    words = Words.query.all()
+    
+    # get all the thoughts by category 
+    notes_by_category = [category.strip() for note in words for category in note.note_category.split(',')]
+
+    notes_by_category = f.group_and_rank(notes_by_category,"TRUE", 10)
+    #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
+
+    return render_template('words_stats.html', notes_by_category=notes_by_category)
+
 # HISTORY ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
@@ -335,6 +359,12 @@ def trips_history():
 def thoughts_history():
     thoughts = Thoughts.query.all()
     return render_template('thoughts_history.html',thoughts=thoughts)
+
+@app.route('/words/history', methods=['GET', 'POST'])
+def words_history():
+    words = Words.query.all()
+    print(*words)
+    return render_template('words_history.html',words=words)
 
 # NEW ---------------------------------------------------------------------------------------------------
 
@@ -431,6 +461,62 @@ def thoughts_new():
             reads_entry = db.session.rollback()
             print(f"Error: {str(e)}")
     return render_template('thoughts_new.html')
+
+@app.route('/words/new', methods=['GET', 'POST'])
+def words_new():
+    if request.method == 'POST':
+        try:
+            date_added = datetime.today().strftime('%Y-%m-%d')
+            note_date = request.form['note_date']
+            note_type = request.form['note_type']
+            note_category = request.form['note_category']
+            note_title = request.form['note_title']
+            note_text = request.form['note_text']
+            note_status = "new"
+            edit_date = ""
+            note_tags = request.form['note_tags']
+            
+            
+            
+            words_entry = Words(note_date=note_date, note_type=note_type, note_category=note_category,note_title=note_title,note_text=note_text,note_tags=note_tags,note_status=note_status,edit_date=edit_date,date_added=date_added)
+            db.session.add(words_entry)
+            db.session.commit()
+            # Redirect to the reads_history page after successful form submission
+            return redirect(url_for('words_history'))
+        except Exception as e:
+            # Handle database or form processing errors
+            words_entry = db.session.rollback()
+            print(f"Error: {str(e)}")
+    return render_template('words_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd)
+
+# VIEWNOTE  ---------------------------------------------------------------------------------------------------
+
+@app.route('/words/note/<int:note_id>')
+def view_note(note_id):
+    note = Words.query.get_or_404(note_id)
+    return render_template('words_view.html', note=note)
+
+
+@app.route('/words/note/<int:note_id>/edit', methods=['GET', 'POST'])
+def edit_note(note_id):
+    note = Words.query.get_or_404(note_id)
+
+    if request.method == 'POST':
+        note.title = request.form['title']
+        note.content = request.form['content']
+        db.session.commit()
+        return redirect(url_for('words_view', note_id=note.id))
+
+    return render_template('words_edit.html', note=note)
+
+
+
+
+
+
+
+
+
 
 
 if __name__ == '__main__':

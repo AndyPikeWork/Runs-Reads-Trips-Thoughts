@@ -1,0 +1,31 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Words - Stats - My App{% endblock %}
+
+{% block content %}
+{% include 'base_words.html' %}
+
+<br/><br/>
+<h6 class="center">Notes by Category</h6>
+<br/>
+<div class="center">
+    <div class="chart center">
+    {% for cat in notes_by_category %}
+        <div class="bar-container">
+            <div class="big-label">{{cat[0]}}</div>
+            <div class="bar {{cat[3]}}" style="width: {{cat[2]}}%">
+                <div class="value">{{cat[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+<!--
+    <br/><br/><br/>
+    <h6 class="center">Thoughts by Catrgory</h6>
+    <div class = "center">
+        <img src="data:image/png;base64,{{ thoughts_by_category }}">
+    </div>
+-->
+{% endblock %}

@@ -57,6 +57,12 @@ def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NUL
     plot_url = base64.b64encode(img.getvalue()).decode()
     return plot_url
 
+# @categories - a list of values that will be aggregated and counted
+# @sort_by_count - if TRUE: will sort by the occurences (not sorted by the label / field)
+#                  if FALSE: will sort by the label (i.e. in order of years)
+# @top_number - how many it will return back (i.e. the first 10 years)
+# @highlight - if "highest" it will single out the highest value 
+#              if "lowest" it will single out the lowest value (useful for average time for a run for e.g.)
 def group_and_rank(categories, sort_by_count, top_number, highlight="highest"):
 
     # Initialize an empty dictionary to store counts
@@ -187,17 +193,24 @@ def convert_time_to_float(time):
 def add_thousand_comma(value):
     return '{:,}'.format(value)
 
+# For putting a weight on a list (to help scaling bars on graphs)
+#
+# @data - a list of values that will be aggregated and counted
+# @highlight - if "highest" it will single out the highest value
+#              if "lowest" it will single out the lowest value (useful for the average time for a run for e.g.)
 
 def create_weights(data, highlight):
     max_val = max(val[1] for val in data)
     min_val = min(val[1] for val in data)
     weighted_data = []
     category = ""
+    # Scale the width down from 100% to X to give enough space at the end of bars
+    scale = 0.6
     for row in data:
         # its finally multiplied by 60% to reduce the overall size of the bar to fit with the labels etc
-        proportion = int((row[1]/max_val)*100)*0.7
+        proportion = int((row[1]/max_val)*100)*scale
         #print(proportion)
-        if proportion == 100:
+        if proportion == 100*scale:
             if highlight == "highest":
                 category = "bar_High"
             else:
