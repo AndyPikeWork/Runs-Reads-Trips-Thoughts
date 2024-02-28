@@ -25,16 +25,14 @@ from flask_login import login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
 import re
 import os
-
-
-
+import functions as f
 
 
 
 markupsafe.Markup()
 #Markup('')
 # My python functions:
-import functions as f
+
 
 
 # Swich betwen 'local' and 'prod'
