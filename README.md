@@ -10,7 +10,7 @@ Includes the Data Model for
 *Words 
 
 **functions.py**
-
+ 
 User-defined functions that can be used across the app
 Remember to apply the prefix a call to a function with f
 
