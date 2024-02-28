@@ -1,0 +1,24 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Words - Delete Note - My App{% endblock %}
+
+
+{% block content %}
+
+{% include 'base_words.html' %}
+<br/>
+<h6 class="big_question"> Are you sure you want to delete? </h6>
+<br/><br/><br/>
+<h1 class="note_title">{{ note.note_title }}</h1>
+<div class="m-5">
+    <p class="note_text_p">{{ note.note_text[:1000] | safe }}</p>
+</div>
+
+<div class="center_wrapper">
+    <form class="input_form" method="post" action="#">
+        <input type="submit" value="Submit" class="submit_button">
+    </form>
+    <a class="back_button" onclick="history.back()" href="#">Back</a>
+</div>
+{% endblock %}

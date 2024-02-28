@@ -16,17 +16,35 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, time
+from time import gmtime, strftime
 from jinja2.utils import markupsafe 
+from flask_login import UserMixin
+from flask_login import LoginManager
+from flask import render_template, redirect, url_for, request
+from flask_login import login_user, login_required, logout_user, current_user
+from werkzeug.utils import secure_filename
+import re
+import os
+
+
+
+
+
+
 markupsafe.Markup()
 #Markup('')
 # My python functions:
 import functions as f
+
 
 # Swich betwen 'local' and 'prod'
 mode = "local"
 
 
 app = Flask(__name__)
+login_manager = LoginManager(app)
+app.secret_key = 'your_secret_key'
+
 
 if mode == "prod":
     SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://{username}:{password}@{hostname}/{databasename}".format(
@@ -100,23 +118,44 @@ class Words(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     date_added = db.Column(db.String(20))
     note_date = db.Column(db.String(20))
+    note_time = db.Column(db.String(20))
     note_type = db.Column(db.String(200))
     note_category = db.Column(db.String(200))
     note_title = db.Column(db.String(200))
     note_text = db.Column(db.String(2000))
     note_status = db.Column(db.String(200))
     edit_date = db.Column(db.String(20))
+    edit_time = db.Column(db.String(20))
     note_tags = db.Column(db.String(200))
+    note_original = db.Column(db.Integer)
+
+class User(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     
 
 with app.app_context():
     db.create_all()
 
+
+
+# Global Parameters
 today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+
+
+words_options = [
+        {'type': 'Meeting', 'categories': ['NHS England', 'Deloitte','Beacon'], 'color': 'lightblue'},
+        {'type': 'Thought', 'categories': [''], 'color': 'lightgreen'},
+        {'type': 'Review', 'categories': ['Book', 'Media'], 'color': 'lightsalmon'},
+        {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'lightred'},
+        {'type': 'Guide', 'categories': ['Technical', 'Tech Training'], 'color': 'lightyellow'},   
+    ]
 
 
 # Route for handling form submissions
 @app.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     reads = Books.query.where(Books.subcategory != "manga")
     number_of_books = reads.count()
@@ -151,6 +190,7 @@ def index():
 
 # Route for handling form submissions
 @app.route('/runs/stats', methods=['GET', 'POST'])
+@login_required
 def runs_stats():
     runs = Runs.query.all()
     
@@ -195,6 +235,7 @@ def runs_stats():
     return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year,sorted_list_5k=sorted_list_5k,sorted_list_10k=sorted_list_10k)
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
+@login_required
 def reads_stats():
     reads = Books.query.where(Books.subcategory != "manga")
 
@@ -221,6 +262,7 @@ def reads_stats():
     return render_template('reads_stats.html', years_grouped=years_grouped, pages_per_year=pages_per_year,authors=authors) 
 
 @app.route('/trips/stats', methods=['GET', 'POST'])
+@login_required
 def trips_stats():
 
     places = Trips.query.all()
@@ -279,6 +321,7 @@ def trips_stats():
     return render_template('trips_stats.html', years_grouped=years_grouped,countries_by_year=countries_by_year, countries=countries)
 
 @app.route('/trips/maps', methods=['GET', 'POST'])
+@login_required
 def trips_maps():
     
     places = Trips.query.all()
@@ -297,6 +340,7 @@ def trips_maps():
     return render_template('trips_maps.html', map_world=map_world, map_europe=map_europe, map_africa=map_africa, map_asia=map_asia, map_north_america=map_north_america, map_south_america=map_south_america)
 
 @app.route('/thoughts/stats', methods=['GET', 'POST'])
+@login_required
 def thoughts_stats():
     thoughts = Thoughts.query.all()
     
@@ -306,24 +350,30 @@ def thoughts_stats():
     thoughts_by_category = f.group_and_rank(thoughts_by_category,"TRUE", 10)
     #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
 
-    return render_template('thoughts_stats.html', thoughts_by_category=thoughts_by_category)
+    return render_template('thoughts_stats.html', thoughts_by_category=thoughts_by_category) 
 
 @app.route('/words/stats', methods=['GET', 'POST'])
+@login_required
 def words_stats():
-    words = Words.query.all()
-    
-    # get all the thoughts by category 
-    notes_by_category = [category.strip() for note in words for category in note.note_category.split(',')]
+    words = Words.query.filter(Words.note_status=='latest', Words.note_category != '')
+    thoughts = Words.query.filter(Words.note_type=='Thought')
 
+    # get all the thoughts by tag
+    thoughts_by_tags = [tag.strip() for note in thoughts for tag in note.note_tags.split(',')]
+    thoughts_by_tags = f.group_and_rank(thoughts_by_tags,"TRUE", 10)
+    
+    # get all the notes by category 
+    notes_by_category = [category.strip() for note in words for category in note.note_category.split(',')]
     notes_by_category = f.group_and_rank(notes_by_category,"TRUE", 10)
     #thoughts_by_category = f.make_graph(thoughts_by_category, "hbar", 0.5, 0, "NULL","NULL", 2, "FALSE")
 
-    return render_template('words_stats.html', notes_by_category=notes_by_category)
+    return render_template('words_stats.html', notes_by_category=notes_by_category,thoughts_by_tags=thoughts_by_tags)
 
 # HISTORY ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/history', methods=['GET', 'POST'])
+@login_required
 def runs_history():
     runs = Runs.query.order_by(Runs.date.desc()).all()
 
@@ -344,32 +394,47 @@ def runs_history():
     return render_template('runs_history.html',runs=runs)
 
 @app.route('/reads/history', methods=['GET', 'POST'])
+@login_required
 def reads_history():
 
     reads = Books.query.order_by(Books.date_ended.desc()).all()
     return render_template('reads_history.html',reads=reads)
 
 @app.route('/trips/history', methods=['GET', 'POST'])
+@login_required
 def trips_history():
     trips = Trips.query.order_by(Trips.date_start.desc()).all()
 
     return render_template('trips_history.html',trips=trips)
 
 @app.route('/thoughts/history', methods=['GET', 'POST'])
+@login_required
 def thoughts_history():
     thoughts = Thoughts.query.all()
     return render_template('thoughts_history.html',thoughts=thoughts)
 
 @app.route('/words/history', methods=['GET', 'POST'])
+@login_required
 def words_history():
-    words = Words.query.all()
-    print(*words)
-    return render_template('words_history.html',words=words)
+    words = Words.query.filter_by(note_status='latest').order_by(Words.note_date.desc())
+    # add the colours from the categories_list array
+
+    colored_words = []
+    for word in words:
+        word_dict = word.__dict__
+
+        for option in words_options:
+            if option['type'] == word.note_type:
+                word_dict['color'] = option['color']
+        colored_words.append(word_dict)
+
+    return render_template('words_history.html',words=colored_words,words_options=words_options)
 
 # NEW ---------------------------------------------------------------------------------------------------
 
 # Route for handling form submissions
 @app.route('/runs/new', methods=['GET', 'POST'])
+@login_required
 def runs_new():
     if request.method == 'POST':
         try:
@@ -391,6 +456,7 @@ def runs_new():
     return render_template('runs_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd)
 
 @app.route('/reads/new', methods=['GET', 'POST'])
+@login_required
 def reads_new():
     if request.method == 'POST':
         try:
@@ -418,6 +484,7 @@ def reads_new():
     return render_template('reads_new.html')
 
 @app.route('/trips/new', methods=['GET', 'POST'])
+@login_required
 def trips_new():
     # Don't redirect to History page (like others) 
     # because you want to keep the Trip details persistent to include with multiple places
@@ -443,7 +510,8 @@ def trips_new():
             print(f"Error: {str(e)}")
     return render_template('trips_new.html')
 
-@app.route('/thoughts/new', methods=['GET', 'POST'])
+""" @app.route('/thoughts/new', methods=['GET', 'POST'])
+@login_required
 def thoughts_new():
     if request.method == 'POST':
         try:
@@ -461,61 +529,232 @@ def thoughts_new():
             reads_entry = db.session.rollback()
             print(f"Error: {str(e)}")
     return render_template('thoughts_new.html')
-
+ """
 @app.route('/words/new', methods=['GET', 'POST'])
+@login_required
 def words_new():
+    current_time = datetime.now().strftime("%H:%M:%S")
+    today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+    key = datetime.now().strftime("%Y%m%d%H%M%S")
+
     if request.method == 'POST':
         try:
             date_added = datetime.today().strftime('%Y-%m-%d')
             note_date = request.form['note_date']
+            note_time = current_time
             note_type = request.form['note_type']
             note_category = request.form['note_category']
             note_title = request.form['note_title']
             note_text = request.form['note_text']
-            note_status = "new"
+            note_status = "latest"
             edit_date = ""
+            edit_time = ""
             note_tags = request.form['note_tags']
+            note_original = key
             
-            
-            
-            words_entry = Words(note_date=note_date, note_type=note_type, note_category=note_category,note_title=note_title,note_text=note_text,note_tags=note_tags,note_status=note_status,edit_date=edit_date,date_added=date_added)
+            words_entry = Words(note_date=note_date, 
+                                note_time=note_time,
+                                note_type=note_type, 
+                                note_category=note_category,
+                                note_title=note_title,
+                                note_text=note_text,
+                                note_tags=note_tags,
+                                note_status=note_status,
+                                edit_date=edit_date,
+                                edit_time=edit_time,
+                                date_added=date_added,
+                                note_original=note_original)
             db.session.add(words_entry)
             db.session.commit()
+
+            # Add any images
+            IMAGE_FOLDER = "static/images/"  
+            
+            uploaded_images = [request.files.getlist('note_images')[i] for i in range(len(request.files.getlist('note_images')))]
+            for image in uploaded_images:
+                try:
+                    filename = key+"_"+secure_filename(image.filename)
+                    print(filename)
+                    # Save the image to the folder
+                    image.save(os.path.join(IMAGE_FOLDER, filename))
+                except Exception as e:
+                    print(f"Error saving image: {e}")
+         
+
             # Redirect to the reads_history page after successful form submission
             return redirect(url_for('words_history'))
         except Exception as e:
             # Handle database or form processing errors
             words_entry = db.session.rollback()
             print(f"Error: {str(e)}")
-    return render_template('words_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd)
+    return render_template('words_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd, words_options=words_options)
 
-# VIEWNOTE  ---------------------------------------------------------------------------------------------------
+# VIEW NOTE  ---------------------------------------------------------------------------------------------------
 
-@app.route('/words/note/<int:note_id>')
-def view_note(note_id):
-    note = Words.query.get_or_404(note_id)
+@app.route('/words/note/<int:note_original>')
+@login_required
+def words_view(note_original):
+    note = Words.query.filter_by(note_original=note_original, note_status='latest').order_by(Words.id.desc()).first()
+
+    # Convert Regex to HTML notation
+    
+    # convert ** into <bold> tags
+    note.note_text = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', note.note_text)
+    # convert links to <a> elements
+    note.note_text = re.sub(r"(https?:\/\/[^\s]+)",r"<a target='_blank' href='\1'>\1</a>", note.note_text).replace('</td>','')
+    #note.note_text = note.note_text.replace('</td></a>', '</a></td>')
+    # convert ___ into a new line
+    note.note_text = re.sub(r'\_\_\_', r'<hr>', note.note_text)
+    # convert ## to <li> and </li>
+    note.note_text = re.sub(r'^##(.*)', r'<li class="words_li">\1</li>', note.note_text, flags=re.MULTILINE)
+
+    # convert <table> tag to <table class="words_content_table>"
+    note.note_text = note.note_text.replace('<table>', '<table class="words_content_table">')
+    # get rid of new lines after table elements (otherwise will create lots of white space before the Table)
+    note.note_text = note.note_text.replace('<table>\r\n', '<table>')
+    note.note_text = note.note_text.replace('<th>\r\n', '<th>')
+    note.note_text = note.note_text.replace('<tr>\r\n', '<tr>')
+    note.note_text = note.note_text.replace('<td>\r\n', '<td>')
+    note.note_text = note.note_text.replace('</table>\r\n', '</table>')
+    note.note_text = note.note_text.replace('</th>\r\n', '</th>')
+    note.note_text = note.note_text.replace('</tr>\r\n', '</tr>')
+    note.note_text = note.note_text.replace('</td>\r\n', '</td>')
+    note.note_text = note.note_text.replace('</li>\n', '</li>')
+    
+    note.note_text = re.sub(r"image>>(.+)", lambda match: f"<img src={url_for('static', filename=f'images/{note.note_original}_{match.group(1).strip()}')} class='words_image center'>", note.note_text)
+
+    # convert new lines to HTML line breaks
+    note.note_text = note.note_text.replace('\n', '<br>')
+
+    #note = Words.query.get_or_404(note_key)
     return render_template('words_view.html', note=note)
 
-
 @app.route('/words/note/<int:note_id>/edit', methods=['GET', 'POST'])
-def edit_note(note_id):
+@login_required
+def words_edit(note_id):
     note = Words.query.get_or_404(note_id)
 
+    today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+    current_time = datetime.now().strftime("%H:%M:%S")
+
+
     if request.method == 'POST':
-        note.title = request.form['title']
-        note.content = request.form['content']
-        db.session.commit()
-        return redirect(url_for('words_view', note_id=note.id))
+        try:
+            date_added = today_dt_yyyymmdd 
+            note_date = request.form['note_date']
+            note_time = request.form['note_time']
+            note_type = request.form['note_type']
+            note_category = request.form['note_category']
+            note_title = request.form['note_title']
+            note_text = request.form['note_text']
+            note_status = "latest"
+            edit_date = today_dt_yyyymmdd 
+            edit_time = current_time
+            note_tags = request.form['note_tags']
+            note_original = int(request.form['note_key'])
 
-    return render_template('words_edit.html', note=note)
+            words_edit = Words(date_added=date_added,
+                               note_date=note_date,
+                               note_time=note_time,
+                               note_type=note_type,
+                               note_category=note_category,
+                               note_title=note_title,
+                               note_text=note_text,
+                               note_status=note_status,
+                               edit_date=edit_date,
+                               edit_time=edit_time,
+                               note_tags=note_tags,
+                               note_original=note_original)
+            
+            db.session.add(words_edit)
+            db.session.commit()
+
+            # change the current note to 'existing' (so it dissapears from original view list)
+            note.note_status="edited"
+            db.session.commit()
+
+            # Add any images
+            IMAGE_FOLDER = "static/images/"  
+            
+            uploaded_images = [request.files.getlist('note_images')[i] for i in range(len(request.files.getlist('note_images')))]
+            for image in uploaded_images:
+                try:
+                    filename = str(note_original)+"_"+secure_filename(image.filename)
+                    print(filename)
+                    # Save the image to the folder
+                    image.save(os.path.join(IMAGE_FOLDER, filename))
+                except Exception as e:
+                    print(f"Error saving image: {e}")
+
+            # Redirect to the reads_history page after successful form submission
+            return redirect(url_for('words_history'))
+        except Exception as e:
+            # Handle database or form processing errors
+            words_edit = db.session.rollback()
+            print(f"Error: {str(e)}")
+    return render_template('words_edit.html', note=note, words_options=words_options)
 
 
 
+@app.route('/words/note/<int:note_id>/delete', methods=['GET', 'POST'])
+@login_required
+def words_delete(note_id):
+    note = Words.query.get_or_404(note_id)
+
+    today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+    current_time = datetime.now().strftime("%H:%M:%S")
+
+
+    if request.method == 'POST':
+        try:
+            # change the current note to 'existing' (so it dissapears from original view list)
+            note.edit_date = today_dt_yyyymmdd
+            note.edit_time = current_time
+            note.note_status="deleted"
+            db.session.commit()
+
+            # Redirect to the reads_history page after successful form submission
+            return redirect(url_for('words_history'))
+        except Exception as e:
+            # Handle database or form processing errors
+            print(f"Error: {str(e)}")
+    return render_template('words_delete.html', note=note)
 
 
 
+# AUTHENTICATION  ---------------------------------------------------------------------------------------------------
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        user = User.query.filter_by(username=username).first()
+
+        if user and user.password == password:
+            login_user(user)
+            return redirect(url_for('index'))
+
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('login.html')
+
+@app.before_request
+def before_request():
+    if not current_user.is_authenticated and request.endpoint not in ['login', 'static']:
+        return redirect(url_for('login'))
+
+# SETUP  ---------------------------------------------------------------------------------------------------
 
 
 

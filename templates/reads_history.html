@@ -21,19 +21,19 @@
 </script>
 <!--- SEARCH (end) -->
 
-<input class="form-control" id="tbl_srch_input" type="text" placeholder="Search..">
+<input class="form-control srchbox center" id="tbl_srch_input" type="text" placeholder="Search..">
     
         <h1>Reads History</h1>
         <table id="reads_history_table" class="table override_table">
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Country</th>
-                    <th>Pages</th>
-                    <th>Publication</th>
-                    <th>Rating</th>
+                    <th class="w-15">Date</th>
+                    <th class="w-30">Title</th>
+                    <th class="w-20">Author</th>
+                    <th class="w-10">Country</th>
+                    <th class="w-10">Pages</th>
+                    <th class="w-15">Published</th>
+                    <th class="w-10">Rating</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,7 +45,7 @@
                         <td>{{ read.country }}</td>
                         <td>{{ read.pages }}</td>
                         <td>{{ read.publication_year }}</td>
-                        <td class="{% if read.my_rating == 1 %}rate_1{% elif read.my_rating == 2 %}rate_2{% elif read.my_rating == 3 %}rate_3{% elif read.my_rating == 4 %}rate_4{% elif read.my_rating == 5 %}rate_5{% endif %}">{{ read.my_rating }}</td>
+                        <td class="center {% if read.my_rating == 1 %}rate_1{% elif read.my_rating == 2 %}rate_2{% elif read.my_rating == 3 %}rate_3{% elif read.my_rating == 4 %}rate_4{% elif read.my_rating == 5 %}rate_5{% endif %}">{{ read.my_rating }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

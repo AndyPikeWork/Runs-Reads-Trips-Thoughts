@@ -6,20 +6,23 @@
 {% block content %}
 {% include 'base_words.html' %}
 
+<!--  Create a list of categories for drop downs (based on the Type) -->
+<script>
+    const categories_list = {{ words_options|tojson }}
+    const existing_category = 'not needed'
 
+</script>
     <br/>
     <br/>
-    <form class="input_form" method="post" action="#">
+    <form class="input_form" method="post" action="#" enctype="multipart/form-data">
 
         <div class="row mb-3">
             <label for="note_type" class="col-sm-2 col-form-label">Type:</label>
             <div class="col-sm-10">
                 <select type="text" rows="8" id="note_type" name="note_type"  required class="form-control" onchange="updateCategories()">
-                    <option value="Thought">Thought</option>
-                    <option value="Meeting">Meeting</option>
-                    <option value="Review">Review</option>
-                    <option value="Guide">Guide</option>
-                    <option value="Article">Article</option>
+                    {% for option in words_options %}
+                        <option value="{{ option['type']}}">{{ option['type'] }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -27,7 +30,7 @@
         <div class="row mb-3">
             <label for="note_category" class="col-sm-2 col-form-label">Category:</label>
             <div class="col-sm-10">
-                <select id="note_category" name="note_category"  rows="8"  required class="form-control">
+                <select id="note_category" name="note_category" class="form-control">
                     <!-- Categories will be dynamically populated here -->
                 </select>
             </div>
@@ -36,21 +39,40 @@
         <div class="row mb-3">
             <label for="note_title" class="col-sm-2 col-form-label">Title:</label>
             <div class="col-sm-10">
-                <input type="text" rows="8" id="note_title" name="note_title"  required class="form-control">
+                <input type="text" rows="8" id="note_title" name="note_title" class="form-control">
             </div>
         </div>
 
-        <div class="row mb-3">
-            <label for="note_text" class="col-sm-2 col-form-label">Text:</label>
-            <div class="col-sm-10">
-                <textarea id="note_text" class="form-control" name="note_text" required rows="10"></textarea>
-            </div>
+        <div class="form-group">
+            <label>Text:</label>
+            <br/>
+            <table>
+                <tr>
+                    <td class="word_code_help_wrapper">
+                        List: ##text
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Bold: **text**
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Image: >>text.jpg
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Line: ___
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        &lt;code&gt;text&lt;/code&gt;
+                    </td>
+                </tr>
+            </table>
+                <textarea id="note_text" class="form-control" name="note_text" required rows="15"></textarea>
         </div>
+        
 
         <div class="row mb-3">
             <label for="note_tags" class="col-sm-2 col-form-label">Tags:</label>
             <div class="col-sm-10">
-                <input type="text" rows="8" id="note_tags" name="note_tags"  required class="form-control">
+                <input type="text" rows="8" id="note_tags" name="note_tags" class="form-control">
             </div>
         </div>
 
@@ -62,8 +84,15 @@
         </div>
 
         <div class="row mb-3">
+            <label for="note_images" class="col-sm-2 col-form-label">Images:</label>
+            <div class="col-sm-10">
+                <input type="file" id="note_images" name="note_images" multiple>
+            </div>
+        </div>
+
+        <div class="row mb-3">
             <div class="col-sm-10 offset-sm-2">
-                <input type="submit" value="Submit">
+                <input type="submit" value="Submit" class="submit_button">
             </div>
         </div>
     </form>

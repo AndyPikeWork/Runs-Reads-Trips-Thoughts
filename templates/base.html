@@ -8,7 +8,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="{{ url_for('static', filename='jquery-3.7.1.js') }}"></script>
-    <script src="{{ url_for('static', filename='field_values.js') }}"></script>
     <script src="{{ url_for('static', filename='functions.js') }}"></script>
 
     <title>{% block title %}My App{% endblock %}</title>
@@ -32,5 +31,12 @@
     <div>
         {% block content %}{% endblock %}
     </div>
+    <br/>
+    <br/>
+    <br/>
+    <a class="center" href="{{ url_for('logout') }}">Sign out</a>
+    <br/>
+    <br/>
+    <br/>
 </body>
 </html>

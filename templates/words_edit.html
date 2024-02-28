@@ -1,21 +1,102 @@
+
+
 <!-- home.html -->
 {% extends 'base.html' %}
 
 {% block title %}Words - Edit Note - My App{% endblock %}
 
-
 {% block content %}
 
 {% include 'base_words.html' %}
 
-<form method="post" action="">
-    <label for="title">Title:</label>
-    <input type="text" name="title" value="{{ note.note_title }}" required>
-    <br>
-    <label for="content">Content:</label>
-    <textarea name="content" required>{{ note.note_text }}</textarea>
-    <br>
-    <input type="submit" value="Save">
+
+
+
+<!--  Create a list of categories for drop downs (based on the Type) -->
+<script>
+    const categories_list = {{ words_options|tojson }}
+    const existing_category = '{{ note.note_category }}'
+</script>
+
+<br/><br/>
+<form class="edit_form" method="post" action="#" enctype="multipart/form-data">
+
+    <input type="hidden" id="note_key" name="note_key" value="{{ note.note_original }}">
+    <input type="hidden" id="note_date" name="note_date" value="{{ note.note_date }}">
+    <input type="hidden" id="note_time" name="note_time" value="{{ note.note_time }}">
+
+    <div class="row mb-3">
+        <label for="title" class="col-sm-2 col-form-label">Title:</label>
+        <div class="col-sm-10">
+            <input type="text" id="note_title" name="note_title" value="{{ note.note_title }}" class="form-control">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="note_type" class="col-sm-2 col-form-label">Type:</label>
+        <div class="col-sm-10">
+            <select id="note_type" name="note_type"  required class="form-control" onchange="updateCategories()">
+            {% for option in words_options %}
+                {% if option['type'] == note.note_type %}
+                    <option value="{{ option['type'] }}" selected>{{ option['type'] }}</option>
+                {% else %}
+                    <option value="{{ option['type'] }}">{{ option['type'] }}</option>
+                {% endif %}
+            {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="note_category" class="col-sm-2 col-form-label">Category:</label>
+        <div class="col-sm-10">
+            <select id="note_category" name="note_category" value="{{ note.note_category }}" class="form-control">
+                    <!--<option value="{{ note.note_category }}" selected>{{ note.note_category }}</option>-->
+            </select>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label>Text:</label>
+            <br/>
+            <table>
+                <tr>
+                    <td class="word_code_help_wrapper">
+                        List: ##text
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Bold: **text**
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Image: >>text.jpg
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        Line: ___
+                    </td>
+                    <td class="word_code_help_wrapper">
+                        &lt;code&gt;text&lt;/code&gt;
+                    </td>
+                </tr>
+            </table>
+            <textarea id="note_text" name="note_text" required class="form-control" required rows="15">{{ note.note_text }}</textarea>
+    </div>
+
+    <div class="row mb-3">
+        <label for="tags" class="col-sm-2 col-form-label">Tags:</label>
+        <div class="col-sm-10">
+            <input id="note_tags" type="text" name="note_tags" value="{{ note.note_tags }}" class="form-control">
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <label for="note_images" class="col-sm-2 col-form-label">Images:</label>
+        <div class="col-sm-10">
+            <input type="file" id="note_images" name="note_images" multiple>
+        </div>
+    </div>
+
+    <span class="center"><input type="submit" value="Save" class="submit_button"></span>
 </form>
 
 {% endblock %}

@@ -6,3 +6,4 @@ matplotlib==3.8.2
 pandas==2.1.4
 Basemap==1.4.0
 #cartopy==0.22.0
+Flask-login==0.6.3

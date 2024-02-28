@@ -21,6 +21,23 @@
     {% endfor %}
     </div>
 </div>
+
+
+<br/><br/><br/><br/>
+<h6 class="center">Thoughts by Tag</h6>
+<br/>
+<div class="center">
+    <div class="chart center">
+    {% for tag in thoughts_by_tags %}
+        <div class="bar-container">
+            <div class="big-label">{{tag[0]}}</div>
+            <div class="bar {{tag[3]}}" style="width: {{tag[2]}}%">
+                <div class="value">{{tag[1]}}</div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
 <!--
     <br/><br/><br/>
     <h6 class="center">Thoughts by Catrgory</h6>
