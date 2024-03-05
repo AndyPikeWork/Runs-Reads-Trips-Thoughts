@@ -1,18 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">  
+    <link rel="stylesheet" href="{{ url_for('static', filename='my_override_style.css') }}">  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='functions.js') }}"> 
+
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
-    <form class="input_form" method="post" action="#">
-        <label for="username">Username:</label>
-        <input type="text" name="username" required>
-        <label for="password">Password:</label>
-        <input type="password" name="password" required>
-        <button type="submit">Login</button>
-    </form>
+    <script src="{{ url_for('static', filename='jquery-3.7.1.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='functions.js') }}"></script>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+
+    <div class="center">
+        <form class="input_form" method="post" action="#">
+            <div class="row mb-3">
+                <label for="username" class="col-sm-2 col-form-label">Username:</label>
+                <div class="col-sm-10">
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="password" class="col-sm-2 col-form-label">Password:</label>
+                <div class="col-sm-10">
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+            </div>
+            <br/>
+            <div class="row mb-3">
+                <div class="col-sm-10 offset-sm-2">
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+
+

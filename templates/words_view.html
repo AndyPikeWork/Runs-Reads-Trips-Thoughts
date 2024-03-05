@@ -7,25 +7,62 @@
 {% block content %}
 
 {% include 'base_words.html' %}
+<script>
+    const categories_list = {{ words_options|tojson }}
+</script>
 <br/>
-<h1 class="note_title">{{ note.note_title }}</h1>
-<br/>
-<div class="center_wrapper">
-    <div class="note_meta_centre_contents">
-        <span class="note_meta_label">Date</span><span class="note_meta_value">{{note.note_date}}</span>
-        <span class="note_meta_label">Type</span><span class="note_meta_value">{{note.note_type}}</span>
-        <span class="note_meta_label">Category</span><span class="note_meta_value">{{note.note_category}}</span>
-        <span class="note_meta_label">Last Edited</span><span class="note_meta_value">{{note.edit_date}} {{note.edit_time}}</span>
-    </div>  
+<div id="words_view_left_panel">
+    <br/>
+    <br/>
+    <div class="center">
+        <select id="words_view_drop_down">
+        </select>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <table>
+        {% for link in notes %}
+        <tr class="words_view_left_panel_link" onclick="window.location='/words/note/{{ link.note_original }}';">
+            <td>
+                {% if 'Thought' not in link.note_type %}
+                    <span class="words_view_left_panel_link_title">{{ link.note_title }}</span>
+                {% endif %}
+                {% if 'Thought' in link.note_type %}
+                    <span class="words_view_left_panel_link_title">{{ link.note_text[:50] }}</span>
+                {% endif %}
+                <span class="words_view_left_panel_link_date">{{link.note_date}}</span>
+                <input type="hidden" value="{{link.note_category}}">
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    
 </div>
-<br/>
-<div class="m-5">
-    <div class="note_text_p">{{ note.note_text | safe }}</div>
-</div>
-<div class="center_wrapper side_panel">
-    <a class="back_button" onclick="history.back()" href="#">Back</a>
-    <a class="edit_button" href="/words/note/{{ note.id }}/edit">Edit</a>
-    <a class="delete_button" href="/words/note/{{ note.id }}/delete">Delete</a>
+<div id="words_view_main_panel">
+    <input id="current_words_view_category" type="hidden" value="{{note.note_category}}">
+    <h1 class="note_title">{{ note.note_title }}</h1>
+    <br/>
+    <div class="center_wrapper">
+        <div class="note_meta_centre_contents">
+            <span class="note_meta_label">Date</span><span class="note_meta_value">{{note.note_date}}</span>
+            <span class="note_meta_label">Type</span><span class="note_meta_value">{{note.note_type}}</span>
+            <span class="note_meta_label">Category</span><span class="note_meta_value">{{note.note_category}}</span>
+            <span class="note_meta_label">Last Edited</span><span class="note_meta_value">{{note.edit_date}} {{note.edit_time}}</span>
+        </div>  
+    </div>
+    <br/>
+    <div class="m-5">
+        <div class="note_text_p">{{ note.note_text | safe }}</div>
+    </div>
+    <div class="center_wrapper side_panel">
+        <a class="back_button" onclick="history.back()" href="#">Back</a>
+        <a class="edit_button" href="/words/note/{{ note.id }}/edit">Edit</a>
+        <a class="delete_button" href="/words/note/{{ note.id }}/delete">Delete</a>
+    </div>
 </div>
 
 {% endblock %}

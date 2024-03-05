@@ -1,4 +1,4 @@
-<div class="d-flex justify-content-center">
+<div class="d-flex justify-content-center base_buttons">
     <ul class="list-group d-flex flex-row">
         <li class="list-group-item m-2 {% if 'stats' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_stats') }}">Stats</a></li>
         <li class="list-group-item m-2 {% if 'new' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_new') }}">New</a></li>

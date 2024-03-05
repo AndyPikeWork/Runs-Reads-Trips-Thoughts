@@ -5,7 +5,6 @@ function updateCategories() {
         const type_selected = document.getElementById('note_type');
         const categorySelect = document.getElementById('note_category');
         const selectedType = type_selected.value;
-
         // Clear existing options
         categorySelect.innerHTML = '';
         console.log("Selected Value: " + selectedType)
@@ -147,14 +146,125 @@ function hideColumnsForThoughts(type_selected) {
     }
 }
 
+// Words - View: Switch on the Left Hand panel
+function checkWidthAndTogglePanel() {
+    if(document.getElementById('words_view_left_panel') != null) {
+        if (window.innerWidth >= 1000) {
+            document.getElementById('words_view_left_panel').style.display = 'block';
+        } else {
+            document.getElementById('words_view_left_panel').style.display = 'none';
+        }
+    }
+}
+
+window.addEventListener('resize', checkWidthAndTogglePanel);
 
 
+// Populate the drop down options of categories
+function words_view_dropdown() {
+    if (document.getElementById("current_words_view_category") != null) {
+        // what the page loads as the main category (not what is selected)
+        var loaded_category = $("#current_words_view_category").val();
+        var container = document.getElementById("words_view_drop_down"); 
+        for(i = 0; i < categories_list.length; i++) {
+            for(j = 0; j < categories_list[i].categories.length; j++) {
+                type = categories_list[i].type
+                category = categories_list[i].categories[j]
+                const option = document.createElement('option');
+                option.value = category;
+                option.text = type + " > " + category;
+                if(category == loaded_category) {
+                    option.selected = true;
+                }
+                container.appendChild(option);
+            }
+        }
+        update_left()
+    }
+}
+
+// Update notes on the left hand panel after drop down option selected
+function update_left_hand_words_panel() {
+    $("#words_view_drop_down").change(function() {
+        update_left();                    
+    });
+}
+
+function update_left() {
+    var selectedValue = $("#words_view_drop_down").val();
+    $(".words_view_left_panel_link").hide();
+    $(".words_view_left_panel_link").each(function() {
+        var hiddenValue = $(this).find("input[type='hidden']").val();
+        if (hiddenValue == selectedValue) {
+            $(this).show();
+        }
+    });
+}
+
+
+
+
+function load_theme() {
+    
+    // In load_theme and toggleTheme:
+    const body = document.body; 
+    const toggleButton = document.getElementById('toggle-theme');
+    const left_panel = document.getElementById('words_view_left_panel');
+    on_words_view_page = false;
+    if(document.getElementById('words_view_left_panel') != null) {
+        on_words_view_page = true;
+    }
+
+
+    // Set initial theme based on local storage
+    const storedTheme = localStorage.getItem('theme');
+    const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
+    const shouldUseDarkMode = storedTheme === 'dark' || prefersDarkMode.matches;
+    if (shouldUseDarkMode) {
+      body.classList.add('dark-mode');
+      if(on_words_view_page) {
+        left_panel.classList.toggle('black-mode');
+      }
+      
+    }
+    // Show the body element again (switched off in CSS)
+    body.style.display = 'block';
+    toggleButton.addEventListener('click', toggleTheme);
+    
+} 
+
+function toggleTheme() {
+    const body = document.body;
+    const left_panel = document.getElementById('words_view_left_panel');
+    if(document.getElementById('words_view_left_panel') != null) {
+        on_words_view_page = true;
+    }
+    const isDarkMode = body.classList.contains('dark-mode');
+    body.classList.toggle('dark-mode');
+    if(on_words_view_page) {
+        left_panel.classList.toggle('black-mode');
+      }
+    localStorage.setItem('theme', isDarkMode ? 'light' : 'dark');
+  }
+
+  function make_image_big() {
+    $('.words_image').click(function(event) {
+        // stops the image opening up in a new tab (keeps it within the current page)
+        event.preventDefault();
+        $(this).toggleClass('expanded-image');
+      });
+  }
 
 
 $(document).ready(function() {
+    load_theme();
+    words_view_dropdown();
+    update_left_hand_words_panel();
     updateCategories();
     words_app_history_buttons();
     updateCategoriesButtons();
     hideColumnsForThoughts("Meeting");
+    checkWidthAndTogglePanel();
+    make_image_big();
 });
 

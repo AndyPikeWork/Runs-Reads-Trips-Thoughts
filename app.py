@@ -147,7 +147,7 @@ words_options = [
         {'type': 'Thought', 'categories': [''], 'color': 'lightgreen'},
         {'type': 'Review', 'categories': ['Book', 'Media'], 'color': 'lightsalmon'},
         {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'lightred'},
-        {'type': 'Guide', 'categories': ['Technical', 'Tech Training'], 'color': 'lightyellow'},   
+        {'type': 'Guide', 'categories': ['Technical', 'Tech Training', 'Project'], 'color': 'gold'},   
     ]
 
 
@@ -570,13 +570,16 @@ def words_new():
             
             uploaded_images = [request.files.getlist('note_images')[i] for i in range(len(request.files.getlist('note_images')))]
             for image in uploaded_images:
-                try:
-                    filename = key+"_"+secure_filename(image.filename)
-                    print(filename)
-                    # Save the image to the folder
-                    image.save(os.path.join(IMAGE_FOLDER, filename))
-                except Exception as e:
-                    print(f"Error saving image: {e}")
+                if image and image.filename:  # Check if image exists and has a filename
+                    try:
+                        filename = key+"_"+secure_filename(image.filename)
+                        print(filename)
+                        # Save the image to the folder
+                        image.save(os.path.join(IMAGE_FOLDER, filename))
+                    except Exception as e:
+                        print(f"Error saving image: {e}")
+                else:
+                    print(f"Skipping empty image file.")
          
 
             # Redirect to the reads_history page after successful form submission
@@ -594,6 +597,10 @@ def words_new():
 def words_view(note_original):
     note = Words.query.filter_by(note_original=note_original, note_status='latest').order_by(Words.id.desc()).first()
 
+    # Get the notes with the same Type and Category
+    # notes = Words.query.filter_by(note_status='latest', note_type=note.note_type, note_category=note.note_category).order_by(Words.note_date.desc())
+    notes = Words.query.filter_by(note_status='latest').order_by(Words.note_date.desc())
+
     # Convert Regex to HTML notation
     
     # convert ** into <bold> tags
@@ -603,6 +610,10 @@ def words_view(note_original):
     #note.note_text = note.note_text.replace('</td></a>', '</a></td>')
     # convert ___ into a new line
     note.note_text = re.sub(r'\_\_\_', r'<hr>', note.note_text)
+    # convert __text__ into <u> tags (Underline)
+    note.note_text = re.sub(r'\-\-(.*?)\-\-', r'<u>\1</u>', note.note_text)
+    # convert _text_ into <i> tags (Italics)
+    note.note_text = re.sub(r'\-(.*?)\-', r'<i>\1</i>', note.note_text)
     # convert ## to <li> and </li>
     note.note_text = re.sub(r'^##(.*)', r'<li class="words_li">\1</li>', note.note_text, flags=re.MULTILINE)
 
@@ -619,13 +630,14 @@ def words_view(note_original):
     note.note_text = note.note_text.replace('</td>\r\n', '</td>')
     note.note_text = note.note_text.replace('</li>\n', '</li>')
     
+    note.note_text = note.note_text.replace('Â£', '£')
     note.note_text = re.sub(r"image>>(.+)", lambda match: f"<img src={url_for('static', filename=f'images/{note.note_original}_{match.group(1).strip()}')} class='words_image center'>", note.note_text)
 
     # convert new lines to HTML line breaks
     note.note_text = note.note_text.replace('\n', '<br>')
 
     #note = Words.query.get_or_404(note_key)
-    return render_template('words_view.html', note=note)
+    return render_template('words_view.html', note=note, notes=notes, words_options=words_options)
 
 @app.route('/words/note/<int:note_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -634,7 +646,6 @@ def words_edit(note_id):
 
     today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
     current_time = datetime.now().strftime("%H:%M:%S")
-
 
     if request.method == 'POST':
         try:
@@ -685,7 +696,8 @@ def words_edit(note_id):
                     print(f"Error saving image: {e}")
 
             # Redirect to the reads_history page after successful form submission
-            return redirect(url_for('words_history'))
+            return redirect(url_for('words_view', note_original=note_original))
+            #return redirect(url_for('words_history'))
         except Exception as e:
             # Handle database or form processing errors
             words_edit = db.session.rollback()
@@ -726,7 +738,6 @@ def words_delete(note_id):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

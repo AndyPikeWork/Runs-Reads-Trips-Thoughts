@@ -1,6 +1,10 @@
 * { 
     font-size: 6pt;
 }
+/* Will display after all functions are complete (in js file) */
+body {
+  display: none;
+}
 
 /* If the screen size is 1000px wide or more, set the font-size of <div> to 80px */
 @media screen and (min-width: 1000px) {
@@ -9,6 +13,13 @@
   }
   .list-group-item {
     padding: 0;
+  }
+  #words_view_main_panel {
+    margin-left: 250px; /* Shift content to the right */
+  }
+  .footer_links, .base_buttons {
+    margin-left: 250px !important; 
+    text-align: center;
   }
 }
 
@@ -49,8 +60,9 @@ a.center {
   width: 16.7%;
 }
 
+
 .trips_stats_table td {
-  background-color: #F8F8F8;
+  background: rgba(0,0,0,0);
 }
 
 
@@ -88,7 +100,7 @@ li {
 }
 
 .input_form {
-    width: 330px;
+    width: 95%;
     margin: auto;
 }
 
@@ -113,7 +125,7 @@ li {
   }
 
   .rate_1 {
-    background-color: #ffffff;
+    background-color:rgba(0, 0, 0, 0);
   }
   .rate_2 {
     background-color: #ede8d9;
@@ -135,7 +147,7 @@ li {
   .chart {
     width: 300px;
     /**margin: 10px;**/
-    background-color: #fff;
+    /**background-color: #fff;**/
     /*border-radius: 5px;*/
     /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
   }
@@ -175,14 +187,12 @@ li {
   .small-label {
     text-align: centre;
     font-size: 10px;
-    color: #333;
     margin-right: 10px;
     min-width: 20px;
   }
   .big-label {
     text-align: left;
     font-size: 10px;
-    color: #333;
     margin-right: 10px;
     min-width: 100px;
   }
@@ -201,7 +211,7 @@ li {
   }
 
   .bar_None {
-    background-color: white;
+    background: rgba(0,0,0,0.5);
   }
 
   /** VIEW AND EDIT NOTES **/
@@ -393,7 +403,8 @@ li {
     max-width: 75%;
     margin: 0 auto;
     display: block;
-    border: 1px solid lightgrey; 
+    cursor: pointer;
+    /*border: 1px solid lightgrey; */
   }
 
 
@@ -408,5 +419,76 @@ li {
     margin-bottom: 1px;
     color: lightgray;
     text-align: center;
-    font-size: 6px;
   }
+
+  /* Left Panel Styles */
+#words_view_left_panel {
+  position: fixed; 
+  left: 0;
+  top: 0;
+  width: 250px; /* Adjust the width as needed */
+  height: 100vh;
+  background-color: #f0f0f0; /* Example background color */
+  /*overflow: hidden;*/
+  overflow-y: auto;
+}
+
+.words_view_left_panel_link:hover {
+  background: grey;
+  color: white;
+}
+
+.words_view_left_panel_link:active {
+  background: grey;
+  color: white;
+}
+
+.words_view_left_panel_link {
+  border-bottom: lightgray 1px solid;
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.words_view_left_panel_link span {
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+
+.words_view_left_panel_link_title {
+  float:left;
+  width:78%;
+  margin-left: 2px;
+}
+
+.words_view_left_panel_link_date {
+  float:right;
+  width:20%;
+  color: grey;
+  font-size: 6px;
+  vertical-align: middle;
+  height: 100%;
+}
+
+.dark-mode {
+  /* Styles for dark mode */
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+.black-mode {
+  background-color: black !important;
+}
+
+table {
+  background-color:rgba(0, 0, 0, 0);
+}
+
+th {
+  background-color:rgba(0, 0, 0, 0);
+}
+
+.words_image.expanded-image {
+  width: 100%;
+  max-width: 100%;
+}
