@@ -17,7 +17,7 @@ body {
   #words_view_main_panel {
     margin-left: 250px; /* Shift content to the right */
   }
-  .footer_links, .base_buttons {
+  .footer, .base_buttons {
     margin-left: 250px !important; 
     text-align: center;
   }
@@ -491,4 +491,22 @@ th {
 .words_image.expanded-image {
   width: 100%;
   max-width: 100%;
+}
+
+.note_text_p.large-font {
+  font-size: 200%;
+}
+
+.note_text_p.large-font * {
+  font-size: inherit;
+}
+
+.footer_links {
+    position: fixed;
+    bottom: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: white;
+    width: 100%;
+    text-align: center;
 }

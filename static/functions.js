@@ -215,7 +215,6 @@ function load_theme() {
         on_words_view_page = true;
     }
 
-
     // Set initial theme based on local storage
     const storedTheme = localStorage.getItem('theme');
     const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)');
@@ -255,6 +254,15 @@ function toggleTheme() {
       });
   }
 
+  function make_text_big() {
+    const fontToggleBtn = document.getElementById('toggle-zoom');
+    const contentDiv = document.getElementsByClassName('note_text_p')[0];
+
+    fontToggleBtn.addEventListener('click', () => {
+        contentDiv.classList.toggle('large-font');
+    });
+  }
+
 
 $(document).ready(function() {
     load_theme();
@@ -266,5 +274,6 @@ $(document).ready(function() {
     hideColumnsForThoughts("Meeting");
     checkWidthAndTogglePanel();
     make_image_big();
+    make_text_big();
 });
 

@@ -146,7 +146,7 @@ words_options = [
         {'type': 'Meeting', 'categories': ['NHS England', 'Deloitte','Beacon'], 'color': 'lightblue'},
         {'type': 'Thought', 'categories': [''], 'color': 'lightgreen'},
         {'type': 'Review', 'categories': ['Book', 'Media'], 'color': 'lightsalmon'},
-        {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'lightred'},
+        {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'violet'},
         {'type': 'Guide', 'categories': ['Technical', 'Tech Training', 'Project'], 'color': 'gold'},   
     ]
 
@@ -613,7 +613,7 @@ def words_view(note_original):
     # convert __text__ into <u> tags (Underline)
     note.note_text = re.sub(r'\-\-(.*?)\-\-', r'<u>\1</u>', note.note_text)
     # convert _text_ into <i> tags (Italics)
-    note.note_text = re.sub(r'\-(.*?)\-', r'<i>\1</i>', note.note_text)
+    note.note_text = re.sub(r'\-(.*?)\-$', r'<i>\1</i>', note.note_text)
     # convert ## to <li> and </li>
     note.note_text = re.sub(r'^##(.*)', r'<li class="words_li">\1</li>', note.note_text, flags=re.MULTILINE)
 
