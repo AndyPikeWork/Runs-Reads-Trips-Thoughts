@@ -427,8 +427,42 @@ function toggleTheme() {
   
     table.append(tbody); // Add body to table
     $('#task-list').append(table); // Append table to the target element
+    tasks_filter(tasks);
   }
 
+function tasks_filter(tasks) {
+    // get the unique values of the task categories
+    const categories = [...new Set(tasks.map(item => item["category"]))];
+    const taskOptionsDiv = document.getElementById("task_options"); // Assuming the div has this ID
+
+    categories.forEach(category => {
+        const button = document.createElement("button");
+        button.addClass = "task_filter_button";
+        button.textContent = category;
+        button.addEventListener("click", () => filter_tasks_table(category)); // Add event listener for filtering
+            taskOptionsDiv.appendChild(button);
+        });
+}
+
+function filter_tasks_table(category) {
+
+    var table = document.getElementsByClassName("tasks_table")[0];
+    var rows = table.getElementsByTagName("tr");
+
+    for (var i = 1; i < rows.length; i++) {
+        var cells = rows[i].getElementsByTagName("td");
+        var cellText = cells[2].textContent;  // Get the text content of the cell
+
+        console.log(cells[2])
+        // for each cell in a row
+        if(cellText == category) {
+            rows[i].style.display = "table-row";
+        } else {
+            // ...else hide it
+            rows[i].style.display = "none";
+        }
+    }
+}
 
 function sort_tasks(tasks) {
  
@@ -446,24 +480,22 @@ function sort_tasks(tasks) {
 }
     
 
-function daysBetween(dateString) {
+function daysBetween(dateString, seconddate = null) {
     // Parse the first date string
     const firstDate = new Date(dateString);
-  
-    // Get today's date
-    const today = new Date();
-  
+    if(seconddate) {
+        seconddate = seconddate;
+    } else {
+        seconddate = new Date();
+    }
     // Check if the first date is after today (negative difference would result)
-    if (firstDate > today) {
+    if (firstDate > seconddate) {
       return 0; // Handle future dates (return 0 days difference)
     }
-  
     // Calculate the time difference in milliseconds
-    const timeDiff = today.getTime() - firstDate.getTime();
-  
+    const timeDiff = seconddate.getTime() - firstDate.getTime();
     // Convert milliseconds to days and round down to whole days
     const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-  
     return daysDiff;
   }
   

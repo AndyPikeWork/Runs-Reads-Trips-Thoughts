@@ -310,6 +310,7 @@ li {
     display: block;
     height: 100%;
     font-size: 125%;
+    font-weight: bold;
   }
 
   .task_tick_button {
@@ -333,6 +334,7 @@ li {
     border-radius: 5px; /* Optional: Add rounded corners */
     text-align: center;
     font-size: 125%;
+    font-weight: bold;
   }
 
   .full-height {
@@ -589,4 +591,15 @@ th {
 .task_row_done {
   background-color: #fdfbfb;
   color: lightgrey;
+}
+
+
+#task_options {
+  text-align: center;
+}
+#task_options button {
+  background-color: white;
+  margin-left: 5px;
+  border-radius: 5px; /* Optional: Add rounded corners */
+  border: 1px solid #ccc;
 }
