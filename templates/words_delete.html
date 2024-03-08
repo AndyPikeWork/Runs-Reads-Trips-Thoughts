@@ -7,7 +7,7 @@
 {% block content %}
 
 {% include 'base_words.html' %}
-<br/>
+<br/><br/><br/><br/>
 <h6 class="big_question"> Are you sure you want to delete? </h6>
 <br/><br/><br/>
 <h1 class="note_title">{{ note.note_title }}</h1>
@@ -15,10 +15,11 @@
     <p class="note_text_p">{{ note.note_text[:1000] | safe }}</p>
 </div>
 
-<div class="center_wrapper">
-    <form class="input_form" method="post" action="#">
-        <input type="submit" value="Submit" class="submit_button">
+<div class="center_wrapper center">
+    <form method="post" action="#">
+        <input type="submit" value="Delete" class="delete_button">
     </form>
-    <a class="back_button" onclick="history.back()" href="#">Back</a>
 </div>
 {% endblock %}
+
+

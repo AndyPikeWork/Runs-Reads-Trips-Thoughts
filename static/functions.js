@@ -205,7 +205,6 @@ function update_left() {
 
 
 function load_theme() {
-    
     // In load_theme and toggleTheme:
     const body = document.body; 
     const toggleButton = document.getElementById('toggle-theme');
@@ -224,12 +223,11 @@ function load_theme() {
       if(on_words_view_page) {
         left_panel.classList.toggle('black-mode');
       }
-      
     }
+
     // Show the body element again (switched off in CSS)
     body.style.display = 'block';
     toggleButton.addEventListener('click', toggleTheme);
-    
 } 
 
 function toggleTheme() {
@@ -254,18 +252,225 @@ function toggleTheme() {
       });
   }
 
+  // HERE
+  function load_zoom() {
+
+    if(document.getElementById('word_view_content') != null) {
+        const stored_zoom = localStorage.getItem('zoom');
+        const shouldZoomIn = stored_zoom === 'out';
+        const contentDiv = document.getElementsByClassName('note_text_p')[0];
+        if (shouldZoomIn) {
+            contentDiv.classList.toggle('large-font');
+            }
+        }
+  }
+
   function make_text_big() {
     const fontToggleBtn = document.getElementById('toggle-zoom');
     const contentDiv = document.getElementsByClassName('note_text_p')[0];
 
+
     fontToggleBtn.addEventListener('click', () => {
+        const ZoomedIn = contentDiv.classList.contains('large-font'); // True or False
+
+        // When you click it, it'll change between Zoom in and Zoom out
         contentDiv.classList.toggle('large-font');
+        // Change the local storage value also
+        localStorage.setItem('zoom', ZoomedIn ? 'in' : 'out');
+        console.log(ZoomedIn);
     });
   }
 
+  function task_add() {
+    $('#task_add_form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+        task_submit("new");
+    });
+  }
+
+  function task_submit(action = "new", task_id=null) {
+
+    console.log(action + ". " + task_id)
+
+        if(action == "new") {
+            // Get task data from the form
+            taskData = {
+                id: null,
+                task: $('#add_task_task').val(),
+                due: $('#add_task_due').val(),
+                category: $('#add_task_category').val(),
+                status: action
+            };
+        } 
+        if(action == "done") {
+            // Get task data from the form
+            taskData = {
+                id: task_id,
+                task: null,
+                due: null,
+                category: null,
+                status: action
+            };
+        } 
+        if(action == "delete") {
+            // Get task data from the form
+            taskData = {
+                id: task_id,
+                task: null,
+                due: null,
+                category: null,
+                status: action
+            };
+        } 
+      
+        // Send AJAX request
+        $.ajax({
+          url: '/words/tasks',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(taskData),
+          success: function(response) {
+            // Handle successful response (e.g., update UI)
+            updateTaskList(response);
+          },
+          error: function(error) {
+            console.error('Error:', error);
+            // Handle errors (e.g., display error message to user)
+          }
+        });
+        const task_input_task = document.getElementById('add_task_task');
+        const task_input_due_date = document.getElementById('add_task_due');
+        task_input_task.value = '';
+        task_input_due_date.value = '';
+  }
+
+
+  function updateTaskList(tasks) {
+    $('#task-list').empty(); // Clear existing tasks
+  
+    const table = $('<table>'); // Create a table element
+    table.addClass('table tasks_table'); // Add Bootstrap class for styling (optional)
+  
+    const thead = $('<thead>'); // Create table header
+    const tr = $('<tr>'); // Create header row
+  
+    // Add headers for task information
+    tr.append($('<th>').text('').addClass('w-10'));
+    tr.append($('<th>').text('Task').addClass('w-40'));
+    tr.append($('<th>').text('Category').addClass('w-10'));
+    tr.append($('<th>').text('Due Date').addClass('w-10'));
+    tr.append($('<th>').text('Elapsed').addClass('w-10'));
+    tr.append($('<th>').text('').addClass('w-10'));
+    // Add more headers as needed
+  
+    thead.append(tr);
+    table.append(thead); // Add header to table
+  
+    const tbody = $('<tbody>'); // Create table body
+    tasks = sort_tasks(tasks);
+    tasks.forEach(function(task) {
+      const tr = $('<tr>'); // Create table row
+    
+      
+      // Create checkbox element
+      const done_button = $('<input>').attr({
+        type: 'button',
+        value: '✓',
+        class: 'task_tick_button',
+        id: 'task-'+task.id, // Unique ID for each checkbox
+      }).on('click', function(event) {
+        const taskId = $(this).attr('id').split('-')[1];  // Extract task ID
+        task_submit("done", taskId);  // Call the function with task ID
+    });
+
+      const remove_button = $('<input>').attr({
+        type: 'button',
+        value: '-',
+        class: 'task_remove_button',
+        id: 'task-'+task.id, // Unique ID for each checkbox
+      }).on('click', function(event) {
+        const taskId = $(this).attr('id').split('-')[1];  // Extract task ID
+        task_submit("delete", taskId);  // Call the function with task ID
+    });
+  
+    elapsed_days=daysBetween(task.date_added)
+    
+      // Create table cells for each task property
+      const tdCheckbox = $('<td>').append(done_button);
+      const tdTask = $('<td>').text(task.task);
+      const tdCategory = $('<td>').text(task.category);
+      const tdDueDate = $('<td>').text(task.date_due);
+      const tdElapsed = $('<td>').text(elapsed_days + " days");
+      const tdRemove = $('<td>').append(remove_button);
+      // Add more table cells as needed
+  
+    if(task.status == "done") {
+        tr.attr({ class: 'task_row_done'});
+        tr.append($('<td>'));
+      }
+    if(task.status != "done") {
+        tr.append(tdCheckbox); // Add cells to the row
+      }
+      
+      tr.append(tdTask);
+      tr.append(tdCategory);
+      tr.append(tdDueDate);
+    if(task.status == "done") {
+        tr.append($('<td>'));
+    } else {
+        tr.append(tdElapsed);
+    }
+      tr.append(tdRemove);
+      // Append more cells as needed
+      tbody.append(tr); // Add row to table body
+    });
+  
+    table.append(tbody); // Add body to table
+    $('#task-list').append(table); // Append table to the target element
+  }
+
+
+function sort_tasks(tasks) {
+ 
+    return tasks.slice().sort((a, b) => {
+        // Sort by "new" tasks appearing first
+        if (a.status === "new" && b.status === "done") {
+          return -1;
+        } else if (a.status === "done" && b.status === "new") {
+          return 1;
+        } else {
+          // If statuses are the same, maintain original order
+          return 0;
+        }
+      });
+}
+    
+
+function daysBetween(dateString) {
+    // Parse the first date string
+    const firstDate = new Date(dateString);
+  
+    // Get today's date
+    const today = new Date();
+  
+    // Check if the first date is after today (negative difference would result)
+    if (firstDate > today) {
+      return 0; // Handle future dates (return 0 days difference)
+    }
+  
+    // Calculate the time difference in milliseconds
+    const timeDiff = today.getTime() - firstDate.getTime();
+  
+    // Convert milliseconds to days and round down to whole days
+    const daysDiff = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+  
+    return daysDiff;
+  }
+  
 
 $(document).ready(function() {
     load_theme();
+    load_zoom();
     words_view_dropdown();
     update_left_hand_words_panel();
     updateCategories();
@@ -275,5 +480,6 @@ $(document).ready(function() {
     checkWidthAndTogglePanel();
     make_image_big();
     make_text_big();
+    task_add();
 });
 

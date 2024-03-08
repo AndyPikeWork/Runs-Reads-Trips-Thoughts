@@ -224,6 +224,7 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0;
   }
 
   .note_meta_centre_contents {
@@ -278,6 +279,9 @@ li {
     color: #fff; /* White text */
     border-radius: 5px; /* Optional: Add rounded corners */
     text-align: center;
+    display: block;
+    /*margin: 0 auto;*/
+    border: 0;
   }
 
   .submit_button {
@@ -294,10 +298,51 @@ li {
     width: auto;
   }
 
+  .add_button {
+    border: none;
+    background: none;
+    margin: 0; /* or adjust as needed */
+    text-decoration: none;
+    background-color: #4CAF50; /* Green color */
+    color: #fff; /* White text */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    text-align: center;
+    display: block;
+    height: 100%;
+    font-size: 125%;
+  }
+
+  .task_tick_button {
+    border: none;
+    background: none;
+    margin: 0; /* or adjust as needed */
+    text-decoration: none;
+    background-color: #4CAF50; /* Green color */
+    color: #fff; /* White text */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    text-align: center;
+  }
+
+  .task_remove_button {
+    border: none;
+    background: none;
+    margin: 0; /* or adjust as needed */
+    text-decoration: none;
+    background-color: lightcoral; /* Green color */
+    color: #fff; /* White text */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    text-align: center;
+    font-size: 125%;
+  }
+
+  .full-height {
+    height: 100%;
+  }
 
   .big_question {
     font-size: 200%;
-    color: darkgray;
+    color: darkorange;
+    margin-left: 50px;
   }
 
   .words_history_row {
@@ -324,6 +369,7 @@ li {
   .w-30 { width: 30%; }
   .w-40 { width: 40%; }
   .w-50 { width: 50%; }
+  .w-55 { width: 55%; }
   .w-60 { width: 60%; }
   .w-70 { width: 70%; }
   .w-80 { width: 80%; }
@@ -493,12 +539,19 @@ th {
   max-width: 100%;
 }
 
+#word_view_content {
+  margin: auto;
+}
+
 .note_text_p.large-font {
-  font-size: 200%;
+  font-size: 125%;
+  width: 50%;
+  margin: auto;
 }
 
 .note_text_p.large-font * {
   font-size: inherit;
+  
 }
 
 .footer_links {
@@ -509,4 +562,31 @@ th {
     background-color: white;
     width: 100%;
     text-align: center;
+}
+
+#task_add_form {
+  width: 75%;
+  margin: 0 auto;
+}
+.form-row {
+  text-align: center;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  
+}
+.form-row div {
+  margin-left: 5px;
+}
+
+.tasks_table {
+  width: 90%;
+  table-layout: fixed ;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.task_row_done {
+  background-color: #fdfbfb;
+  color: lightgrey;
 }

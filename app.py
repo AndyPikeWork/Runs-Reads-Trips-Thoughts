@@ -13,7 +13,7 @@
 # then open on browser: http://127.0.0.1:5000
 
 # app.py
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta, time
 from time import gmtime, strftime
@@ -127,6 +127,15 @@ class Words(db.Model):
     note_tags = db.Column(db.String(200))
     note_original = db.Column(db.Integer)
 
+class Tasks(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    date_added = db.Column(db.String(20))
+    task = db.Column(db.String(20))
+    date_edited = db.Column(db.String(20))
+    status = db.Column(db.String(200))
+    category = db.Column(db.String(200))
+    date_due = db.Column(db.String(200))
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -135,8 +144,6 @@ class User(db.Model, UserMixin):
 
 with app.app_context():
     db.create_all()
-
-
 
 # Global Parameters
 today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
@@ -583,7 +590,9 @@ def words_new():
          
 
             # Redirect to the reads_history page after successful form submission
-            return redirect(url_for('words_history'))
+            return redirect(url_for('words_view', note_original=key))
+
+            # return redirect(url_for('words_history'))
         except Exception as e:
             # Handle database or form processing errors
             words_entry = db.session.rollback()
@@ -731,6 +740,58 @@ def words_delete(note_id):
     return render_template('words_delete.html', note=note)
 
 
+# TASKS ------------------------------------------------------------------------------------------------------------
+
+@app.route('/words/tasks', methods=['GET', 'POST'])
+@login_required
+def words_tasks():
+    tasks = return_tasks()
+    if request.method == 'POST':
+        today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
+        data = request.get_json()
+        print(data['id'])
+
+        if(data['status']) == "new":
+            new_task = Tasks(date_added=today_dt_yyyymmdd,task=data['task'],date_edited="",status="new", category=data['category'], date_due=data['due'])
+            db.session.add(new_task)
+            db.session.commit()
+
+        if(data['status']) == "done":
+            task = Tasks.query.get(data['id'])  # Fetch task using ID
+            if not task:
+                return jsonify({'error': 'Task not found'}), 404
+            # Update task attributes (modify as needed)
+            task.date_edited = today_dt_yyyymmdd  
+            task.status = "done"
+            db.session.commit()
+
+        if(data['status']) == "delete":
+            task = Tasks.query.get(data['id'])  # Fetch task using ID
+            if not task:
+                return jsonify({'error': 'Task not found'}), 404
+            # Update task attributes (modify as needed)
+            task.date_edited = today_dt_yyyymmdd  
+            task.status = "deleted"
+            db.session.commit()
+
+        tasks = return_tasks()
+        return jsonify(tasks)
+    return render_template('words_tasks.html', tasks=tasks)
+
+def return_tasks():
+    existing_tasks = [
+            {
+                "id": task.id,  # Include task ID if needed
+                "task": task.task,
+                "date_added": task.date_added,
+                "status": task.status,
+                "category": task.category,
+                "date_due": task.date_due
+                # Add other task properties as needed
+            }
+            for task in Tasks.query.filter(Tasks.status != "deleted").all()
+        ]
+    return existing_tasks
 
 # AUTHENTICATION  ---------------------------------------------------------------------------------------------------
 

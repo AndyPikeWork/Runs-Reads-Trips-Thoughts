@@ -3,6 +3,7 @@
         <li class="list-group-item m-2 {% if 'stats' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_stats') }}">Stats</a></li>
         <li class="list-group-item m-2 {% if 'new' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_new') }}">New</a></li>
         <li class="list-group-item m-2 {% if 'history' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_history') }}">History</a></li>
+        <li class="list-group-item m-2 {% if 'tasks' in request.endpoint %}active{% endif %}"><a href="{{ url_for('words_tasks') }}">Tasks</a></li>
     </ul>
 </div>
 

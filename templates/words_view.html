@@ -56,7 +56,9 @@
     </div>
     <br/>
     <div class="m-5">
-        <div class="note_text_p">{{ note.note_text | safe }}</div>
+        <div id="word_view_content">
+            <div class="note_text_p">{{ note.note_text | safe }}</div>
+        </div>
     </div>
     <div class="center_wrapper side_panel">
         <a class="back_button" onclick="history.back()" href="#">Back</a>

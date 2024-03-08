@@ -1,0 +1,37 @@
+<!-- home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Words - Tasks{% endblock %}
+
+{% block content %}
+
+{% include 'base_words.html' %}
+
+<br/><br/><br/><br/>
+<form id="task_add_form" method="post" action="#">
+    <div class="form-row">
+        <div class="w-50">
+          <input type="text" id="add_task_task" class="form-control" placeholder="Task">
+        </div>
+        <div class="w-20">
+            <select id="add_task_category" class="form-control">
+                <option value="work" selected>Work</option>
+                <option value="personal">Personal</option>
+            </select>
+        </div>
+        <div class="w-10">
+            <input type="text" id="add_task_due" class="form-control" placeholder="Due">
+        </div>
+        <div class="w-10 full-height">
+            <input type="submit" value="+" class="add_button">
+        </div>
+    </div>
+</form>
+<br/><br/>
+<div id="task-list"></div>
+<script>
+    const tasks_array = {{ tasks|tojson }}
+    updateTaskList(tasks_array);
+</script>
+
+{% endblock %}
