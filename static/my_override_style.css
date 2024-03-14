@@ -368,6 +368,7 @@ li {
   .w-10 { width: 10%; }
   .w-15 { width: 15%; }
   .w-20 { width: 20%; }
+  .w-20 { width: 25%; }
   .w-30 { width: 30%; }
   .w-40 { width: 40%; }
   .w-50 { width: 50%; }
@@ -589,8 +590,11 @@ th {
 }
 
 .task_row_done {
-  background-color: #fdfbfb;
-  color: lightgrey;
+  background-color: #ece7e7;
+
+}
+.task_row_done td {
+  opacity: 0.3;
 }
 
 
@@ -602,4 +606,19 @@ th {
   margin-left: 5px;
   border-radius: 5px; /* Optional: Add rounded corners */
   border: 1px solid #ccc;
+}
+
+.task_due_exceeded {
+  background-color: lightpink;
+}
+
+.task_filter_button {
+  border: 1px solid var(--task-button-color) !important;  
+  color: var(--task-button-color);
+  font-weight: bold;
+}
+
+.task_category_td {
+  background-color: var(--task-button-color) !important; 
+
 }

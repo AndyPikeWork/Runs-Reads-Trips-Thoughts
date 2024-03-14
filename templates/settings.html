@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<br/><br/><br/>
+<div class="w-40 center">
+    <table id="settings_task">
+        <thead>
+            <tr>
+                <th class="w-20 center">Category</th>
+                <th class="w-10 center">Colour</th>
+                <th class="w-5 center">Change</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for task in config_tasks %}
+            <tr>
+                <td class="center">{{ task.category }}</td>
+                <td id="task_category_id_{{task.id}}" class="center" style="background-color: {{ task.color }};">{{ task.color }}</td>
+                <td>
+                    <select id="task_{{ task.id }}" class="colors_dropdown"></select>
+                </td>
+                <!--<td style="background-color: {{ task.color }};"></td>-->
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br/><br/>
+<div class="w-40 center">
+    <form>
+        <div class="form-row">
+            <div class="w-30">
+                <input type="text" id="task_category_option" placeholder="Category" class="form-control center">
+            </div>
+            <div>
+                <select id="new_task_category_color" class="colors_dropdown" class="form-control"></select>
+            </div>
+            <div class="w-10 full-height">
+                <input id="add_task_category_form" type="submit" value="+" class="add_button">
+            </div>
+        </div>  
+    </form>
+</div>
+<br/><br/>
+<hr>
+
+
+
+
+
+
+
+
+
+<br/><br/>
+<div class="w-40 center">
+    <table id="settings_task">
+        <thead>
+            <tr>
+                <th class="w-20 center">Type</th>
+                <th class="w-20 center">Category</th>
+                <th class="w-10 center">Colour</th>
+                <th class="w-5 center">Change</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for words in config_words %}
+            <tr>
+                <td class="center">{{ words.type }}</td>
+                <td class="center">{{ words.category }}</td>
+                <td id="word_category_id_{{words.id}}" class="center" style="background-color: {{ words.color }};">{{ words.color }}</td>
+                <td>
+                    <select id="word_{{ words.id }}" class="colors_dropdown"></select>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<br/><br/>
+<div class="w-40 center">
+    <form>
+        <div class="form-row">
+            <div class="w-25">
+                <input type="text" id="word_type_option" placeholder="Type" class="form-control center">
+            </div>
+            <div class="w-25">
+                <input type="text" id="word_category_option" placeholder="Category" class="form-control center">
+            </div>
+            <div>
+                <select id="new_word_category_color" class="colors_dropdown" class="form-control"></select>
+            </div>
+            <div class="w-10 full-height">
+                <input id="add_word_category_form" type="submit" value="+" class="add_button">
+            </div>
+        </div>  
+    </form>
+</div>
+{% endblock %}

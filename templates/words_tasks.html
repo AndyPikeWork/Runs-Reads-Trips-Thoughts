@@ -6,7 +6,9 @@
 {% block content %}
 
 {% include 'base_words.html' %}
-
+<script>
+    const task_options = {{ task_categories|tojson }}
+</script>
 <br/><br/><br/><br/>
 <form id="task_add_form" method="post" action="#">
     <div class="form-row">
@@ -15,8 +17,6 @@
         </div>
         <div class="w-20">
             <select id="add_task_category" class="form-control">
-                <option value="work" selected>Work</option>
-                <option value="personal">Personal</option>
             </select>
         </div>
         <div class="w-10">

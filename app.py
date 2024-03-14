@@ -15,6 +15,7 @@
 # app.py
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from datetime import datetime, timedelta, time
 from time import gmtime, strftime
 from jinja2.utils import markupsafe 
@@ -140,6 +141,17 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+
+class CONFIG_TASK_CATEGORIES(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category = db.Column(db.String(200))
+    color = db.Column(db.String(200))
+
+class CONFIG_WORDS_OPTIONS(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(200))
+    category = db.Column(db.String(200))
+    color = db.Column(db.String(200))
     
 
 with app.app_context():
@@ -156,6 +168,9 @@ words_options = [
         {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'violet'},
         {'type': 'Guide', 'categories': ['Technical', 'Tech Training', 'Project'], 'color': 'gold'},   
     ]
+
+
+
 
 
 # Route for handling form submissions
@@ -422,18 +437,25 @@ def thoughts_history():
 @login_required
 def words_history():
     words = Words.query.filter_by(note_status='latest').order_by(Words.note_date.desc())
-    # add the colours from the categories_list array
+
+    words_config = db.session.query(CONFIG_WORDS_OPTIONS.type,
+                                func.group_concat(CONFIG_WORDS_OPTIONS.category, ',').label('categories'),
+                                CONFIG_WORDS_OPTIONS.color).group_by(CONFIG_WORDS_OPTIONS.type, CONFIG_WORDS_OPTIONS.color).order_by(CONFIG_WORDS_OPTIONS.id).all()
+
+    words_config_options = [{'type': config.type, 'categories': config.categories.split(','), 'color': config.color} for config in words_config]
+
+    # adding the color to the words
 
     colored_words = []
     for word in words:
         word_dict = word.__dict__
 
-        for option in words_options:
-            if option['type'] == word.note_type:
-                word_dict['color'] = option['color']
+        for option in words_config:
+            if option.type == word.note_type:
+                word_dict['color'] = option.color
         colored_words.append(word_dict)
 
-    return render_template('words_history.html',words=colored_words,words_options=words_options)
+    return render_template('words_history.html',words=colored_words,words_options=words_config_options)
 
 # NEW ---------------------------------------------------------------------------------------------------
 
@@ -597,7 +619,15 @@ def words_new():
             # Handle database or form processing errors
             words_entry = db.session.rollback()
             print(f"Error: {str(e)}")
-    return render_template('words_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd, words_options=words_options)
+    
+    words_config = db.session.query(CONFIG_WORDS_OPTIONS.type,
+                                func.group_concat(CONFIG_WORDS_OPTIONS.category, ',').label('categories'),
+                                CONFIG_WORDS_OPTIONS.color).group_by(CONFIG_WORDS_OPTIONS.type, CONFIG_WORDS_OPTIONS.color).order_by(CONFIG_WORDS_OPTIONS.id).all()
+
+    words_config_options = [{'type': config.type, 'categories': config.categories.split(','), 'color': config.color} for config in words_config]
+
+    
+    return render_template('words_new.html',today_dt_yyyymmdd=today_dt_yyyymmdd, words_options=words_config_options )
 
 # VIEW NOTE  ---------------------------------------------------------------------------------------------------
 
@@ -645,8 +675,14 @@ def words_view(note_original):
     # convert new lines to HTML line breaks
     note.note_text = note.note_text.replace('\n', '<br>')
 
+    words_config = db.session.query(CONFIG_WORDS_OPTIONS.type,
+                                func.group_concat(CONFIG_WORDS_OPTIONS.category, ',').label('categories'),
+                                CONFIG_WORDS_OPTIONS.color).group_by(CONFIG_WORDS_OPTIONS.type, CONFIG_WORDS_OPTIONS.color).order_by(CONFIG_WORDS_OPTIONS.id).all()
+
+    words_config_options = [{'type': config.type, 'categories': config.categories.split(','), 'color': config.color} for config in words_config]
+
     #note = Words.query.get_or_404(note_key)
-    return render_template('words_view.html', note=note, notes=notes, words_options=words_options)
+    return render_template('words_view.html', note=note, notes=notes, words_options=words_config_options)
 
 @app.route('/words/note/<int:note_id>/edit', methods=['GET', 'POST'])
 @login_required
@@ -711,7 +747,14 @@ def words_edit(note_id):
             # Handle database or form processing errors
             words_edit = db.session.rollback()
             print(f"Error: {str(e)}")
-    return render_template('words_edit.html', note=note, words_options=words_options)
+
+    words_config = db.session.query(CONFIG_WORDS_OPTIONS.type,
+                                func.group_concat(CONFIG_WORDS_OPTIONS.category, ',').label('categories'),
+                                CONFIG_WORDS_OPTIONS.color).group_by(CONFIG_WORDS_OPTIONS.type, CONFIG_WORDS_OPTIONS.color).order_by(CONFIG_WORDS_OPTIONS.id).all()
+
+    words_config_options = [{'type': config.type, 'categories': config.categories.split(','), 'color': config.color} for config in words_config]
+
+    return render_template('words_edit.html', note=note, words_options=words_config_options)
 
 
 
@@ -746,9 +789,11 @@ def words_delete(note_id):
 @login_required
 def words_tasks():
     tasks = return_tasks()
+    
     if request.method == 'POST':
         today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
-        data = request.get_json()
+        # When it's an AJAX request, use JSON
+        data = request.get_json() 
         print(data['id'])
 
         if(data['status']) == "new":
@@ -776,7 +821,10 @@ def words_tasks():
 
         tasks = return_tasks()
         return jsonify(tasks)
-    return render_template('words_tasks.html', tasks=tasks)
+    task_categories = CONFIG_TASK_CATEGORIES.query.all() 
+    tasks_options = [{'category': category.category, 'color': category.color} for category in task_categories]
+
+    return render_template('words_tasks.html', tasks=tasks, task_categories=tasks_options)
 
 def return_tasks():
     existing_tasks = [
@@ -789,9 +837,12 @@ def return_tasks():
                 "date_due": task.date_due
                 # Add other task properties as needed
             }
-            for task in Tasks.query.filter(Tasks.status != "deleted").all()
+            for task in Tasks.query.filter(Tasks.status != "deleted").order_by(Tasks.date_due.asc()).all()
         ]
     return existing_tasks
+
+
+
 
 # AUTHENTICATION  ---------------------------------------------------------------------------------------------------
 
@@ -823,6 +874,51 @@ def logout():
 def before_request():
     if not current_user.is_authenticated and request.endpoint not in ['login', 'static']:
         return redirect(url_for('login'))
+    
+
+# SETTINGS  ---------------------------------------------------------------------------------------------------
+
+
+@app.route('/settings',methods=['GET', 'POST'])
+@login_required
+def settings():
+    if request.method == 'POST':
+        data = request.get_json() 
+
+        if(data['update']) == "task_color_change":
+            config_cat = CONFIG_TASK_CATEGORIES.query.get(data['id'])  # Fetch task using ID
+            if not config_cat:
+                return jsonify({'error': 'Task not found'}), 404
+            # Update task attributes (modify as needed)
+            config_cat.color = data['color']  
+            db.session.commit()
+            return jsonify(data['color'])
+        
+        if(data['update']) == "word_color_change":
+            config_cat = CONFIG_WORDS_OPTIONS.query.get(data['id'])  # Fetch task using ID
+            if not config_cat:
+                return jsonify({'error': 'Task not found'}), 404
+            # Update task attributes (modify as needed)
+            config_cat.color = data['color']  
+            db.session.commit()
+            return jsonify(data['color'])
+        
+        if(data['update']) == "new_task_category":
+            new_task_category = CONFIG_TASK_CATEGORIES(category=data['category'],color=data['color'])
+            db.session.add(new_task_category)
+            db.session.commit()
+            return jsonify(data)
+        
+        if(data['update']) == "new_word_category":
+            new_word_category = CONFIG_WORDS_OPTIONS(type=data['type'], category=data['category'],color=data['color'])
+            db.session.add(new_word_category)
+            db.session.commit()
+            return jsonify(data)
+
+    config_tasks = CONFIG_TASK_CATEGORIES.query.all()
+    config_words = CONFIG_WORDS_OPTIONS.query.all()
+    return render_template('settings.html', config_tasks=config_tasks, config_words=config_words)
+
 
 # SETUP  ---------------------------------------------------------------------------------------------------
 

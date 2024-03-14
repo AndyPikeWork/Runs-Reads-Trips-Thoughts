@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='my_override_style.css') }}">  
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="{{ url_for('static', filename='css_colors.js') }}"></script>
     <script src="{{ url_for('static', filename='jquery-3.7.1.js') }}"></script>
     <script src="{{ url_for('static', filename='functions.js') }}"></script>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
@@ -30,7 +31,8 @@
     </div>
     
     <div>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
     <br/>
     <br/>
@@ -42,6 +44,8 @@
             <a href="#" id="toggle-theme">Theme</a>
             &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
             <a href="#" id="toggle-zoom">Zoom</a>
+            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+            <a href="{{ url_for('settings') }}">Settings</a>
         </div>
     </div>
 

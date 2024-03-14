@@ -9,6 +9,7 @@
 {% include 'base_words.html' %}
 <script>
     const categories_list = {{ words_options|tojson }}
+
 </script>
 <br/>
 <div id="words_view_left_panel">
@@ -22,6 +23,7 @@
     <br/>
     <br/>
     <br/>
+    <h1>Options for Tasks</h1>
     <br/>
     <table>
         {% for link in notes %}
