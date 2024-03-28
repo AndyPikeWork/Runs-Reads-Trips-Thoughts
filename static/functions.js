@@ -8,6 +8,8 @@ function add_leading_zero(i) {
     return i;
 }
 
+    
+
 
 
 // Function to update the Category dropdown based on the selected Type
@@ -672,5 +674,6 @@ $(document).ready(function() {
     add_task_categories_drop_down();
     add_colors_to_dropdown();
     submit_new_task_category_settings();
+    $('#login_enter').focus();
 });
 

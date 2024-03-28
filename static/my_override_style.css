@@ -17,10 +17,14 @@ body {
   #words_view_main_panel {
     margin-left: 250px; /* Shift content to the right */
   }
-  .footer, .base_buttons {
+  .footer {
     margin-left: 250px !important; 
     text-align: center;
   }
+  #words_view_main_panel {
+    margin-right: 250px !important;
+  }
+
 }
 
 /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
@@ -33,6 +37,10 @@ body {
 .center {
     text-align: center;
     margin: auto;
+}
+
+.left {
+  text-align: left;
 }
 
 /** Sign out link **/

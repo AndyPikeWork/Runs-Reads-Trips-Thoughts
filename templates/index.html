@@ -6,38 +6,40 @@
 {% block content %}
 
 <br/><br/>
-<table class="table override_table">
-    <tbody>
-        <tr>
-            <td>Books Read:</td>
-            <td>{{ number_of_books }}</td>
-        </tr>
-        <tr>
-            <td>Pages Read:</td>
-            <td>{{ number_of_pages }}</td>
-        </tr>
-        <tr>
-            <td>Runs:</td>
-            <td>{{ number_of_runs }}</td>
-        </tr>
-        <tr>
-            <td>Kilometers run:</td>
-            <td>{{ km_run }}</td>
-        </tr>
-        <tr>
-            <td>Unique trips made:</td>
-            <td>{{ trips_made }}</td>
-        </tr>
-        <tr>
-            <td>Unique places visited:</td>
-            <td>{{ places_visited }}</td>
-        </tr>
-        <tr>
-            <td>Unique countries visited:</td>
-            <td>{{ countries_visited }}</td>
-        </tr>
+<div class="w-60 center">
+    <table class="table override_table">
+        <tbody>
+            <tr>
+                <td class="left">Books Read:</td>
+                <td>{{ number_of_books }}</td>
+            </tr>
+            <tr>
+                <td class="left">Pages Read:</td>
+                <td>{{ number_of_pages }}</td>
+            </tr>
+            <tr>
+                <td class="left">Runs:</td>
+                <td>{{ number_of_runs }}</td>
+            </tr>
+            <tr>
+                <td class="left">Kilometers run:</td>
+                <td>{{ km_run }}</td>
+            </tr>
+            <tr>
+                <td class="left">Unique trips made:</td>
+                <td>{{ trips_made }}</td>
+            </tr>
+            <tr>
+                <td class="left">Unique places visited:</td>
+                <td>{{ places_visited }}</td>
+            </tr>
+            <tr>
+                <td class="left">Unique countries visited:</td>
+                <td>{{ countries_visited }}</td>
+            </tr>
 
-</table>
+    </table>
+</div>
 
 
 {% endblock %}

@@ -161,18 +161,6 @@ with app.app_context():
 today_dt_yyyymmdd = datetime.today().strftime('%Y-%m-%d')
 
 
-words_options = [
-        {'type': 'Meeting', 'categories': ['NHS England', 'Deloitte','Beacon'], 'color': 'lightblue'},
-        {'type': 'Thought', 'categories': [''], 'color': 'lightgreen'},
-        {'type': 'Review', 'categories': ['Book', 'Media'], 'color': 'lightsalmon'},
-        {'type': 'Article', 'categories': ['Essay', 'Academic'], 'color': 'violet'},
-        {'type': 'Guide', 'categories': ['Technical', 'Tech Training', 'Project'], 'color': 'gold'},   
-    ]
-
-
-
-
-
 # Route for handling form submissions
 @app.route('/', methods=['GET', 'POST'])
 @login_required
