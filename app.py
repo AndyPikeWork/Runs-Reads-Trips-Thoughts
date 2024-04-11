@@ -267,7 +267,33 @@ def reads_stats():
     authors = f.group_and_rank(authors, "TRUE", 10, "highest")
     #books_by_author = f.make_graph(authors, "hbar", 0.5, 0, "NULL", "NULL",2, "TRUE")
 
-    return render_template('reads_stats.html', years_grouped=years_grouped, pages_per_year=pages_per_year,authors=authors) 
+    # Fastest Reads
+
+    reads_with_time_difference = []  # List to store reads along with their time differences
+    pages_per_day = []  # List to store reads along with their time differences
+
+    for read in reads:
+        time_difference = f.difference_in_dates(read.date_started, read.date_ended)
+        if time_difference is not None:
+            pages_per_day = int(round(read.pages / time_difference, 0))
+            reads_with_time_difference.append((read, time_difference, pages_per_day))
+
+    # Sort reads based on the calculated time differences
+    #pages_per_day.sort(key=lambda x: x[1] if x[1] is not None else float('inf'))  # Sort based on time difference (shortest first)
+    reads_with_time_difference.sort(key=lambda x: x[2], reverse=True)  # Sort based on pages_per_day
+    #pages_per_day.sort(key=lambda x: x[1] if x[1] is not None else float('inf'))
+
+
+    
+    # Extract the sorted reads
+    sorted_reads = [(read, time_difference, pages_per_day) for read, time_difference, pages_per_day in reads_with_time_difference]
+    # Take the top 10 fastest reads
+    top_10_fastest_reads = sorted_reads[:10]
+
+    # Pass the top 10 fastest reads to the group_and_rank function
+    fastest_reads = [read for read in top_10_fastest_reads]
+
+    return render_template('reads_stats.html', years_grouped=years_grouped, pages_per_year=pages_per_year,authors=authors,fastest_reads=fastest_reads) 
 
 @app.route('/trips/stats', methods=['GET', 'POST'])
 @login_required

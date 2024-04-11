@@ -5,6 +5,7 @@ from io import BytesIO
 import base64
 import pandas as pd
 from mpl_toolkits.basemap import Basemap
+from datetime import datetime
 
 def make_graph(data, chart_type, label_size=0.2, round_results=0, min_range="NULL", max_range="NULL",img_height=2, value_sorted="TRUE"):
     # split out the inbound data into category (x-axis) and the values (y-axis)
@@ -246,3 +247,14 @@ def average_time_per_kilometer(time_str, distance):
     avg_time_str = seconds_to_time(time_per_kilometer)
 
     return avg_time_str
+
+def difference_in_dates(start_date, end_date):
+    if len(start_date) != 10 or len(end_date) != 10:        
+         return None  # Return None if either start_date or end_date is missing
+    start_datetime = datetime.strptime(start_date, '%Y-%m-%d')  # Convert start date string to datetime
+    end_datetime = datetime.strptime(end_date, '%Y-%m-%d')  # Convert end date string to datetime
+    time_difference = end_datetime - start_datetime  # Calculate time difference
+    if time_difference.days > 0:
+        print(start_date," ", end_date, " (" , time_difference.days, ")")
+        return time_difference.days + 1  # Return time difference in days
+

@@ -49,6 +49,28 @@
     </div>
 {% endfor %}
 </div>
+
+<br/><br/>
+<h6 class="center">Fastest Reads</h6>
+<br/>
+<table class="trips_stats_table center">
+            <tr>
+                <th>Book</th>
+                <th>Author</th>
+                <th>Pages</th>
+                <th>Days</th>
+                <th>Pages per day</th>
+            </tr>
+    {% for f_read, time_difference, pages_per_day in fastest_reads %}
+        <tr style="border-top: 1px solid lightgrey">
+                <td class="left">{{ f_read.title }}</td>
+                <td class="left">{{ f_read.author }}</td>
+                <td>{{ f_read.pages }}</td>
+                <td>{{ time_difference }}</td>
+                <td>{{ pages_per_day }}</td>
+        </tr>
+    {% endfor %}
+</table>
 <!--
     <br/><br/><br/>
     <h6 class="center">Books by Year</h6>
