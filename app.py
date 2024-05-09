@@ -654,10 +654,18 @@ def words_view(note_original):
     # notes = Words.query.filter_by(note_status='latest', note_type=note.note_type, note_category=note.note_category).order_by(Words.note_date.desc())
     notes = Words.query.filter_by(note_status='latest').order_by(Words.note_date.desc())
 
-    # Convert Regex to HTML notation
+    # Get Anchor links
     
+    anchor_links = []
+
+    for match in re.finditer(r'\*\*((?:[\w\s]+?)\d*?(?:\s\w+)*\??)\*\*', note.note_text):
+        anchor_links.append(match.group(1))
+
+    # Convert Regex to HTML notation
+
+
     # convert ** into <bold> tags
-    note.note_text = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', note.note_text)
+    note.note_text = re.sub(r'\*\*((?:[\w\s]+?)\d*?(?:\s\w+)*\??)\*\*', r'<b id="\1">\1</b>', note.note_text)
     # convert links to <a> elements
     note.note_text = re.sub(r"(https?:\/\/[^\s]+)",r"<a target='_blank' href='\1'>\1</a>", note.note_text).replace('</td>','')
     #note.note_text = note.note_text.replace('</td></a>', '</a></td>')
@@ -689,6 +697,8 @@ def words_view(note_original):
     # convert new lines to HTML line breaks
     note.note_text = note.note_text.replace('\n', '<br>')
 
+    
+
     words_config = db.session.query(CONFIG_WORDS_OPTIONS.type,
                                 func.group_concat(CONFIG_WORDS_OPTIONS.category, ',').label('categories'),
                                 CONFIG_WORDS_OPTIONS.color).group_by(CONFIG_WORDS_OPTIONS.type, CONFIG_WORDS_OPTIONS.color).order_by(CONFIG_WORDS_OPTIONS.id).all()
@@ -696,7 +706,7 @@ def words_view(note_original):
     words_config_options = [{'type': config.type, 'categories': config.categories.split(','), 'color': config.color} for config in words_config]
 
     #note = Words.query.get_or_404(note_key)
-    return render_template('words_view.html', note=note, notes=notes, words_options=words_config_options)
+    return render_template('words_view.html', note=note, notes=notes, words_options=words_config_options, anchors=anchor_links)
 
 @app.route('/words/note/<int:note_id>/edit', methods=['GET', 'POST'])
 @login_required

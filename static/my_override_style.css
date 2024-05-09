@@ -630,3 +630,9 @@ th {
   background-color: var(--task-button-color) !important; 
 
 }
+
+.note_anchors {
+  text-align: left;
+  color: grey !important;
+  width: 100% !important;
+}

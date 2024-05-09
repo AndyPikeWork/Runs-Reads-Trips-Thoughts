@@ -59,6 +59,20 @@
     <br/>
     <div class="m-5">
         <div id="word_view_content">
+            <div class="note_text_p"><b>Contents</b></div>
+        </div>
+    </div>
+    <div>
+        <ul>
+            {% for anchor in anchors %}
+                <li class="note_anchors"><a href="#{{ anchor }}">{{ anchor }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <hr/>
+    <br/>
+    <div class="m-5">
+        <div id="word_view_content">
             <div class="note_text_p">{{ note.note_text | safe }}</div>
         </div>
     </div>
