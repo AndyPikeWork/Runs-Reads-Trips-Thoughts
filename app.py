@@ -218,6 +218,12 @@ def runs_stats():
     # To make a Matplot lib chart (don't forget to pass total_distance_per_year on to the render function)
     #total_distance_per_year = f.make_graph(total_distance_per_year_data, "hbar", 0.2, 0, "NULL", "NULL", 2, "FALSE")
 
+    #Average Distance per year
+    distance_array_data = [run.distance for run in runs]
+    years_array_data = [run.date.split('-')[0] for run in runs]
+    average_distance_per_year_data = f.group_with_agg(years_array_data, distance_array_data, 100, "ave", "whole")
+
+
     list_5k = [run for run in runs if run.distance == 5]
     sorted_list_5k = sorted(list_5k, key=lambda x: x.time)[:10]
     latest = max(sorted_list_5k, key=lambda x: x.date)
@@ -239,8 +245,18 @@ def runs_stats():
         else: 
             run.is_latest = "bar_None"
 
+    list_15k = [run for run in runs if run.distance == 15]
+    sorted_list_15k = sorted(list_15k, key=lambda x: x.time)[:15]
+    latest = max(sorted_list_15k, key=lambda x: x.date)
+    
+    for run in sorted_list_15k:
+        if run.date == latest.date:
+            run.is_latest = "bar_Low"
+        else: 
+            run.is_latest = "bar_None"
+
     #sorted_list_10k = sorted(list_10k, key=lambda x: x.time)[:5]
-    return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year,sorted_list_5k=sorted_list_5k,sorted_list_10k=sorted_list_10k)
+    return render_template('runs_stats.html',total_distance_per_year_data=total_distance_per_year_data,years_of_runs=years_of_runs,ave_times_per_year=ave_times_per_year,sorted_list_5k=sorted_list_5k,sorted_list_10k=sorted_list_10k,sorted_list_15k=sorted_list_15k,average_distance_per_year_data=average_distance_per_year_data)
 
 @app.route('/reads/stats', methods=['GET', 'POST'])
 @login_required
@@ -658,14 +674,13 @@ def words_view(note_original):
     
     anchor_links = []
 
-    for match in re.finditer(r'\*\*((?:[\w\s]+?)\d*?(?:\s\w+)*\??)\*\*', note.note_text):
+    for match in re.finditer(r'\*\*((?:[\w\s.,!?“”‘’\'\"\-\(\)]+?)\d*?(?:\s[\w\s.,!?“”‘’\'\"\-\(\)]+)*\??)\*\*', note.note_text):
         anchor_links.append(match.group(1))
 
     # Convert Regex to HTML notation
 
-
     # convert ** into <bold> tags
-    note.note_text = re.sub(r'\*\*((?:[\w\s]+?)\d*?(?:\s\w+)*\??)\*\*', r'<b id="\1">\1</b>', note.note_text)
+    note.note_text = re.sub(r'\*\*((?:[\w\s.,!?“”‘’\'\"\-\(\)]+?)\d*?(?:\s[\w\s.,!?“”‘’\'\"\-\(\)]+)*\??)\*\*', r'<b id="\1">\1</b>', note.note_text)
     # convert links to <a> elements
     note.note_text = re.sub(r"(https?:\/\/[^\s]+)",r"<a target='_blank' href='\1'>\1</a>", note.note_text).replace('</td>','')
     #note.note_text = note.note_text.replace('</td></a>', '</a></td>')

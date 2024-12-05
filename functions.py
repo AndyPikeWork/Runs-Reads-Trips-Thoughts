@@ -116,7 +116,10 @@ def group_with_agg(categories, values, top_number, agg_type, data_type,highlight
     if agg_type == "ave":
         # Calculate the mean for each category
         for category, data in aggregated_data.items():
-            data[0] = data[0] / data[1]
+            if data_type == "whole":
+                data[0] = round(data[0] / data[1],1)
+            else:
+                data[0] = data[0] / data[1]
 
     if data_type == "time":
         result = [(category, convert_time_to_float(data[0])) for category, data in aggregated_data.items()]

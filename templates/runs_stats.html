@@ -45,7 +45,19 @@
         {% endfor %}
         </div>
     </div>
-
+    <br/><br/>
+    <h6 class="center">Average Distance by Year</h6>
+    <br/>
+    <div class="chart center">
+        {% for year_values in average_distance_per_year_data %}
+            <div class="bar-container">
+                <div class="small-label">{{year_values[0]}}</div>
+                <div class="bar {{year_values[3]}}" style="width: {{year_values[2]}}%">
+                    <div class="value">{{year_values[1]}}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
     <br/><br/>
     <h6 class="center">Fastest 5ks</h6>
     <br/>
@@ -87,6 +99,33 @@
                 </thead>
                 <tbody>
                     {% for runs in sorted_list_10k %}
+                        <tr class="{{runs.is_latest}}">
+                            <td>{{ loop.index }}</td>
+                            <td>{{ runs.date }}</td>
+                            <td>{{ runs.location }}</td>
+                            <td>{{ runs.time }}</td>
+                            <td>{{ runs.average_time_per_km }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            
+        <br/><br/>
+        <h6 class="center">Fastest 15ks</h6>
+        <br/>
+            <table class="table override_table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Time</th>
+                        <th>Average</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for runs in sorted_list_15k %}
                         <tr class="{{runs.is_latest}}">
                             <td>{{ loop.index }}</td>
                             <td>{{ runs.date }}</td>

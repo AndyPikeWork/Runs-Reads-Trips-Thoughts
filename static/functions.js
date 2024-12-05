@@ -275,7 +275,7 @@ function toggleTheme() {
     if(document.getElementById('word_view_content') != null) {
         const stored_zoom = localStorage.getItem('zoom');
         const shouldZoomIn = stored_zoom === 'out';
-        const contentDiv = document.getElementsByClassName('note_text_p')[0];
+        const contentDiv = document.getElementsByClassName('note_text_p')[1];
         if (shouldZoomIn) {
             contentDiv.classList.toggle('large-font');
             }
@@ -284,7 +284,7 @@ function toggleTheme() {
 
   function make_text_big() {
     const fontToggleBtn = document.getElementById('toggle-zoom');
-    const contentDiv = document.getElementsByClassName('note_text_p')[0];
+    const contentDiv = document.getElementsByClassName('note_text_p')[1];
 
 
     fontToggleBtn.addEventListener('click', () => {
